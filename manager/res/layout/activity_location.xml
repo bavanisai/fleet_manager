@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool"
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/bg17"
+        android:elevation="2dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        app:popupTheme="@style/ThemeOverlay.YourApp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/arrow_img"
+            android:src="@drawable/back_arrow"
+            android:layout_marginRight="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="LOCATION"
+            android:textSize="12dp"
+            android:textColor="@color/white"
+            android:paddingTop="6dp"
+            android:id="@+id/txtLocation"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <com.example.tripmodule.CustomAutoCompleteTextView
+            android:id="@+id/atv_places"
+            android:layout_width="270sp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Address"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:paddingTop="6dp"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            android:visibility="gone"/>
+        <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/search1"
+        android:gravity="right"
+        android:layout_gravity="right"
+        android:layout_marginRight="10sp"
+        android:id="@+id/imgVSearch"
+        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search1"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_marginRight="10sp"
+            android:id="@+id/imgVSearch1"
+            android:visibility="gone"
+            />
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.example.TabView.SlidingTabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg17" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
+</LinearLayout>

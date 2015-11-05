@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/addAdvanceTvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:hint="@string/select_date"
+                    android:textColor="#262522"
+                    android:textColorHint="#262522"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/buttonflatulta" />
+
+
+                <Spinner
+                    android:id="@+id/addAdvanceSpinnerAdvanceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_style"
+                    android:layout_marginTop="10dp" />
+
+                <Spinner
+                    android:id="@+id/addAdvanceSpinnerVehicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_style"
+                    android:layout_marginTop="10dp" />
+
+                <Spinner
+                    android:id="@+id/addAdvanceSpinnerDriver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_style"
+                    android:layout_marginTop="10dp" />
+
+                <Spinner
+                    android:id="@+id/addAdvanceSpinnerCleaner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_style"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/voucherno"
+                    android:layout_marginTop="7dp"
+                    style="@style/customTextView"
+                    />
+
+                <EditText
+                    android:id="@+id/addAdvanceEtVoucherNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/customEditText"
+                    android:inputType="number"
+                    android:textCursorDrawable="@null"></EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount"
+                    android:layout_marginTop="5dp"
+                    style="@style/customTextView"
+                    />
+
+                <EditText
+                    android:id="@+id/addAdvanceEtAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/customEditText"
+                    android:inputType="numberDecimal"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/addAdvanceBtnSave"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/save"
+                style="@style/customButtonStyle"
+                 />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

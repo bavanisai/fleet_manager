@@ -1,0 +1,313 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
+    android:paddingTop="10sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/bata"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvCommisionPercent"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/salary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvConstSalary"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/driver_advance"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvDriverAdvance"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/vehicle_advance"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvVehicleAdvance"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvMileageDeduction"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/mileage_deduction"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvMileageDeductionTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:text="@string/zero"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/expense"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvExpense"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:text="@string/zeroo"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="1"
+                        android:text="@string/total_amount"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvSlidingTotalAmount"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2sp"
+                        android:layout_marginRight="2sp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:inputType="numberDecimal"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="0sp"
+                    android:layout_gravity="right"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+
+                    >
+
+                    <TextView
+                        android:id="@+id/activityPaymentReviewTvViewExpense"
+                        android:layout_width="150sp"
+                        android:layout_height="30sp"
+                        android:layout_gravity="right"
+                        android:layout_marginLeft="3sp"
+                        android:layout_marginTop="2sp"
+                        android:background="@drawable/buttonflatulta"
+                        android:gravity="center"
+                        android:text="VIEW EXPENSE"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#262522"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ListView
+                        android:id="@+id/activityPaymentReviewExpenseListLV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"></ListView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_weight="0.05"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/activityPaymentReviewBtnCloseSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="5sp"
+                android:background="@color/DeepSkyBlue"
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

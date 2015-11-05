@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transReminder"
+    android:background="#CC000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView5"
+        android:src="@drawable/demoimg"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-15dp"
+        android:layout_marginLeft="105dp" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_above="@+id/imageView5"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="68dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#ffff"
+        android:text="Touch here to add Reminders "
+        android:id="@+id/textView16"
+        android:layout_above="@+id/imageView5"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#ffff"
+        android:text="            Ex: Insurance"
+        android:id="@+id/textView27" />
+
+</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentD"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:layout_centerHorizontal="true"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/iVempPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="80sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:contentDescription="@string/employee"
+                android:nextFocusDown="@+id/eTNewEntryEmpName"
+                android:paddingTop="5sp"
+                android:src="@drawable/driver" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        style="@style/customTextView" />
+
+                    <EditText
+                        android:id="@+id/eTNewEntryEmpName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textCursorDrawable="@null"
+                        style="@style/customEditText">
+                </EditText>
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/contactImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="7dp"
+                    android:src="@drawable/contacts"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="center"
+                    android:background="@drawable/edittextstyle"></ImageButton>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone"
+                style="@style/customTextView"
+                android:layout_marginTop="5dp"
+               />
+
+            <EditText
+                android:id="@+id/eTNewEntryPhNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                style="@style/customEditText"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/commission"
+                android:layout_marginTop="5dp"
+                style="@style/customTextView" />
+
+            <EditText
+                android:id="@+id/eTNewEntryCommission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textCursorDrawable="@null"
+                style="@style/customEditText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/salary"
+                style="@style/customTextView"
+                android:layout_marginTop="5dp"
+             />
+
+
+            <EditText
+                android:id="@+id/eTNewEntrySalary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                style="@style/customEditText"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address"
+               style="@style/customTextView"
+                android:layout_marginTop="5dp"
+             />
+
+
+            <EditText
+                android:id="@+id/eTNewEntryAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                style="@style/customEditText"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/license"
+                style="@style/customTextView"
+                android:layout_marginTop="5dp"
+               />
+
+            <EditText
+                android:id="@+id/eTNewEntryLicenseNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customEditText"
+                android:textCursorDrawable="@null" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnFragmentNewEntryEmployeeListSave"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/save"
+        style="@style/customButtonStyle"
+   />
+    </LinearLayout>
+
+</RelativeLayout>

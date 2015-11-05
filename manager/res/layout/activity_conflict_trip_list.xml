@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/tablayout"
+        android:id="@+id/tool_bar">
+    </include>
+
+    <LinearLayout
+        android:layout_height="1.5dp"
+        android:layout_width="fill_parent"
+        android:background="@drawable/bg17">
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/inboxLinearL"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_gravity="center" />
+
+<LinearLayout
+    android:id="@+id/conflictRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:layout_margin="10dp">
+
+    <ListView
+        android:id="@+id/conflictTripListLV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:padding="5dp"/>
+
+</LinearLayout>
+</LinearLayout>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.anand_roadwayss"
+    android:versionCode="1"
+    android:versionName="1.001" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="21" />
+
+    <!-- Start of copy. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- External storage for caching. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- My Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Maps API needs OpenGL ES 2.0. -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <!-- End of copy. -->
+    <!-- Send SMS -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <!-- End -->
+    <permission
+        android:name="com.example.anand_roadwayss.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <!--
+    <permission
+        android:name="com.example.anand_roadwayss.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.anand_roadwayss.permission.MAPS_RECEIVE" />
+    -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <!-- To get imei number of device -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.example.anand_roadwayss.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/own1"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme" >
+
+        <!--
+        client 1 test
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDGDcG308kqJZ70dInwE_sx7J8CZl_F2LE" />
+        -->
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBT5TwUXFqitG5aS5liI5WDcTGk1kdNOy8" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Welcome"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignRegisterActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileEdit"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".AboutUs"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ForgotPassword"
+            android:label="@string/app_name"
+            android:parentActivityName=".Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.FuelModule.FuelActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.example.FuelModule.LineChart"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.FuelModule.FuelReport"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.TrackingModule.TrackActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.ManageResources.DriverEntryActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.ManageResources.CleanerEntryActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.AdvanceModule.AdvanceMain"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.DashBoardModule.DashBoardDriverChart"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.DashBoardModule.DashBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.DashBoardModule.DashBoardVehicleChart"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.DashBoardModule.DashBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.DashBoardModule.DriverDistancePiechart"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.DashBoardModule.DashBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.DashBoardModule.VehicleDistancePiechart"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.DashBoardModule.DashBoard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.tripmodule.TripActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.tripmodule.ConflictTripList"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.tripmodule.LocationActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.tripmodule.TripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.tripmodule.MultipleDestinationActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.tripmodule.TripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.tripmodule.MultipleDestinationActivity1"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.tripmodule.TripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.example.tripmodule.TripDetailsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.tripmodule.TripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.tripmodule.TripListDetailsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.tripmodule.TripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.ManageResources.MainActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.DashBoardModule.DashBoard"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.PaymentModule.PaymentDriver"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.PaymentModule.PaymentCleaner"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.AbsenceReport.LeaveMainActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.Reminder.ReminderListActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.Reminder.ReminderEditActivity"
+            android:label="@string/edit_reminder_title"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Welcome"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.example.Reminder.TaskPreferences"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <!-- This Receiver for GCM messages. -->
+        <receiver
+            android:name=".GcmBroadcastReciever"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.example.anand_roadwayss" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GcmServiceIntent" />
+
+        <receiver android:name="com.example.Reminder.OnBootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.Reminder.OnAlarmReceiver" />
+
+        <service android:name="com.example.Reminder.ReminderService" />
+        <service
+            android:name=".RemoteLogger"
+            android:exported="false" />
+        <service android:name=".UpdateAppService" />
+        <service android:name=".SynchronizeServerDataService" />
+
+        <service android:name=".BackUpService"/>
+
+        <activity
+            android:name="com.example.Inbox.InboxList"
+            android:label="@string/title_activity_inbox_list" />
+        <activity
+            android:name="com.example.Inbox.InboxDetails"
+            android:label="@string/title_activity_inbox_details" />
+        <activity
+            android:name="com.example.Inbox.InboxCommonDetails"
+            android:label="@string/title_activity_inbox_common_details" />
+        <activity
+            android:name="com.example.Expense.Expense"
+            android:label="@string/title_activity_expense"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.example.PaymentModule.PaymentReview"
+            android:label="@string/title_activity_payment_review" >
+        </activity>
+        <activity
+            android:name="com.example.ManualAppServerSync.RepairApp"
+            android:label="@string/title_activity_repair_app" >
+        </activity>
+        <activity
+            android:name="com.example.AppUpdate.AppUpdateCheck"
+            android:label="@string/title_activity_app_update_check" >
+        </activity>
+        <activity
+            android:name="com.example.TrackingModule.TrackReportActivity"
+            android:label="@string/title_activity_track_report"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.example.FuelModule.FuelReport"
+            android:label="@string/title_activity_fuel_report"
+            android:parentActivityName=".Welcome"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.example.PaymentModule.DriverPaidList1"
+            android:label="@string/paid_list_driver"
+            android:parentActivityName="com.example.PaymentModule.PaymentDriver"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.example.PaymentModule.CleanerPaidList"
+            android:label="@string/paid_list_driver"
+            android:parentActivityName="com.example.PaymentModule.PaymentCleaner"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+    </application>
+
+</manifest>

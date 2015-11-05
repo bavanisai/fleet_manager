@@ -1,0 +1,293 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool"
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:elevation="2dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        app:popupTheme="@style/ThemeOverlay.YourApp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/arrow_img"
+            android:src="@drawable/back_arrow"
+            android:layout_marginRight="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="ADD DESTINATION"
+            android:textSize="18dp"
+            android:textColor="@color/Black"
+            android:paddingTop="6dp"/>
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_height="1.5dp"
+        android:layout_width="fill_parent"
+        android:background="@drawable/bg17"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.5">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="5sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="VEHICLE NUMBER"
+                android:inputType="numberDecimal"
+                android:textColor="#262522"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/activityMultipleDestinationTvVehicleNum"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="5sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="VEHICLE NUMBER"
+                android:inputType="numberDecimal"
+                android:textColor="#262522"
+                android:textStyle="bold"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.7">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="5sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="SOURCE/LAST DEST"
+                android:textColor="#262522"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/activityMultipleDestinationTvSrcDest"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="5sp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="SOURCE/LAST DEST"
+                android:textColor="#262522"
+                android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customTextView"
+                android:text="Product"
+                android:layout_marginTop="6dp"
+                />
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customEditText"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quantity"
+                android:layout_marginTop="5dp"
+              style="@style/customTextView"/>
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                style="@style/customEditText"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null"
+                />
+
+            <Spinner
+                android:id="@+id/activityMultipleDestinationSpinnerDestination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_style"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:layout_marginTop="5dp"
+                style="@style/customTextView"
+             />
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                style="@style/customEditText"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Route Name"
+                android:layout_marginTop="5dp"
+                style="@style/customTextView"
+                 />
+
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtRouteName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customEditText"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rent"
+                android:layout_marginTop="5dp"
+                style="@style/customTextView"
+                 />
+
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtRent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                style="@style/customEditText"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null" />
+
+            <Spinner
+                android:id="@+id/activityMultipleDestinationSpinnerPaymentType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_style"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+              style="@style/customTextView"
+                android:text="Enter Payment Km/Percentage"
+                android:layout_marginTop="5dp"
+             />
+
+            <EditText
+                android:id="@+id/activityMultipleDestinationEdtPercentageOrPerKM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/customEditText"
+                android:layout_marginBottom="7dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textCursorDrawable="@null" />
+        </LinearLayout>
+    </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/activityMultipleDestinationBtnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="40sp"
+                android:layout_marginBottom="3sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="2sp"
+                android:layout_marginTop="2sp"
+                android:layout_weight="1"
+                android:text="DONE"
+                style="@style/customButtonStyle"
+
+                 />
+
+
+            <Button
+                android:id="@+id/activityMultipleDestinationBtnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="40sp"
+                android:layout_marginBottom="3sp"
+                android:layout_marginLeft="2sp"
+                android:layout_marginRight="5sp"
+                android:layout_marginTop="2sp"
+                android:layout_weight="1"
+                android:text="ADD"
+                style="@style/customButtonStyle"
+              />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

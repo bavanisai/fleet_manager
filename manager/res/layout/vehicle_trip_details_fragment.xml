@@ -1,0 +1,376 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tripLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:gravity="left"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/TrackDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+
+        <LinearLayout
+            android:id="@+id/left_drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/trackVehImageVDriver"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="0.4"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="2sp"
+                    android:contentDescription="@string/driver"
+                    android:src="@drawable/dri" />
+
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/TrackDriverNametxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="3sp"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:text="@string/driver"
+                        android:textSize="12sp"
+                        android:textColor="#262522"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/TrackDriverContacttxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        android:text="@string/phone"
+                        android:textColor="#262522"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5sp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corner"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3sp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TextView02"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Vehicle No"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+                    <TextView
+                        android:id="@+id/trackTVVehNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/customEditText"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TextcurrFuel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fuel"
+                        android:textSize="12sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/trackTVFuel"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#262522"
+                            android:textStyle="normal"
+                            android:layout_alignParentLeft="true"
+                            style="@style/customEditText"
+                            android:text=""/>
+
+                        <TextView
+                            android:id="@+id/btnAddFuel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/buttonflatulta"
+                            android:contentDescription="@string/addfuel"
+                            android:text="Change"
+                            android:padding="5dp"
+                            android:textColor="#262522"
+                            android:textStyle="bold"
+                            android:textSize="12dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="5dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/laySpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+                    <TextView
+                        android:id="@+id/textView71"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Speed"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+                    <TextView
+                        android:id="@+id/trackTVSpeed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/customEditText"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/laykmtravel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tvKMtravelLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:text="KM Travelled"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+
+
+                    <TextView
+                        android:id="@+id/tvKMtravel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/customEditText"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layrunTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvRunTimeLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Running Time"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+
+                    <TextView
+                        android:id="@+id/tvRunTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                     style="@style/customEditText"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                   android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textSize="11sp"
+                        android:textStyle="normal"
+                        style="@style/customTextView"/>
+
+                    <TextView
+                        android:id="@+id/trackTVStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                       style="@style/customEditText"
+                        android:text=""/>
+                </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10sp"
+                    android:background="@drawable/buttonflatulta"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/trackTVSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:textColor="#262522"
+                        android:textStyle="normal"
+                        android:textAlignment="gravity"
+                        android:text=""/>
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                         android:layout_weight="1"
+                        android:contentDescription="@string/driver"
+                        android:src="@drawable/loop" />
+
+                    <TextView
+                        android:id="@+id/trackTVDestination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:textColor="#262522"
+                        android:textStyle="normal"
+                        android:text=""/>
+                </LinearLayout>
+        </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnViewonMap"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_marginTop="5sp"
+                android:text="@string/view_on_map"
+                android:layout_marginBottom="5dp"
+                android:layout_margin="5dp"
+                android:visibility="visible"
+                style="@style/customButtonStyle"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ErrorTripManageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/ErrorMessageinTrack"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.00"
+            android:background="#FFF"
+            android:gravity="center"
+            android:text="@string/select_vehicle_first"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/ErrorStatusinTrack"
+            android:layout_width="match_parent"
+            android:layout_height="10sp"
+            android:layout_margin="5sp"
+            android:layout_weight="0.13"
+            android:background="@drawable/buttonflatulta"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/ErrorSpeedinTrack"
+            android:layout_width="match_parent"
+            android:layout_height="10sp"
+            android:layout_margin="5sp"
+            android:layout_weight="0.13"
+            android:background="@drawable/buttonflatulta"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000000"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/ErrorTrackbtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5sp"
+            android:text="OK"
+            android:layout_margin="5dp"
+            style="@style/customButtonStyle"
+           />
+    </LinearLayout>
+
+</LinearLayout>

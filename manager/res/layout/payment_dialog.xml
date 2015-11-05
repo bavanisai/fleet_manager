@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_margin="5dp"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/paymentTxt"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:textSize="12dp"
+        android:text="ENTER THE VOUCHER NUMBER HERE"
+        android:gravity="center"
+        android:textColor="#262522"
+        android:layout_marginBottom="5dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:id="@+id/editText"
+        style="@style/customEditText"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/cancle"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg17"
+            android:gravity="center"
+            android:hint="CANCLE"
+            android:textSize="12sp"
+            android:textColorHint="@color/white"
+            android:textStyle="bold"
+            android:layout_marginRight="5sp" />
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg17"
+            android:gravity="center"
+            android:hint="OK"
+            android:textSize="12sp"
+            android:textColorHint="@color/white"
+            android:textStyle="bold"
+            android:layout_marginLeft="5sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

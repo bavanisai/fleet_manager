@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+
+            <TextView
+                android:id="@+id/fragmentFuelEntryBtnDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/buttonflatulta"
+                android:text="@string/date1"
+                android:textColor="#262522"
+                android:textStyle="normal"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/fragmentFuelEntrySpinnerVehNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/edit_text_style" />
+
+            <Spinner
+                android:id="@+id/fragmentFuelEntrySpinnerDriver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_style"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/speedometer_value"
+                    android:layout_marginBottom="3dp" />
+
+                <EditText
+                    android:id="@+id/fragmentFuelEntryEtSpeedometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/customEditText"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/fuel_volume"
+                    android:layout_marginBottom="3dp"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+                <EditText
+                    android:id="@+id/fragmentFuelEntryEtFuelVol"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/customEditText"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/silver" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/fragmentFuelEntryBtnSave"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/bg17"
+                android:text="@string/save"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

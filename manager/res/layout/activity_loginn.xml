@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradientbackground"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/loginEdtPin11"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginLeft="35sp"
+            android:layout_marginRight="35sp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/buttonstyle"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/lock1"
+            android:drawablePadding="25sp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/pin"
+            android:inputType="numberPassword"
+            android:paddingLeft="12sp"
+            android:paddingTop="8sp"
+            android:textColor="#262522"
+            android:textColorHint="@color/gray"
+            android:password="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textCursorDrawable="@null">
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/loginBtnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginLeft="35sp"
+            android:layout_marginRight="35sp"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/buttonflat"
+            android:text="@string/login"
+            style="@style/customButtonStyle"
+            />
+
+        <TextView
+            android:id="@+id/loginBtnFgtPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:gravity="center"
+            android:text="@string/forgot_password"
+            android:textColor="@color/white"
+          style="@style/customTextView"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/loginTxt"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="POWERED BY M&amp;K SOFTWARE"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+
+</LinearLayout>

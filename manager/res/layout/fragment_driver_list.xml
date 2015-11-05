@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+            android:id="@+id/fragmentDriverPaymentBtnFromDate"
+            android:layout_width="match_parent"
+                android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/buttonflatulta"
+            android:gravity="center"
+            android:text="FROM DATE"
+            android:textSize="12sp"
+            android:textColorHint="#262522"
+            android:textStyle="bold"
+                android:layout_marginRight="5sp" />
+        <TextView
+            android:id="@+id/fragmentDriverPaymentBtnToDate"
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/buttonflatulta"
+            android:gravity="center"
+            android:text="TO DATE"
+            android:textSize="12sp"
+            android:textColorHint="#262522"
+            android:textStyle="bold"
+            android:layout_marginLeft="5sp" />
+
+    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/inboxLinearL"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                   />
+                <ListView
+        android:id="@+id/fragmentDriverListLV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:cacheColorHint="@color/WhiteSmoke"
+        android:background="@drawable/rounded_corner"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1">
+
+    </ListView>
+    <Button
+        android:id="@+id/fragmentDriverPaymentListBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:text="PAID PAYMENT LIST"
+        style="@style/customButtonStyle"
+       />
+                </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

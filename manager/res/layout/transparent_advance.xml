@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#CC000000"
+    android:id="@+id/transAdvan"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/transAdvImg"
+        android:src="@drawable/demoimg"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/transAdvImg"
+        android:layout_alignLeft="@+id/transAdvImg"
+        android:layout_alignStart="@+id/transAdvImg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="            Touch here to add Advance of "
+            android:id="@+id/textView23" />
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="                  Vehicle/Cleaner/Driver"
+        android:id="@+id/textView11"
+        android:textColor="#ffff"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    </LinearLayout>
+</RelativeLayout>

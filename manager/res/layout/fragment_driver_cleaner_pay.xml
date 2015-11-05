@@ -1,0 +1,200 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/fragmentDriverPaymentImgVDriver"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/dri" />
+
+                        <TextView
+                            android:id="@+id/fragmentDriverPaymentTVDriverName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:hint="@string/name"
+                            android:textAppearance="?android:attr/textAppearanceLargeInverse"
+                            android:textColor="@color/Black"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:orientation="horizontal"
+                        android:layout_margin="5sp">
+
+                        <TextView
+                            android:id="@+id/TextView03"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/from_date"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#262522" />
+
+                        <TextView
+                        android:id="@+id/fragmentDriverPaymentBtnFromDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="25sp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/buttonflatulta"
+                        android:gravity="center"
+                        android:hint="@string/click_here"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="#262522"
+                        android:textStyle="normal"
+                        android:layout_margin="5sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_marginBottom="50dp"
+                        android:orientation="horizontal"
+                        android:layout_margin="5sp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/to_date"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="#262522" />
+
+                        <TextView
+                            android:id="@+id/fragmentDriverPaymentBtnToDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="25sp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/buttonflatulta"
+                            android:gravity="center"
+                            android:hint="@string/click_here"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColorHint="#262522"
+                            android:textStyle="normal"
+                            android:layout_margin="5sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/fragmentDriverPaymentTvTotalPay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/click_here"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#262522"
+                        android:textStyle="bold"
+                        />
+
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/tv">
+
+                        <Button
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Attach Receipt"
+                            android:background="@drawable/buttonflatulta"
+                            android:textStyle="bold"
+                            android:layout_weight="0.3"
+                            android:id="@+id/cameraInterface"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:id="@+id/checkmark" />
+
+                        <Button
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:text="View Receipt"
+                            android:background="@drawable/buttonflatulta"
+                            android:textStyle="bold"
+                            android:layout_weight="0.3"
+                            android:id="@+id/viewReceipt" />
+
+
+                    </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/fragmentDriverPaymentBtnPay"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg17"
+                android:text="@string/pay"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

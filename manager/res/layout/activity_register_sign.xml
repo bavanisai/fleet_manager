@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg17">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:elevation="2dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        app:popupTheme="@style/ThemeOverlay.YourApp"></android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_height="1.5dp"
+        android:layout_width="fill_parent"
+        android:background="@drawable/bg17" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+
+        tools:context=".RegisterActivity"
+        android:orientation="vertical">
+
+        <TextView
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SIGN HERE"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="35dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:id="@+id/textView"
+            />
+
+        <LinearLayout
+            android:id="@+id/mysignature"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/buttonflatulta"
+            android:layout_marginTop="10sp"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="SAVE"
+                android:id="@+id/btnReg"
+                android:background="@drawable/buttonflat"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_marginRight="11dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="CLEAR"
+                android:id="@+id/btnClear"
+                android:layout_weight="1"
+                android:background="@drawable/buttonflat"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

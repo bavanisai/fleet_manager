@@ -1,0 +1,205 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical">
+   <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:fillViewport="true">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+           <TextView
+               android:id="@+id/MultipleDestinationTvVehicleNum"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_centerHorizontal="true"
+               android:layout_gravity="center"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:gravity="bottom"
+               android:hint="VEHICLE NUMBER"
+               android:inputType="numberDecimal"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <TextView
+               android:id="@+id/MultipleDestinationTvSrcDest"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_centerHorizontal="true"
+               android:layout_gravity="center"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:gravity="bottom"
+               android:hint="SOURCE/LAST DESTINATION"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtProduct"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="PRODUCT"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtQuantity"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="QUANTITY"
+               android:inputType="numberDecimal"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <Spinner
+               android:id="@+id/MultipleDestinationSpinnerDestination"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_below="@+id/activityMultipleDestinationEdtQuantity"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtDistance"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="DISTANCE"
+               android:inputType="numberDecimal"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtRouteName"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="ROUTE NAME"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtRent"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="RENT"
+               android:inputType="numberDecimal"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           <Spinner
+               android:id="@+id/MultipleDestinationSpinnerPaymentType"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_gravity="center_horizontal"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1" />
+
+           <EditText
+               android:id="@+id/MultipleDestinationEdtPercentageOrPerKM"
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="5sp"
+               android:layout_marginRight="5sp"
+               android:layout_weight="1"
+               android:hint="ENTER PAYMENT KM/PERCENTAGE"
+               android:textColor="#262522"
+               android:textColorHint="@color/silver"
+               android:textSize="?android:attr/textAppearanceSmall" />
+
+           </LinearLayout>
+
+   </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/MultipleDestinationBtnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="3sp"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="2sp"
+            android:layout_marginTop="2sp"
+            android:layout_weight="1"
+            android:background="@color/DeepSkyBlue"
+            android:text="SAVE"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/MultipleDestinationBtnView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="3sp"
+            android:layout_marginLeft="2sp"
+            android:layout_marginRight="2sp"
+            android:layout_marginTop="2sp"
+            android:layout_weight="1"
+            android:background="@color/DeepSkyBlue"
+            android:text="VIEW"
+            android:textColor="@color/white"
+            android:textSize="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/MultipleDestinationBtnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="3sp"
+            android:layout_marginLeft="2sp"
+            android:layout_marginRight="5sp"
+            android:layout_marginTop="2sp"
+            android:layout_weight="1"
+            android:background="@color/DeepSkyBlue"
+            android:text="ADD"
+            android:textColor="@color/white"
+            android:textSize="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

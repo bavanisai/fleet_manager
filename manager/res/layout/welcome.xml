@@ -1,0 +1,383 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentScreen"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool"
+        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:elevation="2dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        app:popupTheme="@style/ThemeOverlay.YourApp"
+        >
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/own1"
+            android:layout_marginRight="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FLEET MANAGER"
+            android:textSize="13dp"
+            android:paddingTop="6dp"
+            android:textStyle="bold"/>
+   </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/welcomeIvFuel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="0.93"
+            android:background="@color/vivid_orang"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/fuel"
+                android:src="@drawable/fuel"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/fuel"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/white"
+                android:textColorLink="@color/AliceBlue"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcomeIVSalary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="0.91"
+            android:background="@color/DeepSkyBlue"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/fuel"
+                android:src="@drawable/salary"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/payment"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/white"
+                android:textColorLink="@color/AliceBlue"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/welcomeIVAdvance"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="0.93"
+            android:background="@color/greens"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/advance"
+                android:src="@drawable/advance" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/advance"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/AliceBlue"
+                android:textColorLink="@color/AliceBlue"
+                android:textStyle="bold|normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcomeIVTracking"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="0.91"
+            android:background="@color/vivid_pink"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/Tracking"
+                android:src="@drawable/tracking" />
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/Tracking"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/white"
+                android:textColorLink="@color/AliceBlue"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/welcomeIVCurrentTrips"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="0dp"
+        android:layout_weight="2"
+        android:background="@color/RoyalBlue"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:contentDescription="@string/current_trip"
+            android:src="@drawable/tripp" />
+
+        <TextView
+            android:id="@+id/TextView03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="2dp"
+            android:singleLine="true"
+            android:text="@string/CurrentTrips"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/AliceBlue"
+            android:textColorLink="@color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:baselineAligned="false">
+
+        <LinearLayout
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@color/green"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/welcomeIVNewEntries"
+                android:layout_width="100sp"
+                android:layout_height="100sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:clickable="true"
+                android:contentDescription="@string/add_vehicle_user"
+                android:longClickable="true"
+                android:src="@drawable/adduservehicle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/new_entries"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/AliceBlue"
+                android:textColorLink="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/welcomeIVDashBoard"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:background="@color/magenta"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:contentDescription="@string/dashboard"
+                    android:src="@drawable/chart_pie"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="2dp"
+                    android:singleLine="true"
+                    android:text="@string/dashboard"
+                    android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="false"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/welcomeIVReminders"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/darkorange"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/reminder"
+                        android:src="@drawable/alarm"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/TextView06"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="2dp"
+                        android:singleLine="true"
+                        android:text="@string/reminder"
+                        android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/welcomeIVLeave"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/strong_cyan"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/fuel"
+                        android:src="@drawable/calendar1"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/TextView07"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginLeft="2dp"
+                        android:singleLine="true"
+                        android:text="@string/leave"
+                        android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,189 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context="com.example.fleetmanager.RegistrationActivity$PlaceholderFragment">
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/tablayout"
+        android:id="@+id/tool_bar">
+    </include>
+    <LinearLayout
+        android:layout_height="1.5dp"
+        android:layout_width="fill_parent"
+        android:background="@drawable/bg17"/>
+
+
+        <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:orientation="vertical"
+            android:layout_margin="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="10sp">
+
+                <TextView
+                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:hint="@string/name"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    <EditText
+                        android:id="@+id/profileEtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textCursorDrawable="@null"
+                        style="@style/customEditText">
+                    </EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone No"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp"></TextView>
+
+                <EditText
+                    android:id="@+id/profileEtPhno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textCursorDrawable="@null"
+                    style="@style/customEditText"
+                    android:inputType="phone"></EditText>
+
+                <TextView
+                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp"
+                        android:inputType="textEmailAddress" />
+
+                    <EditText
+                        android:id="@+id/profileEtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textCursorDrawable="@null"
+                        style="@style/customEditText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/pinnn" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/profileEtPinNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberPassword"
+                        android:layout_weight="1.1"
+                        style="@style/customEditText" />
+                    <CheckBox
+                        android:id="@+id/cbShowPwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
+                        android:text="Show" />
+                </LinearLayout>
+
+                <TextView
+                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:hint="@string/clientname"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="3dp" />
+
+                    <TextView
+                        android:id="@+id/profileTvClientName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#262522"
+                        android:padding="5dp"
+                        android:textSize="12dp"
+                        android:background="@drawable/edit_text_style" />
+
+
+                <TextView
+                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/usertype"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="1dp" />
+
+                    <TextView
+                        android:id="@+id/profileTvUserType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#262522"
+                        android:padding="5dp"
+                        android:textSize="12dp"
+                        android:background="@drawable/edit_text_style" />
+
+                <TextView
+                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                        android:hint="@string/productkey"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_marginLeft="3dp" />
+
+                    <TextView
+                        android:id="@+id/profileTvProductKey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#262522"
+                        android:padding="5dp"
+                        android:background="@drawable/edit_text_style"
+                        android:textSize="12dp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/profileBtnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignLeft="@+id/linearLayout1"
+            android:layout_alignParentBottom="true"
+
+            android:layout_marginTop="8sp"
+            android:background="@drawable/bg17"
+            android:text="@string/update"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
+</RelativeLayout>

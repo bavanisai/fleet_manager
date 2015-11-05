@@ -1,0 +1,111 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.TrackingModule.TrackReportActivity">
+
+    <include layout="@layout/tablayout"
+        android:id="@+id/tool_bar">
+    </include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="FROM DATE"
+            android:id="@+id/textViewfromDate"
+            android:gravity="center"
+            android:textColor="#262522"
+            android:layout_weight="1"
+            android:textAppearance="?android:textAppearanceSmall"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="30sp"
+            android:text="click here"
+            android:id="@+id/textClick1"
+            android:layout_weight="1"
+            android:background="@drawable/buttonflatulta"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColorHint="#262522"
+            android:textStyle="normal"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TO DATE"
+                android:id="@+id/textViewtoDate"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="#262522"
+                android:layout_weight="1"
+                android:textAppearance="?android:textAppearanceSmall"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30sp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="click here"
+                android:id="@+id/textclick2"
+                android:background="@drawable/buttonflatulta"
+                android:gravity="center"
+
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColorHint="#262522"
+                android:textStyle="normal"
+                 />
+        </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/inboxLinearL"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_gravity="center" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:id="@+id/TrackinglistViewVehicleNum"
+        android:background="@drawable/rounded_corner" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

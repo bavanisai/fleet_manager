@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array2">
+        <item>Cleaner Payment</item>
+        <item>Driver Payment</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="ManageResource1">
+        <item>Manage Vehicle</item>
+        <item>Manage Driver</item>
+        <item>Manage Cleaner</item>
+    </string-array>
+</resources>

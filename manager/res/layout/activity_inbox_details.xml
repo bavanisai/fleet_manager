@@ -1,0 +1,315 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.Inbox.InboxDetails">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:orientation="vertical">
+
+                <TextView
+                android:id="@+id/inboxDetailsTvSubject"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:text="Fuel pilferage alert"
+                    android:padding="10dp"
+               android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#262522" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="5sp"
+            android:layout_weight="1"
+            android:background="@drawable/layoutborder"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/inboxDetailsTvName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginTop="10sp"
+                        android:text="Hello Ram ,"
+                        style="@style/customTextView"
+                          />
+
+                    <TextView
+                        android:id="@+id/inboxDetailsTvMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5sp"
+                        android:layout_marginTop="5sp"
+                        android:text="The vehicle fuel level is reduced by 5ltrs."
+                        style="@style/customTextView" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Vehicle No"
+                            style="@style/customTextView"
+                            />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvVehicleNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="TN 63 AC 1643"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvvTripStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Trip Status"
+                            style="@style/customTextView"
+                            />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvTripStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="On Trip"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvvCurrentLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Current Location"
+                            style="@style/customTextView"
+              />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvCurrentLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="2sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Vijay Nagar Bangalore"
+                            style="@style/customTextView"
+                          />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/inboxDetailsTvvDriverName">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Driver Name"
+                            style="@style/customTextView"
+                            />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvDriverName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Ram"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/inboxDetailsTvvDriverPhoneNo">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Driver PhNo"
+                       style="@style/customTextView" />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvDriverPhoneNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="9878676767"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/inboxDetailsTvvCleanerName">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Cleaner"
+                         style="@style/customTextView"/>
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvCleanerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Mahim"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/inboxDetailsTvvCleanerPhoneNo">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="Cleaner PhNo"
+                            style="@style/customTextView"
+                         />
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvCleanerPhoneNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5sp"
+                            android:layout_marginTop="5sp"
+                            android:layout_weight="1"
+                            android:text="8978675645"
+
+                            style="@style/customTextView" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/inboxDetailsTvDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center"
+                            android:gravity="right"
+                            android:layout_marginLeft="7sp"
+                            android:layout_marginTop="10sp"
+                            android:layout_marginRight="7sp"
+                            android:layout_weight="1"
+                            android:text="2015-Sep-01 09:40 AM"
+                            android:textSize="12sp"
+                            android:textColor="@color/gray" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

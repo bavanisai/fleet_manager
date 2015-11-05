@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android1="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pagerAdvance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android1:id="@+id/textViewListItem"
+        android1:layout_width="wrap_content"
+        android1:layout_height="wrap_content"
+        android1:text="@string/textview"
+        android:textColor="#262522"
+        android1:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

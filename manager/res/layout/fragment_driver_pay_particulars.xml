@@ -1,0 +1,230 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bata"
+                   style="@style/customTextView" />
+
+                <EditText
+                    android:id="@+id/fragmentDriverPaymentETCommisionPercent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp"
+                    style="@style/customEditText" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/customTextView"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/salary" />
+
+                <EditText
+                    android:id="@+id/fragmentDriverPaymentETConstSalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    style="@style/customEditText"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/driver_advance"
+                    style="@style/customTextView"
+                   />
+
+                <EditText
+                    android:id="@+id/fragmentDriverPaymentETDriverAdvance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    style="@style/customEditText"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/vehicle_advance"
+                    style="@style/customTextView"
+                   />
+
+                <EditText
+                    android:id="@+id/fragmentDriverPaymentETVehicleAdvance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    style="@style/customEditText"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp" />
+
+                <TextView
+                    android:id="@+id/tvMileageDeduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/mileage_deduction"
+                    style="@style/customTextView"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/fragmentDriverPaymentETMileageDeduction"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:layout_marginLeft="2sp"
+                        style="@style/customEditText" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="0.25"
+                        android:text="@string/ltr"
+                        android:textColor="#262522"
+                        android:textSize="12sp"
+                        android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/fragmentDriverPaymentETMileageDeductionAmount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:text="@string/zero"
+                        style="@style/customEditText" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="0.25"
+                        android:text="@string/rs"
+                        android:textColor="#262522"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/fragmentDriverPaymentETMileageDeductionTotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:text="@string/zero"
+                        style="@style/customEditText" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="0.25"
+                        android:text="@string/rs"
+                        android:textColor="#262522"
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/expense"
+                    style="@style/customTextView"
+                    />
+
+                <EditText
+                    android:id="@+id/fragmentDriverPaymentETExpense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="@string/zeroo"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp"
+                    style="@style/customEditText" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/total_amount"
+                    style="@style/customTextView"
+                    />
+
+                <TextView
+                    android:id="@+id/fragmentDriverPaymentETSlidingTotalAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:inputType="numberDecimal"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:background="@drawable/edit_text_style" />
+
+                <requestFocus />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/fragmentDriverPaymentETbtnCloseSlider"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/ok"
+            style="@style/customButtonStyle"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

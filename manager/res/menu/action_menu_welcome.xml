@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_inbox"
+        android:icon="@drawable/inbox"
+        android:actionLayout="@layout/badge_message_counter_layout"
+        app:showAsAction="always"
+        android:title="@string/action_inbox" />
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/profile"
+        app:showAsAction="never"
+        android:title="@string/action_editprofile" />
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_action_help"
+        app:showAsAction="never"
+        android:title="@string/action_help" />
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="never"
+        android:title="@string/action_exit" />
+    <item
+        android:id="@+id/action_about_us"
+        android:icon="@drawable/about_us"
+        app:showAsAction="never"
+        android:title="@string/action_about_us" />
+
+</menu>
