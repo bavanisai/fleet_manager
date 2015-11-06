@@ -3,7 +3,6 @@
     package="com.example.anand_roadwayss"
     android:versionCode="1"
     android:versionName="1.001" >
-
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
