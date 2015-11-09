@@ -45,19 +45,16 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
@@ -334,7 +331,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
                 driverDistancePieChartRefresh.setVisibility(View.INVISIBLE);
                 layout.removeAllViews();
                 ImageView imageView = new ImageView(this);
-                imageView.setImageResource(R.drawable.nodata1);
+                imageView.setImageResource(R.drawable.nodata);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
@@ -342,7 +339,18 @@ public class DriverDistancePiechart extends ActionBarActivity implements
                 imageView.setLayoutParams(layoutParams);
                 layout.addView(imageView);
                 driverDistancePieChartTv.setVisibility(View.INVISIBLE);
-                driverDistancePieChartTvTotalDistance.setText("");
+
+                TextView textView=new TextView(this);
+                textView.setText("NO DATA");
+                textView.setTextSize(14);
+                textView.setTypeface(null, Typeface.BOLD);
+                LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams1.gravity = Gravity.CENTER;
+                layoutParams1.topMargin = 20;
+                textView.setLayoutParams(layoutParams1);
+                layout.addView(textView);
+
 
             }
 
@@ -535,7 +543,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
                 } else {
                     layout.removeAllViews();
                     ImageView imageView = new ImageView(this);
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             LayoutParams.WRAP_CONTENT,
                             LayoutParams.WRAP_CONTENT);

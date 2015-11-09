@@ -4,7 +4,6 @@
 package com.example.ManageResources;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
 
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
@@ -111,7 +109,7 @@ public class DriverList extends Fragment {
                 noDataLayout.setVisibility(View.VISIBLE);
                 driverList.setVisibility(View.GONE);
                 ImageView imageView = new ImageView(getActivity());
-                imageView.setImageResource(R.drawable.alert_nodata);
+                imageView.setImageResource(R.drawable.nodata);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;

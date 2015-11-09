@@ -1,18 +1,14 @@
 package com.example.TrackingModule;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -32,7 +28,6 @@ import android.widget.Toast;
 
 import com.example.Interface.ITrackingReport;
 
-import com.example.PaymentModule.PaymentDriver;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.CustomAlertDialog;
 import com.example.anand_roadwayss.DBAdapter;
@@ -54,23 +49,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
@@ -129,7 +120,7 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
             noDataLayout.setVisibility(View.VISIBLE);
             vehnum.setVisibility(View.GONE);
             ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.alert_nodata);
+            imageView.setImageResource(R.drawable.nodata);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;

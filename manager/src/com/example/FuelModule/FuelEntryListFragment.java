@@ -139,7 +139,7 @@ public class FuelEntryListFragment extends Fragment implements
                     noDataLayout.setVisibility(View.VISIBLE);
                     listPersonalAdvance.setVisibility(View.GONE);
                     ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER;

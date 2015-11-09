@@ -542,8 +542,8 @@ public class DriverPayParticulars extends Fragment implements IDriverCleanerPaym
                 .findViewById(R.id.fragmentDriverPaymentETSlidingTotalAmount);
         payBtn = (Button) view
                 .findViewById(R.id.fragmentDriverPaymentETbtnCloseSlider);
-        camera = (Button) view.findViewById(R.id.cameraInterface);
-        viewImg = (Button) view.findViewById(R.id.viewReceipt);
+//        camera = (Button) view.findViewById(R.id.cameraInterface);
+//        viewImg = (Button) view.findViewById(R.id.viewReceipt);
 
     }
 

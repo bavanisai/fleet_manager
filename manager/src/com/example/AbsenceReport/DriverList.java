@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -175,7 +174,7 @@ public class DriverList extends Fragment implements ILeaveEntryDriver {
             noDataLayout.setVisibility(View.VISIBLE);
             lvEmp.setVisibility(View.GONE);
             ImageView imageView = new ImageView(getActivity());
-            imageView.setImageResource(R.drawable.alert_nodata);
+            imageView.setImageResource(R.drawable.nodata);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;

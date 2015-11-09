@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_height="1.5dp"
         android:layout_width="fill_parent"
-        android:background="@drawable/bg17"/>
+        android:background="@color/toolbar_color"/>
 
 
         <LinearLayout
@@ -179,7 +179,7 @@
             android:layout_alignParentBottom="true"
 
             android:layout_marginTop="8sp"
-            android:background="@drawable/bg17"
+            android:background="@color/toolbar_color"
             android:text="@string/update"
             android:textColor="#FFFFFF"
             android:textAppearance="?android:attr/textAppearanceMedium"

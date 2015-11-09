@@ -42,19 +42,16 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
@@ -197,7 +194,7 @@ Toolbar toolbar;
                 vehicleMileageBarGraphRefresh.setVisibility(View.INVISIBLE);
                 vehicleMileageBarGraphContent.removeAllViews();
                 ImageView imageView = new ImageView(this);
-                imageView.setImageResource(R.drawable.alert_nodata);
+                imageView.setImageResource(R.drawable.nodata);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
@@ -793,7 +790,7 @@ Toolbar toolbar;
                 } else {
                     vehicleMileageBarGraphContent.removeAllViews();
                     ImageView imageView = new ImageView(this);
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             LayoutParams.WRAP_CONTENT,
                             LayoutParams.WRAP_CONTENT);

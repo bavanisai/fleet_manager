@@ -23,11 +23,9 @@ import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -39,7 +37,6 @@ import com.example.Interface.IDeleteAdvance;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
@@ -153,7 +150,7 @@ public class AdvanceVehicleFragment extends Fragment implements IDeleteAdvance {
                     noDataLayout.setVisibility(View.VISIBLE);
                     listPersonalAdvance.setVisibility(View.GONE);
                     ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER;

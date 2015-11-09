@@ -11,7 +11,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.MatrixCursor;
 import android.graphics.Typeface;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 
 import com.example.AbsenceReport.DatePickerFragment;
 import com.example.Interface.IDriverCleanerPayment;
-import com.example.ManageResources.CleanerEntryActivity;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.CustomAlertDialog;
 import com.example.anand_roadwayss.DBAdapter;
@@ -171,7 +169,7 @@ public class CleanerList extends Fragment implements View.OnClickListener,IDrive
                 noDataLayout.setVisibility(View.VISIBLE);
                 cleanerList.setVisibility(View.GONE);
                 ImageView imageView = new ImageView(getActivity());
-                imageView.setImageResource(R.drawable.alert_nodata);
+                imageView.setImageResource(R.drawable.nodata);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;

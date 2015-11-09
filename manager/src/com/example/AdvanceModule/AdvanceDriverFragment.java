@@ -24,7 +24,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
@@ -38,7 +37,6 @@ import com.example.Interface.IDeleteAdvance;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
@@ -144,7 +142,7 @@ public class AdvanceDriverFragment extends Fragment implements
                     noDataLayout.setVisibility(View.VISIBLE);
                     listDriverAdvance.setVisibility(View.GONE);
                     ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER;

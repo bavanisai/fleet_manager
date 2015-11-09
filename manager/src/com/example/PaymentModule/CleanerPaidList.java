@@ -17,7 +17,6 @@ import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -149,7 +148,7 @@ Toolbar toolbar;
                     noDataLayout.setVisibility(View.VISIBLE);
                     cleanerPaidList.setVisibility(View.GONE);
                     ImageView imageView = new ImageView(this);
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER;

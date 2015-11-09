@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Interface.IFuelGraph;
@@ -127,15 +128,26 @@ public class LineChart extends ActionBarActivity implements IFuelGraph {
                 chartContainer.setVisibility(View.GONE);
                 fuelChartRefresh.setVisibility(View.GONE);
                 ImageView imageView = new ImageView(this);
-                imageView.setImageResource(R.drawable.nodata1);
+                imageView.setImageResource(R.drawable.nodata);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
                 layoutParams.topMargin = 100;
-                layoutParams.bottomMargin=100;
+                layoutParams.bottomMargin=10;
                 imageView.setLayoutParams(layoutParams);
                 noDataLayout.addView(imageView);
-                Toast.makeText(getApplicationContext(), "No Data Available", Toast.LENGTH_LONG).show();
+
+                TextView textView=new TextView(this);
+                textView.setText("NO DATA");
+                textView.setTextSize(14);
+                textView.setTypeface(null, Typeface.BOLD);
+                LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams1.gravity = Gravity.CENTER;
+                layoutParams1.topMargin = 20;
+                textView.setLayoutParams(layoutParams1);
+               noDataLayout.addView(textView);
+               // Toast.makeText(getApplicationContext(), "No Data Available", Toast.LENGTH_LONG).show();
             }
             else if (statuschk.equals("OK")) {
                 noDataLayout.setVisibility(View.GONE);

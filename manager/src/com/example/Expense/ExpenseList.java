@@ -652,7 +652,7 @@ catch (Exception e){
 							else
 							{
 								Resources res = getResources();
-								Drawable drawable = res.getDrawable(R.drawable.no_image);
+								Drawable drawable = res.getDrawable(R.drawable.loop);
 								 bitmap = ((BitmapDrawable)drawable).getBitmap();
 								ByteArrayOutputStream stream = new ByteArrayOutputStream();
 								bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -685,7 +685,7 @@ catch (Exception e){
             fragmentExpenseLayout.setVisibility(View.VISIBLE);
             fragmentExpenseLayout.removeAllViews();
             ImageView imageView = new ImageView(getActivity());
-            imageView.setImageResource(R.drawable.nodata1);
+            imageView.setImageResource(R.drawable.nodata);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;

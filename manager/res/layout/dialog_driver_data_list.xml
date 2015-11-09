@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="2dp"
-                android:background="@drawable/bg17"
+                android:background="@color/toolbar_color"
                 android:gravity="center"
                 android:text="@string/ok"
                 android:textColor="#FFFFFF"

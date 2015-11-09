@@ -8,7 +8,7 @@
         android:layout_height="50dp"
         android:layout_width="match_parent"
         android:id="@+id/tool_bar"
-        android:background="@drawable/bg17"
+        android:background="@color/toolbar_color"
         android:elevation="2dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"

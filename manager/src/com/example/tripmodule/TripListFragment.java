@@ -8,10 +8,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteException;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -310,7 +308,7 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
                     fragmentTripLayout.setVisibility(View.VISIBLE);
                     trip.setVisibility(View.GONE);
                     ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageResource(R.drawable.alert_nodata);
+                    imageView.setImageResource(R.drawable.nodata);
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.gravity = Gravity.CENTER;
@@ -382,13 +380,14 @@ try {
             trip.setAdapter(tripAdapter);
             tripAdapter.notifyDataSetChanged();
 
-            trip.setLongClickable(true);
+
             trip.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view,
                                                int position, long id) {
                     alertLongPressed(position);
-                    return false;
+                    return true;
+
                 }
             });
             trip.setOnItemClickListener(new OnItemClickListener() {
