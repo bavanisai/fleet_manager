@@ -72,7 +72,7 @@
     <string name="email">Email</string>
     <string name="usertype">User Type</string>
     <string name="clientname">Client Name</string>
-    <string name="pinn">ENTER 4 DIGIT PIN</string>
+    <string name="pinn">Enter 4 digit pin</string>
     <string name="pinnn">Pin</string>
     <string name="confirm_pin">CONFIRM PIN</string>
     <string name="productkey">Product Key</string>
