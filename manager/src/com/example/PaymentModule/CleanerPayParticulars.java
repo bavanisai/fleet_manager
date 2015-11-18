@@ -176,7 +176,16 @@ public class CleanerPayParticulars extends Fragment implements IDriverCleanerPay
                         public void onClick(View view)
                         {
                             mVoucherNum = et1.getText().toString();
-                            receiptAlertDialog();
+                            if(mVoucherNum.equals("") || mVoucherNum.equalsIgnoreCase("null") || mVoucherNum.length()<3 ) {
+                                dialog.dismiss();
+                                Toast.makeText(getActivity(),"Enter proper voucher number",Toast.LENGTH_LONG).show();
+                            }
+                                else
+                            {
+                                receiptAlertDialog();
+                                dialog.dismiss();
+                            }
+
                         }
                     });
                     dialog.show();

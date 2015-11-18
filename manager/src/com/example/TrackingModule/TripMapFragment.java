@@ -74,6 +74,7 @@ import android.widget.Toast;
 public class TripMapFragment extends Fragment implements ILiveTrack{
 
     GoogleMap map;
+    MarkerOptions currMark;
     ProgressDialog pd;
     ImageButton track;
     ArrayList<LatLng> markerPoints;
@@ -89,6 +90,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
     String currId, srcId, destId;
     String vehNo;
     final ILiveTrack mTrackLive = this;
+    static String disable;
 
 
     //Older init
@@ -125,7 +127,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
 
 //        vehNo = "KA001";
-//        origin = new LatLng(12.969053, 77.610340);
+     // current= new LatLng(12.969053, 77.610340);
 //        dest = new LatLng(12.305318, 76.655936);
 
 
@@ -288,19 +290,21 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 // @ Override Resume
 
     public void Resume()
+    { try
     {
-        if(map==null)
-        {
+        if (map == null) {
             map = fragment.getMap();
-
         }
-        map.clear();
+//        MarkerOptions currMark1 = new MarkerOptions();
+//        currMark1.position(current);
+//        map.clear();
 
-        if(map!=null) {
-            MarkerOptions currMark = new MarkerOptions();
+        if (map != null && current != null)
+        {
+          currMark = new MarkerOptions();
             currMark.position(current);
 
-           // currMark.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
+            // currMark.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
             currMark.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             Marker m = map.addMarker(currMark);
             currId = m.getId();
@@ -378,10 +382,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
         });
 
 
-
-
-
-
         //      Method to stop Loading the spinner on MapLoad
         map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -392,8 +392,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                     spinner.setVisibility(View.GONE);
                     //               stopSpinner();
                     //                     pd.dismiss();
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                                     .toString() + " " + "[map.setOnMapLoadedCallback]",
                             e.toString());
@@ -403,7 +402,11 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
         });
 
 
-
+    }catch(Exception e)
+    {
+        ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                .toString() + " " + "[resume()]", e.toString());
+    }
 
     }
 
@@ -506,6 +509,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 //                    currLoc.position(current);
 //                    currLoc.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 }
+
 
                 // JSONObject trStatus = sourceArray.getJSONObject(4);
                 if (!(cLat.isNull("tripStatus"))) {
@@ -736,6 +740,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                     JSONObject o = tripData.getJSONObject(0);
                     if(o.getString("status").equals("data does not exist"))
                     {
+                        disable="data does not exist";
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage("Live Tracking is provided only if vehicle is in Trip!")
                                 .setCancelable(false)

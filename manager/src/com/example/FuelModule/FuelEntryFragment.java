@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONObject;
+import org.xmlpull.v1.sax2.Driver;
 
 public class FuelEntryFragment extends Fragment implements OnClickListener,
         IFuelEntryFragment
@@ -94,6 +95,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         FuelV = (EditText) view.findViewById(R.id.fragmentFuelEntryEtFuelVol);
         DriverS = (Spinner) view
                 .findViewById(R.id.fragmentFuelEntrySpinnerDriver);
+
         VehicleS = (Spinner) view
                 .findViewById(R.id.fragmentFuelEntrySpinnerVehNo);
 

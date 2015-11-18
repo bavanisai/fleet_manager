@@ -63,7 +63,8 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
         //noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
         //titlelayout=(LinearLayout)view.findViewById(R.id.fragment_trip_list_img);
         bindData();
-
+        db=new DBAdapter(getActivity());
+       db.open();
         tripListfragmentTvGetTripList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
