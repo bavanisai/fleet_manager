@@ -185,20 +185,21 @@ public class GcmServiceIntent extends IntentService {
 
         Notification notification = new Notification(icon, tickerText, when);
         Intent Destination = new Intent(context, TripActivity.class);
+        Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         Bundle c = new Bundle();
         c.putString("Message", Message[0]);
         Destination.putExtras(c);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                Destination, PendingIntent.FLAG_CANCEL_CURRENT);
+                Destination, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // String text = "Calls will be blocked while driving";
 
         notification
                 .setLatestEventInfo(context, tickerText, Message[0], contentIntent);
 
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
+//        notification.flags |= Notification.FLAG_ONGOING_EVENT;
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+//        notification.flags |= Notification.FLAG_SHOW_LIGHTS;
         notification.defaults |= Notification.DEFAULT_SOUND;
 
         StringTokenizer Trip = new StringTokenizer(msg, "@");
@@ -208,6 +209,7 @@ public class GcmServiceIntent extends IntentService {
 //        sample.setAlarm(this, TripVoucherId);
 
         mNotificationManager.notify(notificationId, notification);
+        mNotificationManager.cancel(notificationId);
         notificationId++;
     }
 
@@ -239,17 +241,18 @@ public class GcmServiceIntent extends IntentService {
 
         Notification notification = new Notification(icon, tickerText, when);
         Intent Destination = new Intent(context, LocationActivity.class);
+        Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                Destination, PendingIntent.FLAG_CANCEL_CURRENT);
+                Destination, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // String text = "Calls will be blocked while driving";
 
         notification
                 .setLatestEventInfo(context, tickerText, Message[0], contentIntent);
 
-        notification.flags |= Notification.FLAG_ONGOING_EVENT;
+//        notification.flags |= Notification.FLAG_ONGOING_EVENT;
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+//        notification.flags |= Notification.FLAG_SHOW_LIGHTS;
         notification.defaults |= Notification.DEFAULT_SOUND;
         mNotificationManager.notify(notificationId, notification);
         notificationId++;
@@ -311,17 +314,18 @@ public class GcmServiceIntent extends IntentService {
             Notification notification = new Notification(icon, tickerText, when);
 
             Intent Destination = new Intent(context, InboxList.class);
+            Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    Destination, PendingIntent.FLAG_CANCEL_CURRENT);
+                    Destination, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // String text = "Calls will be blocked while driving";
 
             notification
                     .setLatestEventInfo(context, tickerText, display, contentIntent);
 
-            notification.flags |= Notification.FLAG_ONGOING_EVENT;
+//            notification.flags |= Notification.FLAG_ONGOING_EVENT;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+//            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.defaults |= Notification.DEFAULT_SOUND;
 
             mNotificationManager.notify(notificationId, notification);
@@ -388,17 +392,18 @@ public class GcmServiceIntent extends IntentService {
 
             Notification notification = new Notification(icon, tickerText, when);
             Intent Destination = new Intent(context, InboxList.class);
+            Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    Destination, PendingIntent.FLAG_CANCEL_CURRENT);
+                    Destination, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // String text = "Calls will be blocked while driving";
 
             notification
                     .setLatestEventInfo(context, tickerText, messag, contentIntent);
 
-            notification.flags |= Notification.FLAG_ONGOING_EVENT;
+//            notification.flags |= Notification.FLAG_ONGOING_EVENT;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+//            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.defaults |= Notification.DEFAULT_SOUND;
             mNotificationManager.notify(notificationId, notification);
             notificationId++;
