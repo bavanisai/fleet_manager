@@ -107,6 +107,7 @@
                 android:layout_weight="1"
                 android:gravity="top"
                 android:minLines="5"
+                android:selectAllOnFocus="true"
                 android:scrollbars="vertical"
                 android:textColor="#262522"
                 android:background="@drawable/edit_text_style" />
