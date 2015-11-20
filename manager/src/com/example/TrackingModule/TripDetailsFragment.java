@@ -91,7 +91,13 @@ public class TripDetailsFragment extends Fragment implements IAck {
 
             @Override
             public void onClick(View v) {
-                ((TrackActivity) getActivity()).setCurrentItem(2, true);
+                if(TripMapFragment.disable.equals("data does not exist"))
+                    viewMap.setEnabled(false);
+                else {
+                    viewMap.setEnabled(true);
+                    ((TrackActivity) getActivity()).setCurrentItem(2, true);
+                }
+
             }
         });
         ErrorBtn = (Button) view.findViewById(R.id.ErrorTrackbtn);
@@ -216,7 +222,7 @@ public class TripDetailsFragment extends Fragment implements IAck {
                         .getColumnIndex(DBAdapter.getKeyPhNo())));
                 byte[] bitmapData = cursor.getBlob(cursor
                         .getColumnIndex(DBAdapter.getKeyPhoto()));
-                if (bitmapData.length > 0) {
+                if (bitmapData != null) {
                     ByteArrayInputStream imageStream = new ByteArrayInputStream(
                             bitmapData);
                     Bitmap theImage = BitmapFactory.decodeStream(imageStream);

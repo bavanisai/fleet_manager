@@ -18,6 +18,10 @@ public class OnBootReceiver extends BroadcastReceiver {
 
     private static final String TAG = ComponentInfo.class.getCanonicalName();
     public Activity _context;
+    public  OnBootReceiver()
+    {
+
+    }
     public OnBootReceiver(Activity _context)
     {
         this._context=_context;
