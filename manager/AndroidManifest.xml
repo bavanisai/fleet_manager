@@ -52,7 +52,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/own1"
+        android:icon="@drawable/manager_icon"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
