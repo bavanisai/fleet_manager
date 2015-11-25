@@ -68,40 +68,6 @@ public class LocationList extends Fragment implements IDeleteLocation {
             }
         });
 
-//        this.dest.setOnItemClickListener(new OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                DBAdapter db = new DBAdapter(getActivity());
-//                try {
-//                    db.open();
-//                    Cursor c = db.getLatLongDest(id);
-//                    // String latitude = null,longitude = null,DestName1 = null;
-//                    if (c.moveToFirst()) {
-//                        AddLocation.Longitude = c.getString(1);
-//                        AddLocation.Lattitude = c.getString(2);
-//                        AddLocation.Name = c.getString(3);
-//                       // AddLocation.Amount1 = c.getString(5);
-//                       // AddLocation.Distance = c.getString(4);
-//                        AddLocation.Type = c.getString(4);
-//                        ((LocationActivity) getActivity()).setCurrentItem(1,
-//                                true);
-//                    }
-//                    db.close();
-//                } catch (SQLiteException e) {
-//                    ExceptionMessage.exceptionLog(getActivity(), this
-//                            .getClass().toString()
-//                            + " "
-//                            + "[dest.setOnItemClickListener]", e.toString());
-//                } catch (Exception e) {
-//                    ExceptionMessage.exceptionLog(getActivity(), this
-//                            .getClass().toString()
-//                            + " "
-//                            + "[dest.setOnItemClickListener]", e.toString());
-//                }
-//            }
-//        });
         return view;
     }
 
@@ -162,9 +128,7 @@ public class LocationList extends Fragment implements IDeleteLocation {
 
         SendToWebService send = new SendToWebService(getActivity(),
                 mDeleteLocation);
-        // OneJSONValue one = new OneJSONValue();
-       // if (send.isConnectingToInternet()) {
-            try {
+        try {
                 send.execute("17", "DeleteLocation", DestName1);
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "Try after sometime...",
@@ -173,13 +137,7 @@ public class LocationList extends Fragment implements IDeleteLocation {
                         .exceptionLog(getActivity(), this.getClass().toString()
                                 + " " + "[DeleteDestination]", e.toString());
             }
-//        } else {
-//            Toast.makeText(getActivity().getBaseContext(),
-//                    "INTERNET CONNECTION ERROR!! PLEASE CHECK NETWORK",
-//                    Toast.LENGTH_SHORT).show();
-//        }
         db.close();
-
     }
 
     protected void StartMethod() {

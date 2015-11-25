@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 public class TripListDetailsActivity extends Activity implements View.OnClickListener, IGetParticularTripData,ITripListFragment,IGetTripStatus {
     String inputvoucher,inputvehicle;
+    int totalDestination;
     TextView txtSource, txtDriver1;//txtDriver2;
     Button btnEdit,btnAdd,btnDelete;
     ListView destinationList;
@@ -206,27 +207,13 @@ catch (Exception e){
                     String subVoucher=trip.getString("subVoucher");
                     String route=trip.getString("route");
                     String tripStatus=trip.getString("tripStatus");
-//                    String lastDest=destination;
-
-//                    if (i == 0) {
-//                         lastDest = sourceName;
-//                    }
-//
-//                    else{
-//                         lastDest=lastDest;
-//                    }
 
                     mList = new NewMultipleDestinationArray(vehicleNo, product, quantity, destination, distance, route, amount, tripPaymentType, payment_km, sourceOrLastDest,tripOrder,subVoucher);
                     int pos=multipleArrayList.size();
                     multipleArrayList.add(pos, mList);
                 }
-
-
                 viewData();
                 setAllData();
-
-
-
             }
 
         } catch (JSONException e) {
@@ -263,6 +250,14 @@ catch (Exception e){
             txtDriver1.setText(driver);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, destList);
+            //totalDestination is a count of items present in single choice listview
+            totalDestination=adapter.getCount();
+            //if that destination listview containing one value delete button should be hide
+            if(totalDestination<2)
+            {
+                btnDelete.setVisibility(View.GONE);
+            }
+            System.out.println(totalDestination);
             destinationList.setAdapter(adapter);
             destinationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -283,43 +278,49 @@ catch (Exception e){
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tripDetailsActivityDestinationBtnEditDestination:
-                try {
-                    editTripData = new ArrayList<String>();
-                    String[] arr = val.split(",");
-                    String voucher = arr[11];
-                    for (int i = 0; i < arr.length; i++) {
-                        data = arr[i];
-                        editTripData.add(data);
+
+                if(val!=null) {
+                    try {
+                        editTripData = new ArrayList<String>();
+                        String[] arr = val.split(",");
+                        String voucher = arr[11];
+                        for (int i = 0; i < arr.length; i++) {
+                            data = arr[i];
+                            editTripData.add(data);
+                        }
+                    } catch (Exception e) {
+                        ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
+                                        .getClass().toString() + " " + "[tripDetailsActivityDestinationBtnEditDestination]",
+                                e.toString());
                     }
-                }
-                catch (Exception e){
-                    ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
-                                    .getClass().toString() + " " + "[tripDetailsActivityDestinationBtnEditDestination]",
-                            e.toString());
-                }
-                try {
-                    SendToWebService send = new SendToWebService(TripListDetailsActivity.this,
-                            mGetTripStatus);
-                    send.execute("45", "GetTripStatus", voucher);
-                }
-                catch (Exception e){
-                    ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
-                                    .getClass().toString() + " " + "[deleteSubTrip]",
-                            e.toString());
+                    try {
+                        SendToWebService send = new SendToWebService(TripListDetailsActivity.this,
+                                mGetTripStatus);
+                        send.execute("45", "GetTripStatus", voucher);
+                    } catch (Exception e) {
+                        ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
+                                        .getClass().toString() + " " + "[deleteSubTrip]",
+                                e.toString());
+                    }
+                }else
+                {
+                    Toast.makeText(TripListDetailsActivity.this,"Please select destination to edit",Toast.LENGTH_LONG).show();
                 }
                 break;
-
-//            case R.id.tripDetailsActivityDestinationBtnAddDestination:
-//                Intent intent=new Intent(TripListDetailsActivity.this,MultipleDestinationActivity1.class);
-//                intent.putExtra("editPosition",pos);
-//                startActivity(intent);
-//                break;
 
             case R.id.tripDetailsActivityDestinationBtnDeleteDestination:
-
-                deleteSubTrip();
-               // Toast.makeText(TripListDetailsActivity.this, "Destination" + pos + " completeList[" + val + "]" +" Removed", Toast.LENGTH_LONG).show();
+                //if list containing more than one destination delete button will be visible
+                btnDelete.setVisibility(View.VISIBLE);
+                    //select value before delete it
+                    //click on any radio button
+                    //this condition tells that item is select or not
+                    if (val != null) {
+                        deleteSubTrip();
+                    } else {
+                        Toast.makeText(TripListDetailsActivity.this, "Please select destination to delete", Toast.LENGTH_LONG).show();
+                    }
                 break;
+
         }
     }
 

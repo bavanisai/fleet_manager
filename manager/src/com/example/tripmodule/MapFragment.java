@@ -99,47 +99,40 @@ public class MapFragment extends Fragment {
         d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         // setUpMapIfNeeded();
         try {
-       //     ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            //     ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-            atvPlaces = (AutoCompleteTextView) view
-                    .findViewById(R.id.atv_places);
+            atvPlaces = (AutoCompleteTextView) view.findViewById(R.id.atv_places);
 
-
-           // AUTOCOMPLETE TEXT VIEW
-
+            // AUTOCOMPLETE TEXT VIEW
             atvPlaces.setThreshold(3);
-
             atvPlaces.addTextChangedListener(new TextWatcher() {
 
-                @Override
-                public void onTextChanged(CharSequence s, int start,
-                                          int before, int count) {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start,
+                                              int before, int count) {
 
-                    try {
-                        if (isConnectingToInternet()) {
-                            // GOOGLE PLACES API
-                            placesTask = new PlacesTask();
-                            placesTask.execute(s.toString());
+                        try {
+                            if (isConnectingToInternet()) {
+                                // GOOGLE PLACES API
+                                placesTask = new PlacesTask();
+                                placesTask.execute(s.toString());
+                            }
+                        } catch (Exception e) {
+
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                    .getClass().toString(), e.toString());
                         }
-                    } catch (Exception e) {
-
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString(), e.toString());
                     }
-                }
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start,
+                                                  int count, int after) {
+                    }
+                   @Override
+                    public void afterTextChanged(Editable s) {
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start,
-                                              int count, int after) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-        } catch (Exception e) {
+                    }
+                });
+        }catch (Exception e) {
 
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString(), e.toString());
@@ -175,34 +168,28 @@ public class MapFragment extends Fragment {
             mMap = fragment.getMap();
             // mMap.addMarker(new MarkerOptions().position(new LatLng(0,
             // 0)).icon(BitmapDescriptorFactory.fromResource(R.drawable.blink)));
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
+//            if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
 
-            mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-                public void onInfoWindowClick(Marker marker) {
-                    LatLng point = marker.getPosition();
-                    // Bitmap blink =
-                    // BitmapFactory.decodeResource(getResources(),
-                    // R.drawable.blink);
-                    // BitmapDescriptor blinker =
-                    // BitmapDescriptorFactory.fromBitmap(blink);
-                    // GroundOverlay groundOverlay = mMap.addGroundOverlay(new
-                    // GroundOverlayOptions()
-                    // .image(blinker).position(point, 100)
-                    // .transparency((float) 0.5));
-                    AddLocation.Lattitude = String.valueOf(point.latitude);
-                    AddLocation.Longitude = String.valueOf(point.longitude);
-                    AddLocation.Name = null;
-                    ((LocationActivity) getActivity()).setCurrentItem(1, true);
+                mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+                    public void onInfoWindowClick(Marker marker) {
+                        LatLng point = marker.getPosition();
+                        AddLocation.Lattitude = String.valueOf(point.latitude);
+                        AddLocation.Longitude = String.valueOf(point.longitude);
+                        AddLocation.Name = null;
+                        ((LocationActivity) getActivity()).setCurrentItem(1, true);
+                    }
+                });
+
+                if (AddLocation.Longitude != null) {
+                    LatLng Location = new LatLng(Double.valueOf(AddLocation.Lattitude),
+                            Double.valueOf(AddLocation.Longitude));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 17));
+                    mMap.addMarker(new MarkerOptions().position(Location).title(
+                            AddLocation.Name));
                 }
-            });
-        }
-        if (AddLocation.Longitude != null) {
-            LatLng Location = new LatLng(Double.valueOf(AddLocation.Lattitude),
-                    Double.valueOf(AddLocation.Longitude));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 17));
-            mMap.addMarker(new MarkerOptions().position(Location).title(
-                    AddLocation.Name));
+          //  }
         }
     }
 
@@ -331,24 +318,6 @@ public class MapFragment extends Fragment {
         return strAdd;
     }
 
-    // private void setUpMapIfNeeded() {
-    //
-    // try
-    // {
-    // if (mMap == null) {
-    //
-    // if (mMap != null) {
-    // }
-    // }
-    // }
-    // catch(Exception e)
-    // {
-    // //Toast.makeText(getActivity(), "Error in set uping map",
-    // Toast.LENGTH_SHORT).show();
-    // Log.e("My App", e.toString(), e);
-    // }
-    // }
-    // GEOCODER WITH GOOGLE MAP
 
     private class GetLatLong extends AsyncTask<String, Void, String> {
 
@@ -648,51 +617,6 @@ public class MapFragment extends Fragment {
                     e.toString());
         }
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-//    {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater = getActivity().getMenuInflater();
-//        inflater.inflate(R.menu.search_menu, menu);
-//
-//        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-//        item = menu.findItem(R.id.action_search);
-//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//        searchView.setQueryHint("Enter Vehicle Number");
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-//        searchView.setIconifiedByDefault(false);
-//
-//        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adp.getFilter().filter(newText);
-//                System.out.println("on text change text: " + newText);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                adp.getFilter().filter(query);
-//                System.out.println("on query submit: " + query);
-//                MenuItemCompat.collapseActionView(item);
-//                return true;
-//            }
-//        };
-//        searchView.setOnQueryTextListener(textChangeListener);
-//    }
-//
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        boolean started = true;
-//        if(started)
-//        {
-//            menu.removeItem(R.id.action_profile);
-//            menu.removeItem(R.id.action_help);
-//            menu.removeItem(R.id.action_logout);
-//        }
-//    }
 
 
     @Override

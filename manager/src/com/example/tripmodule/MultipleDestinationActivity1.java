@@ -224,9 +224,9 @@ catch (Exception e){
 //                viewData();
 //                break;
             case R.id.activityMultipleDestinationBtnAdd:
-//                if (multipleDestinationBtnAdd.getText().toString().equals("ADD")) {
-//                    addDataToArrayList();
-//                } else
+                if (multipleDestinationBtnAdd.getText().toString().equals("ADD")) {
+                    addDataToArrayList();
+                } else
                 if (multipleDestinationBtnAdd.getText().toString().equals("UPDATE")) {
                     updateDataToArrayList();
                 }
