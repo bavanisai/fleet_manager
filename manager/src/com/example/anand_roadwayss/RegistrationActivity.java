@@ -46,6 +46,7 @@ public class RegistrationActivity extends ActionBarActivity {
     Spinner empType;
     ArrayList<String> UserType = new ArrayList<>();
     String strEmpType = null;
+    String ProductKey;
     int count = 0;
     ArrayList<String> processList = new ArrayList<>();
     DBAdapter db;
@@ -343,12 +344,19 @@ public class RegistrationActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        proDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                        proDialog.setMessage("please wait...!!!");
-                        proDialog.setIndeterminate(false);
-                        proDialog.setProgressNumberFormat(null);
-                        proDialog.setProgress(0);
-                        proDialog.show();
+                        if(!regEtName.getText().toString().equals("")
+                                && !regEtEmail.getText().toString().equals("")
+                                && !regEtPhno.getText().toString().equals("")
+                                && !regEtPin.getText().toString().equals("")
+                                && !ProductKey.equals("") ) {
+
+                            proDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                            proDialog.setMessage("Please wait...!!!");
+                            proDialog.setIndeterminate(false);
+                            proDialog.setProgressNumberFormat(null);
+                            proDialog.setProgress(0);
+                            proDialog.show();
+                        }
 
 //                        //Email Validation
                         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -356,13 +364,12 @@ public class RegistrationActivity extends ActionBarActivity {
                         if (!m.matches())
                             regEtEmail.setError("Invalid Email-Id");
 
-
                         strEmpType = empType.getSelectedItem().toString();
                         String Name = regEtName.getText().toString();
                         String Email = regEtEmail.getText().toString();
                         String Phone = regEtPhno.getText().toString();
                         String Pin = regEtPin.getText().toString();
-                        String ProductKey = p1.getText().toString() + "-" + p2.getText().toString() + "-" + p3.getText().toString() + "-" + p4.getText().toString() + "-" + p5.getText().toString() + "-" + p6.getText().toString();
+                        ProductKey = p1.getText().toString() + "-" + p2.getText().toString() + "-" + p3.getText().toString() + "-" + p4.getText().toString() + "-" + p5.getText().toString() + "-" + p6.getText().toString();
 
                         TelephonyManager mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
                         String IMEI = mngr.getDeviceId();
