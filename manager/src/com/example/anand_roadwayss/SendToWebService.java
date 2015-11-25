@@ -629,7 +629,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
                     } else {
-                        registerAnApplication(params[2], params[3], params[4],
+                        RegisterAnApplication(params[2], params[3], params[4],
                                 params[5], params[6], params[7], params[8],
                                 params[9]);
                     }
@@ -1342,9 +1342,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     }
 
     // Method:9 in Switch Case
-    public void registerAnApplication(String regAuthKey, String userName,
-                                      String userRole, String emailId, String phoneNumber, String pin,
-                                      String IMEI, String productKey) {
+    public void RegisterAnApplication(String regAuthKey, String userName,
+                                      String userRole, String emailId, String phoneNumber,String IMEI, String pin,
+                                    String productKey) {
 
        // interfaceToBeExecuted = 9;
         try {

@@ -49,6 +49,7 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
     int tripOrderNum;
     Toolbar toolbar;
     ImageView img;
+
     ArrayAdapter<String> dataAdapter;
 
 
@@ -68,13 +69,11 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
             }
         });
         db = new DBAdapter(this);
-
-        String[] pay = {"Select Payment Mode", "Commission", "KM Travelled"};
+        String[] pay={"Select Payment Mode","Commission","KM Travelled"};
         selDest = "Select Destination";
-       // selPayment="SELECT PAYMENT MODE";
+
         multipleDestinationBtnSave.setOnClickListener(this);
         multipleDestinationBtnAdd.setOnClickListener(this);
-     //   multipleDestinationBtnView.setOnClickListener(this);
 
         SharedPreferences UserType = getSharedPreferences(
                 "RegisterName", 0);
@@ -187,7 +186,6 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
             multipleDestinationSpinnerDestination = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerDestination);
             multipleDestinationSpinnerPaymentType = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerPaymentType);
             multipleDestinationBtnSave = (Button) findViewById(R.id.activityMultipleDestinationBtnSave);
-            // multipleDestinationBtnView = (Button) findViewById(R.id.activityMultipleDestinationBtnView);
             multipleDestinationBtnAdd = (Button) findViewById(R.id.activityMultipleDestinationBtnAdd);
         }
         catch (Exception e){
@@ -230,46 +228,123 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
 
         switch (v.getId()) {
             case R.id.activityMultipleDestinationBtnSave:
-//            Intent i=new Intent(MultipleDestinationActivity.this,TripManageFragment.class);
-//                startActivity(i);
-
-
-//                int rowCount = MultipleDestinationActivity.arrayList.size();
-//                if(rowCount==0){
-                    try {
+                try {
                         getData();
-                        if (mProduct != null && mQuantity != null && mDestination != null && mDistance != null && mRouteName != null && mRent != null && mPayType != null && mPercentOrPayPerKM != null && mLastDestination != null) {
-                            addDataToArrayList();
-                        }
-                        // }
+                    if (mProduct.equals("") && mQuantity.equals("")  &&
+                            mDestination.equals("Select Destination")
+                            && mDistance.equals("")&& mRouteName .equals("")
+                            && mRent.equals("") && mPayType.equals("Select Payment Mode")
+                            && mPercentOrPayPerKM.equals(""))
 
-
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please Select all Values", Toast.LENGTH_LONG).show();
+                    else if(mProduct.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add product name", Toast.LENGTH_LONG).show();}
+                    else if(mQuantity.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add quantity of product", Toast.LENGTH_LONG).show();
                     }
-
-                        catch (Exception e){
+                    else if(mDestination.equals("Select Destination"))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please select destination ", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mRouteName.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add route name", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mDistance.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add distance", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mRent.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add Rent", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mPayType.equals("Select Payment Mode"))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please select payment mode", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mPercentOrPayPerKM.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add Commission or KM travelled ", Toast.LENGTH_LONG).show();
+                    }
+                        else
+                        {
+                            addDataToArrayList();
+                            finish();
+                        }
+                }
+                catch (Exception e){
                             ExceptionMessage.exceptionLog(MultipleDestinationActivity.this, this.getClass()
                                     .toString() + " " + "[activityMultipleDestinationBtnSave]", e.toString());
                         }
-
-
-
-                finish();
                 break;
-//            case R.id.activityMultipleDestinationBtnView:
-//                viewData();
-//                break;
+
             case R.id.activityMultipleDestinationBtnAdd:
                 try {
                     getData();
-                    if (mProduct != null && mQuantity != null && mDestination != null && !mDestination.equals(selDest) && mDistance != null && mRouteName != null && mRent != null && mPayType != null && mPercentOrPayPerKM != null && mLastDestination != null) {
+                    if (mProduct.equals("") && mQuantity.equals("")  &&
+                            mDestination.equals("Select Destination")
+                            && mDistance.equals("")&& mRouteName .equals("")
+                            && mRent.equals("") && mPayType.equals("Select Payment Mode")
+                            && mPercentOrPayPerKM.equals(""))
+
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please Select all Values", Toast.LENGTH_LONG).show();
+                    else if(mProduct.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add product name", Toast.LENGTH_LONG).show();}
+                    else if(mQuantity.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add quantity of product", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mDestination.equals("Select Destination"))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please select destination ", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mRouteName.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add route name", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mRent.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add Rent", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mDistance.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add distance", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mPayType.equals("Select Payment Mode"))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please select payment mode", Toast.LENGTH_LONG).show();
+                    }
+                    else if(mPercentOrPayPerKM.equals(""))
+                    {
+                        Toast.makeText(MultipleDestinationActivity.this,
+                                "Please add Commission or KM travelled ", Toast.LENGTH_LONG).show();
+                    }
+                    else {
                         if (multipleDestinationBtnAdd.getText().toString().equals("ADD")) {
                             addDataToArrayList();
                         } else if (multipleDestinationBtnAdd.getText().toString().equals("UPDATE")) {
                             updateDataToArrayList();
                         }
-                    } else {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please Select all Values", Toast.LENGTH_LONG).show();
                     }
                 }
                 catch (Exception e){
@@ -355,17 +430,12 @@ catch(Exception e){
 }
     }
 
-
-
-
-
-
-
     public void updateDataToArrayList() {
         try {
             getData();
 
-            mList = new MultipleDestinationArrayList(mVehNo, mProduct, mQuantity, mDestination, mDistance, mRouteName, mRent, mPayType, mPercentOrPayPerKM, mLastDestination, mTripOrder, mSubVoucher);
+            mList = new MultipleDestinationArrayList(mVehNo, mProduct, mQuantity, mDestination, mDistance,
+                    mRouteName, mRent, mPayType, mPercentOrPayPerKM, mLastDestination, mTripOrder, mSubVoucher);
             arrayList.set(updatePosition, mList);
             updatePosition += 1;
             clearViewData();

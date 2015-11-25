@@ -378,11 +378,11 @@ public class AddExpense extends Fragment implements View.OnClickListener, IAddEx
         if (mUzrDate.equals("")) {
             Toast.makeText(getActivity().getApplicationContext(),
                     "PLEASE SELECT THE DATE", Toast.LENGTH_LONG).show();
-        } else if (mSpinnerVehicleNo.equals("SELECT THE VEHICLE")) {
+        } else if (mSpinnerVehicleNo.equals("Select The Vehicle")) {
             Toast.makeText(getActivity().getApplicationContext(),
                     "PLEASE SELECT THE VEHICLE", Toast.LENGTH_LONG)
                     .show();
-        } else if (mSpinnerDriver.equals("SELECT THE DRIVER")) {
+        } else if (mSpinnerDriver.equals("Select The Driver")) {
             Toast.makeText(getActivity().getApplicationContext(),
                     "PLEASE SELECT THE DRIVER", Toast.LENGTH_LONG)
                     .show();

@@ -52,37 +52,43 @@ public class SignRegisterActivity extends ActionBarActivity implements ISignatur
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //clearing sign n making canvas blank
                 mSignature.clear();
+                //once mark anything on canvas lastTouchX and lastTouchY contains value so
+                //once we clear the canvas we should make lastTouchX and lastTouchY zero
+                mSignature.lastTouchY=0;
+                mSignature.lastTouchX=0;
+
             }
         });
 
         save.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
-            {
-
-                Bitmap returnedBitmap = Bitmap.createBitmap(mContent.getWidth(),mContent.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(returnedBitmap);
+            public void onClick(View v) {
+                //Checking canvas containing sign or not
+                if (mSignature.lastTouchX != 0 && mSignature.lastTouchY != 0) {
+                    Bitmap returnedBitmap = Bitmap.createBitmap(mContent.getWidth(), mContent.getHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(returnedBitmap);
 //
 //                    canvas.drawColor(Color.WHITE);
-                mContent.draw(canvas);
+                    mContent.draw(canvas);
 
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     returnedBitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
                     // Calling addSignature Method
-                    try{
+                    try {
                         img = bs.toByteArray();
-                       // signImage=new String(img);
+                        // signImage=new String(img);
 
                         db.open();
                         db.addSignature(img);
                         mSignature.clear();
                         db.close();
 
-                    }
-                    catch(Exception e)
-                    {
+
+
+                    } catch (Exception e) {
                         ExceptionMessage.exceptionLog(SignRegisterActivity.this, this
                                         .getClass().toString() + " " + "[save.setOnClickListener]",
                                 e.toString());
@@ -93,6 +99,10 @@ public class SignRegisterActivity extends ActionBarActivity implements ISignatur
                     startActivity(imgIntent);
                     finish();
                 }
+                else {
+                    Toast.makeText(SignRegisterActivity.this,"Please sign here",Toast.LENGTH_LONG).show();
+                }
+            }
 
 
         });

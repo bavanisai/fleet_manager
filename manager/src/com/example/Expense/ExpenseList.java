@@ -17,9 +17,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.text.InputType;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +45,7 @@ import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
+import com.example.anand_roadwayss.Welcome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +60,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ExpenseList extends Fragment implements View.OnClickListener,IDeleteExpense,IExpenseList {
+public class ExpenseList extends Fragment implements IDeleteExpense,IExpenseList,View.OnTouchListener {
 
     View view;
     DBAdapter db;
@@ -65,23 +68,26 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
     int year, month, day;
     SendToWebService send;
     List<String> label1;
-    String mSpinnerVehicleNo, mDateType,Id, fromDate,toDate;
+    String mSpinnerVehicleNo, mDateType, Id, fromDate, toDate;
     TextView fragmentExpenseListTvFromDate, fragmentExpenseListTvToDate;
     Spinner fragmentExpenseListSpinnerVehicle;
     ListView fragmentExpenseListLV;
     LinearLayout fragmentExpenseLayout;
-    final IDeleteExpense mDeleteExpense=this;
-    public static String expenseListVoucherNum=null;
+    final IDeleteExpense mDeleteExpense = this;
+    public static String expenseListVoucherNum = null;
     final IExpenseList mExpenseList = this;
     public static MatrixCursor expenseCursor;
     public MatrixCursor cur;
     private int sKey = 0;
     public static int rowid;
     public static String veh;
-	byte[] byteArray,receipt;
+    byte[] byteArray, receipt;
     CustomAlertDialog ald;
     SimpleCursorAdapter expenseAdapter;
-
+    public DatePickerDialog fromDatePickerDialog;
+    private DatePickerDialog toDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    Calendar fdate, tdate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,116 +95,75 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
         view = inflater.inflate(R.layout.fragment_expense_list, container, false);
         db = new DBAdapter(getActivity());
         bindData();
-        ald=new CustomAlertDialog();
-        loadVehicleSpinnerData();
-        fragmentExpenseListTvFromDate.setOnClickListener(this);
-        fragmentExpenseListTvToDate.setOnClickListener(this);
+        ald = new CustomAlertDialog();
+        db.open();
+        label1 = db.getAllLabels(DBAdapter.getVehicleDetails());
+        db.close();
+        label1.add(0, "SELECT THE VEHICLE");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                getActivity(), android.R.layout.simple_spinner_item,
+                label1);
+        //  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        fragmentExpenseListSpinnerVehicle.setAdapter(dataAdapter);
+
+//        fragmentExpenseListTvFromDate.setOnClickListener(this);
+//        fragmentExpenseListTvToDate.setOnClickListener(this);
+        fragmentExpenseListSpinnerVehicle.setOnTouchListener(this);
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        //findViewsById();
+        setDateTimeField();
 
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()) {
-            case R.id.fragmentExpenseListTvFromDate:
-                mDateType = "from";
-                fragmentExpenseListTvToDate.setText("TO DATE");
-                MyDatePickerDialog();
-                break;
-            case R.id.fragmentExpenseListTvToDate:
-                if (fragmentExpenseListTvFromDate.getText().toString() != ""
-                        && fragmentExpenseListTvFromDate.getText().toString() != null
-                        && fragmentExpenseListTvFromDate.toString() != "CLICK HERE") {
-                    mDateType = "to";
-                    MyDatePickerDialog();
-                } else {
-                    ImageView image = new ImageView(getActivity());
-                    image.setImageResource(R.drawable.selectdate);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(
-                            getActivity())
-                            .setMessage("Select the From date")
-                            .setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog,
-                                                int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).setView(image);
-                    builder.create().show();
-                }
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//
+//        switch (v.getId()) {
+//            case R.id.fragmentExpenseListTvFromDate:
+//                mDateType = "from";
+//                fragmentExpenseListTvToDate.setText("TO DATE");
+//                MyDatePickerDialog();
+//                break;
+//            case R.id.fragmentExpenseListTvToDate:
+//                if (fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE")) {
+//                    ald.alertDialog(getActivity(), "Select the From Date");
+//                } else {
+//                    mDateType = "to";
+//                    MyDatePickerDialog();
+//                }
+//                break;
+//        }
+//    }
 
     private void bindData() {
         fragmentExpenseListTvFromDate = (TextView) view.findViewById(R.id.fragmentExpenseListTvFromDate);
         fragmentExpenseListTvToDate = (TextView) view.findViewById(R.id.fragmentExpenseListTvToDate);
         fragmentExpenseListSpinnerVehicle = (Spinner) view.findViewById(R.id.fragmentExpenseListSpinnerVehicle);
         fragmentExpenseListLV = (ListView) view.findViewById(R.id.fragmentExpenseListLV);
-        fragmentExpenseLayout=(LinearLayout)view.findViewById(R.id.fragmentExpenseLayout);
+        fragmentExpenseLayout = (LinearLayout) view.findViewById(R.id.fragmentExpenseLayout);
 
     }
 
     private void loadVehicleSpinnerData() {
         try {
-            db.open();
-            label1 = db.getAllLabels(DBAdapter.getVehicleDetails());
-            label1.add(0, "SELECT THE VEHICLE");
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
-                    label1);
-          //  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            fragmentExpenseListSpinnerVehicle.setAdapter(dataAdapter);
+
             fragmentExpenseListSpinnerVehicle
                     .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         public void onItemSelected(AdapterView<?> adapterView,
                                                    View view, int i, long l) {
-                            if (fragmentExpenseListTvFromDate.getText().toString() != "CLICK HERE" && fragmentExpenseListTvToDate.getText().toString() != "CLICK HERE") {
+
+                            if ((!fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE")) &&
+                                    (!fragmentExpenseListTvToDate.getText().toString().equals("FROM DATE"))) {
+
                                 mSpinnerVehicleNo = label1.get(i);
-                                if(!mSpinnerVehicleNo.equals("SELECT THE VEHICLE")) {
-                                    cur=null;
-                                    expenseCursor=null;
+                                if (!mSpinnerVehicleNo.equals("SELECT THE VEHICLE")) {
+                                    cur = null;
+                                    expenseCursor = null;
                                     displayExpenseData();
                                 }
 
-                            } else if (fragmentExpenseListTvFromDate.getText().toString() == "CLICK HERE" && fragmentExpenseListTvToDate.getText().toString() != "CLICK HERE") {
-                                ImageView image = new ImageView(getActivity());
-                                image.setImageResource(R.drawable.selectdate);
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(
-                                        getActivity())
-                                        .setMessage("Select the From date")
-                                        .setPositiveButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(
-                                                            DialogInterface dialog,
-                                                            int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                }).setView(image);
-                                builder.create().show();
-                            } else if (fragmentExpenseListTvFromDate.getText().toString() != "CLICK HERE" && fragmentExpenseListTvToDate.getText().toString() == "CLICK HERE") {
-                                ImageView image = new ImageView(getActivity());
-                                image.setImageResource(R.drawable.selectdate);
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(
-                                        getActivity())
-                                        .setMessage("Select the To date")
-                                        .setPositiveButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(
-                                                            DialogInterface dialog,
-                                                            int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                }).setView(image);
-                                builder.create().show();
                             }
                         }
 
@@ -242,27 +207,27 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
                               int dayOfMonth) {
 
             if (mDateType.equals("from")) {
-                fromDate=String.valueOf(year) + "-"
+
+                fromDate = String.valueOf(year) + "-"
                         + String.valueOf(monthOfYear + 1) + "-"
                         + String.valueOf(dayOfMonth);
                 fromDateValidation();
 
 
-
             } else if (mDateType.equals("to")) {
-                toDate=String.valueOf(year) + "-"
+
+                toDate = String.valueOf(year) + "-"
                         + String.valueOf(monthOfYear + 1) + "-"
                         + String.valueOf(dayOfMonth);
-                toDateValidation();
 
+                toDateValidation();
             }
 
 
         }
     };
 
-    public  void displayExpenseData()
-    {
+    public void displayExpenseData() {
 
 //       Cursor expenseCursor= db.getParticularExpenseData(fragmentExpenseListTvFromDate.toString(), fragmentExpenseListTvToDate.toString());
 //        String from[] = new String[]{DBAdapter.getKeyDate(),
@@ -296,13 +261,12 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
 //            }
 //        });
         expenseCursor = null;
-        SendToWebService send=new SendToWebService(getActivity(),mExpenseList);
-        try{
+        SendToWebService send = new SendToWebService(getActivity(), mExpenseList);
+        try {
 
             send.execute("39", "GetExpenseList",
                     fragmentExpenseListTvFromDate.getText().toString(), fragmentExpenseListTvToDate.getText().toString(), mSpinnerVehicleNo);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getActivity().getBaseContext(),
                     "Try after sometime...", Toast.LENGTH_SHORT)
                     .show();
@@ -316,8 +280,7 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
     }
 
 
-
-    public void alertLongPressed(final int id){
+    public void alertLongPressed(final int id) {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle("Do u want to Cancel the Expense?");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -337,18 +300,18 @@ public class ExpenseList extends Fragment implements View.OnClickListener,IDelet
     }
 
     public void alertClickPressed(final int id) {
-try {
-    final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-    alert.setTitle("Do you want to update expense ?");
-    // alert.setMessage("Message");
+        try {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            alert.setTitle("Do you want to update expense ?");
+            // alert.setMessage("Message");
 
-    alert.setPositiveButton("Yes",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String Voucher = null;
-                    Id = String.valueOf(id);
-                    rowid = id;
-                    veh = mSpinnerVehicleNo;
+            alert.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            String Voucher = null;
+                            Id = String.valueOf(id);
+                            rowid = id;
+                            veh = mSpinnerVehicleNo;
 //                        DBAdapter db = new DBAdapter(getActivity());
 //                        db.open();
 //                        Cursor expenseDetails = db.getVoucherExpense(DBAdapter.getExpensedetails(), Id);
@@ -357,40 +320,39 @@ try {
 //                                    .getColumnIndex(DBAdapter.getKeyVoucherNo()));
 //                        }
 
-                    if (expenseCursor.moveToFirst()) {
-                        for (int i = 0; i < expenseCursor.getCount(); i++) {
+                            if (expenseCursor.moveToFirst()) {
+                                for (int i = 0; i < expenseCursor.getCount(); i++) {
 
-                            if (i == rowid) {
-                                Voucher = expenseCursor.getString(5);
+                                    if (i == rowid) {
+                                        Voucher = expenseCursor.getString(5);
+                                    }
+
+                                    expenseCursor.moveToNext();
+                                }
                             }
+                            expenseCursor.close();
+                            expenseListVoucherNum = Voucher;
 
-                            expenseCursor.moveToNext();
+
+                            //  dialog.dismiss();
+                            ((Expense) getActivity()).setCurrentItem(1, true);
+
                         }
-                    }
-                    expenseCursor.close();
-                    expenseListVoucherNum = Voucher;
+                    });
 
 
-                    //  dialog.dismiss();
-                    ((Expense) getActivity()).setCurrentItem(1, true);
+            alert.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
 
-                }
-            });
+                        }
+                    });
 
-
-    alert.setNegativeButton("Cancel",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-                }
-            });
-
-    alert.show();
-}
-catch (Exception e){
-    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-            .toString() + " " + "[alertClickPressed]", e.toString());
-}
+            alert.show();
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[alertClickPressed]", e.toString());
+        }
 
     }
 
@@ -402,7 +364,7 @@ catch (Exception e){
         if (expenseCursor.moveToFirst()) {
             for (int i = 0; i < expenseCursor.getCount(); i++) {
 
-                if(i==id) {
+                if (i == id) {
                     Voucher = expenseCursor.getString(5);
                 }
 
@@ -553,7 +515,7 @@ catch (Exception e){
     @Override
     public void onGetExpenseList(String response) {
 
-        try{
+        try {
             if (response.equals("No Internet")) {
                 ConnectionDetector cd = new ConnectionDetector(getActivity());
                 cd.ConnectingToInternet();
@@ -590,14 +552,12 @@ catch (Exception e){
 
             } else {
 
-              String status= getExpensejsonParsing(response);
-              displayExpenseList(status);
+                String status = getExpensejsonParsing(response);
+                displayExpenseList(status);
 
 
             }
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                             .toString() + " " + "[onGetExpenseList]",
                     e.toString());
@@ -622,45 +582,40 @@ catch (Exception e){
                             statuschk);
 
                 } else if (statuschk.equals("data does not exist")) {
-				
+
 //					Toast.makeText(getActivity().getBaseContext(),
 //                    "DATA IS NOT AVAILABLE", Toast.LENGTH_SHORT).show();
 //                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
 //                                    .toString() + " " + "[getExpensejsonParsing]",
 //                            statuschk);
-                }
-
-                else if (statuschk.equals("OK")){
-                    String[] columnNames = {"_id","Expense_Id", "Name", "Date","Particular","Voucher","Amount","Receipt","vehNo"};
+                } else if (statuschk.equals("OK")) {
+                    String[] columnNames = {"_id", "Expense_Id", "Name", "Date", "Particular", "Voucher", "Amount", "Receipt", "vehNo"};
                     expenseCursor = new MatrixCursor(columnNames);
-                    cur=new MatrixCursor(columnNames);
+                    cur = new MatrixCursor(columnNames);
                     for (int i = 1; i < expense.length(); i++) {
 
                         JSONObject expenseJSONObject = expense.getJSONObject(i);
-                        String ExpenseId=expenseJSONObject.getString("expenseId");
+                        String ExpenseId = expenseJSONObject.getString("expenseId");
                         String Name = expenseJSONObject.getString("employeeName");
                         String Date1 = expenseJSONObject.getString("expenseDate");
-                         String Date = Date1.substring(0, 10);
+                        String Date = Date1.substring(0, 10);
                         String Particular = expenseJSONObject.getString("particular");
                         String Voucher = expenseJSONObject.getString("billNumber");
                         String Amount = expenseJSONObject.getString("amount");
                         String Receipt = expenseJSONObject.getString("receipt");
-						if(!Receipt.equals("") || Receipt==null)
-							{
-								receipt=StringToBitMap(Receipt);
-							}
-							else
-							{
-								Resources res = getResources();
-								Drawable drawable = res.getDrawable(R.drawable.loop);
-								 bitmap = ((BitmapDrawable)drawable).getBitmap();
-								ByteArrayOutputStream stream = new ByteArrayOutputStream();
-								bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-								receipt = stream.toByteArray();
-							}
+                        if (!Receipt.equals("") || Receipt == null) {
+                            receipt = StringToBitMap(Receipt);
+                        } else {
+                            Resources res = getResources();
+                            Drawable drawable = res.getDrawable(R.drawable.loop);
+                            bitmap = ((BitmapDrawable) drawable).getBitmap();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            receipt = stream.toByteArray();
+                        }
                         //Bitmap receipt= StringToBitMap(receipt);
-                        expenseCursor.addRow(new Object[]{sKey, ExpenseId,Name,Date,Particular,Voucher,Amount,receipt,mSpinnerVehicleNo});
-                        cur.addRow(new Object[]{sKey, ExpenseId,Name,Date,Particular,"# "+Voucher,"Rs "+Amount,receipt,mSpinnerVehicleNo});
+                        expenseCursor.addRow(new Object[]{sKey, ExpenseId, Name, Date, Particular, Voucher, Amount, receipt, mSpinnerVehicleNo});
+                        cur.addRow(new Object[]{sKey, ExpenseId, Name, Date, Particular, "# " + Voucher, "Rs " + Amount, receipt, mSpinnerVehicleNo});
 
                     }
 
@@ -677,10 +632,9 @@ catch (Exception e){
     }
 
 
-    public void displayExpenseList(String status){
+    public void displayExpenseList(String status) {
 
-        if (status.equals("data does not exist"))
-        {
+        if (status.equals("data does not exist")) {
             fragmentExpenseListLV.setVisibility(View.GONE);
             fragmentExpenseLayout.setVisibility(View.VISIBLE);
             fragmentExpenseLayout.removeAllViews();
@@ -693,7 +647,7 @@ catch (Exception e){
             imageView.setLayoutParams(layoutParams);
             fragmentExpenseLayout.addView(imageView);
 
-            TextView textView=new TextView(getActivity());
+            TextView textView = new TextView(getActivity());
             textView.setText("NO EXPENSE LIST");
             textView.setTextSize(14);
             textView.setTypeface(null, Typeface.BOLD);
@@ -705,59 +659,55 @@ catch (Exception e){
             fragmentExpenseLayout.addView(textView);
 
 
-        }
-
-        else{
+        } else {
 
             fragmentExpenseListLV.setVisibility(View.VISIBLE);
             fragmentExpenseLayout.setVisibility(View.GONE);
 
-//                fragmentExpenseLayout.removeAllViews();
-//                fragmentExpenseLayout.setVisibility(View.INVISIBLE);
-                String from[] = new String[]{"_id","Date","Voucher","Particular","vehNo","Name","Amount"};
+            String from[] = new String[]{"_id", "Date", "Voucher", "Particular", "vehNo", "Name", "Amount"};
 
-                int to[] = new int[]{R.id.accountExpenseListId,R.id.accountExpenseListDate, R.id.accountExpenseListvoucher,
-                                R.id.accountExpenseListParticular,R.id.accountExpenseListTvVehicleNo,
-                                 R.id.accountExpenseListTvDriver, R.id.accountExpenseListTvAmount};
-                 expenseAdapter = new SimpleCursorAdapter(
-                        getActivity(), R.layout.accountexpenselist, cur , from,
-                        to, 0);
+            int to[] = new int[]{R.id.accountExpenseListId, R.id.accountExpenseListDate, R.id.accountExpenseListvoucher,
+                    R.id.accountExpenseListParticular, R.id.accountExpenseListTvVehicleNo,
+                    R.id.accountExpenseListTvDriver, R.id.accountExpenseListTvAmount};
+            expenseAdapter = new SimpleCursorAdapter(
+                    getActivity(), R.layout.accountexpenselist, cur, from,
+                    to, 0);
 
-                fragmentExpenseListLV.setAdapter(expenseAdapter);
-                expenseAdapter.notifyDataSetChanged();
+            fragmentExpenseListLV.setAdapter(expenseAdapter);
+            expenseAdapter.notifyDataSetChanged();
 
-                fragmentExpenseListLV.setLongClickable(true);
-                fragmentExpenseListLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                                   int position, long id) {
+            fragmentExpenseListLV.setLongClickable(true);
+            fragmentExpenseListLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                               int position, long id) {
 
-                        alertLongPressed(position);
-                        return false;
-                    }
-                });
-                fragmentExpenseListLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    alertLongPressed(position);
+                    return false;
+                }
+            });
+            fragmentExpenseListLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        alertClickPressed(position);
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    alertClickPressed(position);
 
-                    }
-                });
+                }
+            });
         }
 
     }
 
-   public byte [] StringToBitMap(String encodedString){
-        try{
-            byte [] encodeByte=Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+    public byte[] StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteArray = stream.toByteArray();
             return byteArray;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
@@ -770,28 +720,25 @@ catch (Exception e){
             if (visible) {
                 rowid = 0;
                 veh = null;
-               // expenseCursor = null;
+                // expenseCursor = null;
                 cur = null;
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
+
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser)
-        {
-            Expense.pos=1;
+        if (isVisibleToUser) {
+            Expense.pos = 1;
         }
 
     }
 
-    public void fromDateValidation()
-    {
-        try{
+    public void fromDateValidation() {
+        try {
             String today = fromDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
@@ -804,18 +751,14 @@ catch (Exception e){
             DateFormat format2 = new SimpleDateFormat("yyyy-M-dd");
             String tomDate = format2.format(tomorrow);
             Date nextday = format.parse(tomDate);
-            if(dateToday.after(nextday)||dateToday.equals(nextday))
-            {
-                ald.alertDialog(getActivity(),"From Date cannot be greater than Today's Date !");
+            if (dateToday.after(nextday) || dateToday.equals(nextday)) {
+                ald.alertDialog(getActivity(), "From Date cannot be greater than Today's Date !");
                 fragmentExpenseListTvFromDate.setText("FROM DATE");
 
-            }
-            else{
+            } else {
                 fragmentExpenseListTvFromDate.setText(fromDate);
             }
-        }
-
-        catch (Exception e){
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this
                             .getClass().toString() + " " + "[fromDateValidation()]",
                     e.toString());
@@ -823,9 +766,8 @@ catch (Exception e){
         }
     }
 
-    public void toDateValidation()
-    {
-        try{
+    public void toDateValidation() {
+        try {
             String today = toDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
@@ -841,22 +783,16 @@ catch (Exception e){
 
             Date preFromDate = format.parse(fromDate);
 
-            if(dateToday.after(nextday)|| dateToday.equals(nextday))
-            {
-                ald.alertDialog(getActivity(),"To Date cannot be greater than Today's Date !");
+            if (dateToday.after(nextday) || dateToday.equals(nextday)) {
+                ald.alertDialog(getActivity(), "To Date cannot be greater than Today's Date !");
                 fragmentExpenseListTvToDate.setText("TO DATE");
-            }
-
-            else if(dateToday.before(preFromDate)){
-                ald.alertDialog(getActivity(),"To Date cannot be less than From Date !");
+            } else if (dateToday.before(preFromDate)) {
+                ald.alertDialog(getActivity(), "To Date cannot be less than From Date !");
                 fragmentExpenseListTvToDate.setText("TO DATE");
-            }
-            else{
+            } else {
                 fragmentExpenseListTvToDate.setText(toDate);
             }
-        }
-
-        catch (Exception e){
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this
                             .getClass().toString() + " " + "[toDateValidation()]",
                     e.toString());
@@ -864,4 +800,80 @@ catch (Exception e){
         }
     }
 
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        int action = motionEvent.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN) {
+            if (fragmentExpenseListTvToDate.getText().toString().equals("TO DATE")
+                    && fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE"))
+            {
+                ald.alertDialog(getActivity(), "Select from date and to date");
+
+            } else if (fragmentExpenseListTvToDate.getText().toString().equals("TO DATE")
+                    && !fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE"))
+            {
+                ald.alertDialog(getActivity(), "Select to date");
+
+            } else if (!fragmentExpenseListTvToDate.getText().toString().equals("TO DATE")
+                    && !fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE")) {
+                fragmentExpenseListSpinnerVehicle.performClick();
+                loadVehicleSpinnerData();
+            }
+        }
+
+        return true;
+    }
+
+
+    private void setDateTimeField() {
+        fragmentExpenseListTvFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fromDatePickerDialog.show();
+
+            }
+        });
+        fragmentExpenseListTvToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE")
+                        && fragmentExpenseListTvToDate.getText().toString().equals("TO DATE")) {
+                    ald.alertDialog(getActivity(), "Please select From date !");
+                } else
+                    toDatePickerDialog.show();
+
+            }
+        });
+
+
+        Calendar newCalendar = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+            {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                fragmentExpenseListTvFromDate.setText(dateFormatter.format(newDate.getTime()));
+                fromDate = fragmentExpenseListTvFromDate.getText().toString();
+                fdate = newDate;
+                fromDateValidation();
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        toDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                fragmentExpenseListTvToDate.setText(dateFormatter.format(newDate.getTime()));
+                toDate = fragmentExpenseListTvToDate.getText().toString();
+                tdate = newDate;
+                toDateValidation();
+                System.out.println(toDate);
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+    }
 }

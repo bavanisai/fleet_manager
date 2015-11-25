@@ -191,7 +191,7 @@ public class AddLocation extends Fragment implements OnClickListener,
         //		if(!dname.equals("")){
         //			String Loc = db.checkDestTableforDataExist(dname);
         //		}
-        if (lon != null || lat != null || dname != null) {
+        if (!lon.equals("") || !lat.equals("") || !dname.equals("")) {
             db.open();
             String Loc = db.checkDestTableforDataExist(dname);
 

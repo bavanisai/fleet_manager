@@ -197,7 +197,8 @@ public class FuelReport extends ActionBarActivity implements IFuelReport {
         toDatetxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fromDatetxt.getText().toString().equals("click here") && toDatetxt.getText().toString().equals("click here")) {
+                if (fromDatetxt.getText().toString().equals("click here")
+                        && toDatetxt.getText().toString().equals("click here")) {
                     ald.alertDialog(FuelReport.this, "Please select From date !");
                 } else
                     toDatePickerDialog.show();
