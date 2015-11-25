@@ -10,52 +10,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <!--<ProgressBar-->
+    <!--style="?android:attr/progressBarStyleSmall"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/progressBar"-->
+    <!--android:layout_below="@+id/live"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="112dp" />-->
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_height="50dp"
+        android:background="#098DCA"
+        android:visibility="gone"
+        android:id="@+id/mapLayout"
+        android:layout_alignParentBottom="true">
 
-    </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Location"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="@color/toolbar_color"
+            android:layout_marginTop="10dp"
+            android:textColor="#fff"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/placeId"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Live Track"
+            android:textSize="14sp"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:background="@color/toolbar_color"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:textStyle="bold"
+            android:id="@+id/live"/>
 
 
-    <ImageButton
-        android:layout_width="35dp"
-        android:layout_height="32dp"
-        android:layout_gravity="bottom|center"
-        android:id="@+id/placeId"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/buttonflatulta"
-        android:layout_alignParentBottom="true" />
-
-    <ImageButton
-        android:layout_width="37dp"
-        android:layout_height="38dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
-        android:background="@drawable/buttonflatulta"
-        android:layout_weight="0.4"
-        android:id="@+id/track"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/current"
-        android:padding="10sp"
-        />
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_below="@+id/track"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="112dp" />
+    </RelativeLayout>
 
 </RelativeLayout>
