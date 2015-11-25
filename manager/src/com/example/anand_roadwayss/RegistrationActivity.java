@@ -264,14 +264,16 @@ public class RegistrationActivity extends ActionBarActivity {
             });
 
 
-            // Registration Product key Validation simply
-
+            // Registration Product key Validation and
+            // If product key is already there in clipboard paste key onCreate
 
             p1.setFocusableInTouchMode(true);
             p1.setFocusable(true);
             p1.requestFocus();
 
-            cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+            cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);  // permission to access clipboard data
+
             if (cb != null) {
                 if (cb.hasPrimaryClip() == true) {
                     ClipData.Item data = cb.getPrimaryClip().getItemAt(0);
@@ -279,18 +281,42 @@ public class RegistrationActivity extends ActionBarActivity {
                     if (val.length() == 29) {
                         String[] splitKey = val.split("-");
                         p1.setText(splitKey[0]);
-                        p1.setFocusableInTouchMode(true);
-                        p1.setFocusable(true);
-                        p1.requestFocus();
-                        p1.setSelection(4);
                         p2.setText(splitKey[1]);
                         p3.setText(splitKey[2]);
                         p4.setText(splitKey[3]);
                         p5.setText(splitKey[4]);
                         p6.setText(splitKey[5]);
+                        p6.setSelection(4);
                     }
                 }
             }
+
+
+            // on touch of first edit text paste product key
+
+            p1.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (cb.hasPrimaryClip() == true) {
+                        ClipData.Item data = cb.getPrimaryClip().getItemAt(0);
+                        val = data.getText().toString().trim();
+                        int len = val.length();
+                        if (len == 29) {
+                            String[] splitKey = val.split("-");
+                            p1.setText(splitKey[0]);
+                            p2.setText(splitKey[1]);
+                            p3.setText(splitKey[2]);
+                            p4.setText(splitKey[3]);
+                            p5.setText(splitKey[4]);
+                            p6.setText(splitKey[5]);
+                            p6.setSelection(4);
+                        }
+                    }
+                }
+            });
+
+
+
 
             regTvPinNumberShow.setOnClickListener(new OnClickListener() {
                 @Override
@@ -599,8 +625,8 @@ public class RegistrationActivity extends ActionBarActivity {
                                 try {
                                     response = send1.execute("9", "RegisterAnApplication",
                                             registrationAuthKey, Name,
-                                            strEmpType, Email, Phone, Pin,
-                                            IMEI, ProductKey).get();
+                                            strEmpType, Email, Phone,IMEI, Pin,
+                                           ProductKey).get();
 
                                     if (response != null)
                                         try {

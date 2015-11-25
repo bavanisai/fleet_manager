@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class InboxList extends ActionBarActivity {
+public class InboxList extends AppCompatActivity {
     DBAdapter db;
     Toolbar toolbar;
     LinearLayout noDataLayout;

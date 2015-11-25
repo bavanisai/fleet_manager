@@ -90,6 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
+                android:maxLength="10"
                 style="@style/customEditText"
                 android:textCursorDrawable="@null" />
 

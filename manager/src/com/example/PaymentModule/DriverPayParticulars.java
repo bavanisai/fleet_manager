@@ -191,7 +191,9 @@ public class DriverPayParticulars extends Fragment implements IDriverCleanerPaym
                     t2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(mVoucherNum.equals("") || mVoucherNum.equalsIgnoreCase("null") || mVoucherNum.length()<3 ) {
+                            mVoucherNum=et1.getText().toString();
+                            if(mVoucherNum.equals("") || mVoucherNum.equalsIgnoreCase("null") ||
+                                    mVoucherNum.length()<3  ) {
                                 dialog.dismiss();
                                 Toast.makeText(getActivity(),"Enter proper voucher number",Toast.LENGTH_LONG).show();
                             }
@@ -202,43 +204,7 @@ public class DriverPayParticulars extends Fragment implements IDriverCleanerPaym
                             }
                         }
                     });
-
-//                                              AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-//
-//                                              alert.setTitle("Voucher Number"); // Set Alert dialog
-//                                              // title here
-//                                              alert.setMessage(""); // Message
-//                                              // here
-//                                              final EditText input = new EditText(getActivity());
-//                                              input.setPadding(3,1,3,1);
-//                                              alert.setView(input);
-//                                              alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                                  public void onClick(
-//                                                          DialogInterface dialog,
-//                                                          int whichButton) {
-//                                                      mVoucherNum = input.getEditableText().toString();
-//                                                      receiptAlertDialog();
-//
-//                                                  } // End of onClick(DialogInterface
-//                                                  // dialog,
-//                                                  // int
-//                                                  // whichButton)
-//                                              }); // End of alert.setPositiveButton
-//
-//                                              alert.setNegativeButton("CANCEL",
-//                                                      new DialogInterface.OnClickListener() {
-//                                                          public void onClick(
-//                                                                  DialogInterface dialog,
-//                                                                  int whichButton) {
-//                                                              // Canceled.
-//                                                              dialog.cancel();
-//                                                          }
-//                                                      }); // End of alert.setNegativeButton
-//                                              AlertDialog alertDialog = alert.create();
-//                                              alertDialog.show();
                     dialog.show();
-
-                    // /* Alert Dialog Code End */
                 } else {
                     Toast.makeText(getActivity(), "SELECT DATE & EMPLOYEE FROM THE LIST!!", Toast.LENGTH_LONG).show();
                     ((PaymentDriver) getActivity()).setCurrentItem(0, true);
