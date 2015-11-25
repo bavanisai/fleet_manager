@@ -599,8 +599,8 @@ public class RegistrationActivity extends ActionBarActivity {
                                 try {
                                     response = send1.execute("9", "RegisterAnApplication",
                                             registrationAuthKey, Name,
-                                            strEmpType, Email, Phone, Pin,
-                                            IMEI, ProductKey).get();
+                                            strEmpType, Email, Phone,IMEI, Pin,
+                                           ProductKey).get();
 
                                     if (response != null)
                                         try {
