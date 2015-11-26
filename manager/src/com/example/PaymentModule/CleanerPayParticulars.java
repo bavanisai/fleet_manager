@@ -775,8 +775,7 @@ public class CleanerPayParticulars extends Fragment implements IDriverCleanerPay
                 signDb = cursor.getBlob(cursor.getColumnIndex("signature"));
                 //matching current sign with database sign
                 bp1 = BitmapFactory.decodeByteArray(signDb, 0, signDb.length);
-                bp2 = BitmapFactory.decodeByteArray(imgArr,
-                        0, imgArr.length);
+                bp2 = BitmapFactory.decodeByteArray(imgArr, 0, imgArr.length);
                 mSignature.clear();
 
                 a = ((signDb.length - imgArr.length) * 100 / imgArr.length);

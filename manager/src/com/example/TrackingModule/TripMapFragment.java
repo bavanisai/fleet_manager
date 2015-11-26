@@ -76,9 +76,10 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
     GoogleMap map;
     MarkerOptions currMark;
     ProgressDialog pd;
-    Button track, loc;
+    ImageButton track;
     ArrayList<LatLng> markerPoints;
- //   ProgressBar spinner;
+    ImageButton clear, loc;
+        ProgressBar spinner;
     String currentPlace;
     static int count = 0;
     MarkerOptions in;
@@ -90,8 +91,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
     String vehNo;
     final ILiveTrack mTrackLive = this;
     static String disable;
-    RelativeLayout ml;
-    Boolean val = true;
 
 
     //Older init
@@ -114,14 +113,12 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
         view = inflater.inflate(R.layout.track_map_fragment, container,
                 false);
 
-        ml = (RelativeLayout) view.findViewById(R.id.mapLayout);
-
         //Getting Button IDs
-        track = (Button) view.findViewById(R.id.live);
+        track = (ImageButton) view.findViewById(R.id.track);
 
         //Getting Image view id
-        loc = (Button) view.findViewById(R.id.placeId);
-    //    loc.setImageResource(R.drawable.place1);
+        loc = (ImageButton) view.findViewById(R.id.placeId);
+        loc.setImageResource(R.drawable.place1);
 //        clear = (ImageButton) view.findViewById(R.id.clearId);
 //        clear.setImageResource(R.drawable.refresh1);
 
@@ -268,35 +265,14 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
-        try {
-            super.onActivityCreated(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
 
-            FragmentManager fm = getChildFragmentManager();
-            fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
-            if (fragment == null) {
-                fragment = SupportMapFragment.newInstance();
-                fm.beginTransaction().replace(R.id.map, fragment).commit();
-            }
-
-            if (map == null) {
-                map = fragment.getMap();
-
-                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        if(val==false) {
-                            ml.setVisibility(View.VISIBLE);
-                            val = true;
-                        }
-                        else if(val == true){
-                            ml.setVisibility(View.GONE);
-                            val = false;
-                        }
-                    }
-                });
-
-            }
-
+        FragmentManager fm = getChildFragmentManager();
+        fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
+        if (fragment == null) {
+            fragment = SupportMapFragment.newInstance();
+            fm.beginTransaction().replace(R.id.map, fragment).commit();
+        }
 
 //        pd = new ProgressDialog(getActivity());
 //        pd.setTitle("Loading Map");
@@ -306,11 +282,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 //        pd.setCancelable(true);
 //        pd.show();
 
-            GetLiveTracking(vehNo);
-        } catch (Exception e) {
-            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString() + " " + "[onActivityCreated]", e.toString());
-        }
+        GetLiveTracking(vehNo);
     }
 
 
@@ -361,9 +333,9 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
             animatedCircles(current);
             map.moveCamera(CameraUpdateFactory.newLatLng(current));
             map.animateCamera(CameraUpdateFactory.zoomTo(10));
-  //          spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-//            spinner.destroyDrawingCache();
-//            spinner.setVisibility(View.GONE);
+            spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
+            spinner.destroyDrawingCache();
+            spinner.setVisibility(View.GONE);
 
             //       m.showInfoWindow();
         }
@@ -411,23 +383,23 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
 
         //      Method to stop Loading the spinner on MapLoad
-//        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-//            @Override
-//            public void onMapLoaded() {
-//                try {
-//                    spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-//                    spinner.destroyDrawingCache();
-//                    spinner.setVisibility(View.GONE);
-//                    //               stopSpinner();
-//                    //                     pd.dismiss();
-//                } catch (Exception e) {
-//                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-//                                    .toString() + " " + "[map.setOnMapLoadedCallback]",
-//                            e.toString());
-//
-//                }
-//            }
-//        });
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                try {
+                    spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
+                    spinner.destroyDrawingCache();
+                    spinner.setVisibility(View.GONE);
+                    //               stopSpinner();
+                    //                     pd.dismiss();
+                } catch (Exception e) {
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[map.setOnMapLoadedCallback]",
+                            e.toString());
+
+                }
+            }
+        });
 
 
     }catch(Exception e)
@@ -575,16 +547,16 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
 
   //   Method Load Spinner
-//    public void startSpinner() {
-//        spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-//        spinner.setVisibility(View.VISIBLE);
-//    }
+    public void startSpinner() {
+        spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
+        spinner.setVisibility(View.VISIBLE);
+    }
 
-//    // Method Stop Spinner
-//    public void stopSpinner() {
-//        spinner.destroyDrawingCache();
-//        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
-//    }
+    // Method Stop Spinner
+    public void stopSpinner() {
+        spinner.destroyDrawingCache();
+        getActivity().findViewById(R.id.progressBar).setVisibility(View.GONE);
+    }
 
     // Animate circle
     public void animatedCircles(LatLng latlng) {

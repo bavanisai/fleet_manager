@@ -188,10 +188,25 @@ public class AddLocation extends Fragment implements OnClickListener,
     private void SaveDestination() {
         String srcExist = "";
         getSetData();
-        //		if(!dname.equals("")){
-        //			String Loc = db.checkDestTableforDataExist(dname);
-        //		}
-        if (!lon.equals("") || !lat.equals("") || !dname.equals("")) {
+        if(lon.equals("") && lat.equals("") && dname.equals(""))
+        {
+            Toast.makeText(getActivity(),"Please fill all the fields !",Toast.LENGTH_LONG).show();
+        }
+        else if(lon.equals(""))
+        {
+            Toast.makeText(getActivity(),"Please add Longitude !",Toast.LENGTH_LONG).show();
+        }
+        else if(lat.equals(""))
+        {
+            Toast.makeText(getActivity(),"Please add Latitude !",Toast.LENGTH_LONG).show();
+        }
+        else if(dname.equals(""))
+        {
+            Toast.makeText(getActivity(),"Please add Destination name!",Toast.LENGTH_LONG).show();
+        }
+
+        else
+        {
             db.open();
             String Loc = db.checkDestTableforDataExist(dname);
 
@@ -232,20 +247,12 @@ public class AddLocation extends Fragment implements OnClickListener,
                 Latt.setText("");
                 DestName.setText("");
                 LocType.setSelection(LocList.getPosition("DESTINATION"));
-//				ArrayAdapter vehSpinner = (ArrayAdapter) LocType.getAdapter();
-//				LocType.setSelection(vehSpinner.getPosition("DESTINATION"));
-
                 Toast.makeText(
                         getActivity(),
                         "Source Already exists.Delete the existing Source to add new source",
                         Toast.LENGTH_SHORT).show();
             }
-
-        } else {
-            Toast.makeText(getActivity(), "Please fill all Details",
-                    Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public boolean alertUpdate() {
