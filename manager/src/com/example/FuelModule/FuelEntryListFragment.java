@@ -40,7 +40,7 @@ public class FuelEntryListFragment extends Fragment implements
     LinearLayout noDataLayout;
     final IFuelEntryFragment mFuelEntryFragment = this;
     ListView listPersonalAdvance;
-    TextView ok,cancel,message;
+    TextView ok, cancel, message;
     String veh;
     String adress = new IpAddress().getIpAddress();
 
@@ -51,7 +51,7 @@ public class FuelEntryListFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_fuel_entry_list,
                 container, false);
         listPersonalAdvance = (ListView) view.findViewById(R.id.fragmentFuelEntryListLV);
-        noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
+        noDataLayout = (LinearLayout) view.findViewById(R.id.inboxLinearL);
 
         SharedPreferences UserType = getActivity().getSharedPreferences(
                 "RegisterName", 0);
@@ -90,18 +90,13 @@ public class FuelEntryListFragment extends Fragment implements
                                 return false;
                             }
                         });
-            }
-
-            catch(Exception e){
+            } catch (Exception e) {
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                         .toString() + " " + "[onCreateView]", e.toString());
             }
-        }
-
-        else {
+        } else {
             DBAdapter db = new DBAdapter(getActivity());
             try {
-
                 db.open();
                 Cursor Personalaccounts = db.getAllFuelDetails();
                 int count = Personalaccounts.getCount();
@@ -131,6 +126,7 @@ public class FuelEntryListFragment extends Fragment implements
                                 public boolean onItemLongClick(AdapterView<?> parent,
                                                                View view, int position, long id) {
                                     alertLongPressed(id);
+                                    System.out.println("position="+position+"id="+id);
                                     return false;
                                 }
                             });
@@ -147,7 +143,7 @@ public class FuelEntryListFragment extends Fragment implements
                     imageView.setLayoutParams(layoutParams);
                     noDataLayout.addView(imageView);
 
-                    TextView textView=new TextView(getActivity());
+                    TextView textView = new TextView(getActivity());
                     textView.setText("NO FUEL DATA");
                     textView.setTextSize(14);
                     textView.setTypeface(null, Typeface.BOLD);
@@ -169,17 +165,16 @@ public class FuelEntryListFragment extends Fragment implements
         return view;
     }
 
-    public void alertLongPressed(final long id1)
-    {
-    DBAdapter db = new DBAdapter(getActivity());
-    db.open();
-    Cursor FuelDetails = db.getOneVehicleFuelDetails(String.valueOf(id1));
-        int cnt=FuelDetails.getCount();
-        if(cnt>0) {
+    public void alertLongPressed(final long id1) {
+        DBAdapter db = new DBAdapter(getActivity());
+        db.open();
+        Cursor FuelDetails = db.getOneVehicleFuelDetails(String.valueOf(id1));
+        int cnt = FuelDetails.getCount();
+        if (cnt > 0) {
             FuelDetails.moveToFirst();
             veh = FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMvehicle()));
         }
-    db.close();
+        db.close();
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -188,19 +183,18 @@ public class FuelEntryListFragment extends Fragment implements
         final AlertDialog alertDialog1 = builder.create();
         message = (TextView) dialogView.findViewById(R.id.textmsg);
         ok = (TextView) dialogView.findViewById(R.id.textOkBtn);
-        cancel=(TextView)dialogView.findViewById(R.id.textCancelBtn);
-        message.setText("Delete fuel entry details of "+veh+" ?");
+        cancel = (TextView) dialogView.findViewById(R.id.textCancelBtn);
+        message.setText("Delete fuel entry details of " + veh + " ?");
         //for hiding title layout
-        View v1= inflater.inflate(R.layout.title_dialog_layout, null);
+        View v1 = inflater.inflate(R.layout.title_dialog_layout, null);
         alertDialog1.setCustomTitle(v1);
 
         ok.setText("DELETE");
         cancel.setText("CANCEL");
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-               DeleteFuelDetails(id1);
+            public void onClick(View view) {
+                DeleteFuelDetails(id1);
                 alertDialog1.dismiss();
             }
         });
@@ -210,7 +204,7 @@ public class FuelEntryListFragment extends Fragment implements
                 alertDialog1.dismiss();
             }
         });
-        Resources resources =alertDialog1.getContext().getResources();
+        Resources resources = alertDialog1.getContext().getResources();
         int color = resources.getColor(R.color.white);
         alertDialog1.show();
 
@@ -220,8 +214,7 @@ public class FuelEntryListFragment extends Fragment implements
         titleDivider.setBackgroundColor(color);
     }
 
-    public void alertLongPressedDemo(final long id1)
-    {
+    public void alertLongPressedDemo(final long id1) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogView = inflater.inflate(R.layout.dialog_two_btn, null);
@@ -229,17 +222,16 @@ public class FuelEntryListFragment extends Fragment implements
         final AlertDialog alertDialog1 = builder.create();
         message = (TextView) dialogView.findViewById(R.id.textmsg);
         ok = (TextView) dialogView.findViewById(R.id.textOkBtn);
-        cancel=(TextView)dialogView.findViewById(R.id.textCancelBtn);
+        cancel = (TextView) dialogView.findViewById(R.id.textCancelBtn);
         message.setText("Delete fuel entry details ?");
-        View v1= inflater.inflate(R.layout.title_dialog_layout, null);
+        View v1 = inflater.inflate(R.layout.title_dialog_layout, null);
         alertDialog1.setCustomTitle(v1);
 
         ok.setText("DELETE");
         cancel.setText("CANCEL");
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 DeleteFuelDetailsDemo(id1);
             }
         });
@@ -249,7 +241,7 @@ public class FuelEntryListFragment extends Fragment implements
                 alertDialog1.dismiss();
             }
         });
-        Resources resources =alertDialog1.getContext().getResources();
+        Resources resources = alertDialog1.getContext().getResources();
         int color = resources.getColor(R.color.white);
         alertDialog1.show();
 
@@ -269,7 +261,7 @@ public class FuelEntryListFragment extends Fragment implements
             if (FuelDetails.moveToFirst()) {
                 String Id = FuelDetails.getString(FuelDetails
                         .getColumnIndex(DBAdapter.getKeyFuelRowId()));
-             //  veh=FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMvehicle()));
+                //  veh=FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMvehicle()));
                 id = String.valueOf(id1);
                 SendToWebService send = new SendToWebService(getActivity(),
                         mFuelEntryFragment);
@@ -305,6 +297,7 @@ public class FuelEntryListFragment extends Fragment implements
         }
 
     }
+
     public void refreshActivity() {
         // vg.invalidate();
         getActivity().finish();
@@ -355,8 +348,8 @@ public class FuelEntryListFragment extends Fragment implements
                 try {
                     jsonResponse = new JSONObject(response);
                     String jsonData = jsonResponse.getString("d");
-                    JSONObject d=new JSONObject(jsonData);
-					String status = d.getString("status").trim();
+                    JSONObject d = new JSONObject(jsonData);
+                    String status = d.getString("status").trim();
                     switch (status) {
 
                         case "deleted":
@@ -421,12 +414,10 @@ public class FuelEntryListFragment extends Fragment implements
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser)
-        {
-           FuelActivity.pos=2;
+        if (isVisibleToUser) {
+            FuelActivity.pos = 2;
         }
 
     }
