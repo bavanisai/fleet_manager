@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
+import java.util.ArrayList;
+
 public class FuelEntryListFragment extends Fragment implements
         IFuelEntryFragment {
     String id;
@@ -43,6 +46,9 @@ public class FuelEntryListFragment extends Fragment implements
     TextView ok, cancel, message;
     String veh;
     String adress = new IpAddress().getIpAddress();
+    long idMax;
+    Cursor csr1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,11 +57,26 @@ public class FuelEntryListFragment extends Fragment implements
         View view = inflater.inflate(R.layout.fragment_fuel_entry_list,
                 container, false);
         listPersonalAdvance = (ListView) view.findViewById(R.id.fragmentFuelEntryListLV);
+
         noDataLayout = (LinearLayout) view.findViewById(R.id.inboxLinearL);
 
         SharedPreferences UserType = getActivity().getSharedPreferences(
                 "RegisterName", 0);
         String UserTyp = UserType.getString("Name", "");
+
+        try {
+            DBAdapter db = new DBAdapter(getActivity());
+            db.open();
+            csr1 = db.getMaxId();
+            int s = csr1.getCount();
+            System.out.print(s);
+            if (csr1 != null)
+                idMax = csr1.getLong(0);
+            csr1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         if (UserTyp.equals("DEMO")) {
             try {
@@ -119,17 +140,23 @@ public class FuelEntryListFragment extends Fragment implements
                     listPersonalAdvance.setAdapter(caPersonal);
 
                     db.close();
+
+
                     listPersonalAdvance.setLongClickable(true);
-                    listPersonalAdvance
-                            .setOnItemLongClickListener(new OnItemLongClickListener() {
-                                @Override
-                                public boolean onItemLongClick(AdapterView<?> parent,
-                                                               View view, int position, long id) {
-                                    alertLongPressed(id);
-                                    System.out.println("position="+position+"id="+id);
-                                    return false;
-                                }
-                            });
+                    listPersonalAdvance.setOnItemLongClickListener(new OnItemLongClickListener() {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent,
+                                                       View view, int position, long id) {
+                            if (id == idMax) {
+                                alertLongPressed(id);
+                            } else {
+                                Toast.makeText(getActivity(), "You can delete only latest fuel entry", Toast.LENGTH_SHORT).show();
+                            }
+
+                            System.out.println("position= " + position + " id= " + id);
+                            return false;
+                        }
+                    });
                 } else {
                     //if listview is empty at 1st time
                     noDataLayout.setVisibility(View.VISIBLE);

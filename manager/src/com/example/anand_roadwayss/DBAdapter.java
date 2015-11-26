@@ -64,7 +64,7 @@ public class DBAdapter {
 
     private static final String KEY_ADVANCE_TYPE = "AdvanceType";
     private static final String T_ADVANCE_DETAILS = "AdvanceDetails";
-    private static final String KEY_RECEIPT="voucherImage";
+    private static final String KEY_RECEIPT = "voucherImage";
 
     private static final String DATABASE_ADVANCE_DETAILS = "create table AdvanceDetails (_id integer primary key autoincrement, "
             + "date text,VehNo text,Name text,AdvanceType text,VouNo text , amount integer, voucherImage blob );";
@@ -128,7 +128,6 @@ public class DBAdapter {
     // 7. End Location Table
 
 
-
     // 8. Begin InboxDetails Table
 
     private static final String KEY_SUBJECT = "Subject";
@@ -142,12 +141,11 @@ public class DBAdapter {
     // 8. End InboxDetails Table
 
     // 9. Begin signature Table
-    private static final String KEY_SIGN="signature";
+    private static final String KEY_SIGN = "signature";
     private static final String T_SIGN = "RegSign";
 
     private static final String DATABASE_SIGNATURE = "create table RegSign (_id integer primary key autoincrement , signature blob );";
     //9. Begin signature Table
-
 
 
     final Context context;
@@ -209,7 +207,6 @@ public class DBAdapter {
 
         db.execSQL("delete from " + table);
     }
-
 
 
     //3. To Delete Employee Details From Employee Table By EmpId
@@ -483,8 +480,7 @@ public class DBAdapter {
     }
 
     //27. Insert Upto 100 rows
-    public long insertContactWithDelete(String TABLE, ContentValues contentValues)
-    {
+    public long insertContactWithDelete(String TABLE, ContentValues contentValues) {
         long id = db.insert(TABLE, null, contentValues);
         Cursor c = db.rawQuery("select (max(_id)-100)  from " + TABLE, null);
         String l = String.valueOf(c.moveToFirst() ? c.getInt(0) : 0);
@@ -497,14 +493,13 @@ public class DBAdapter {
 
         return id;
     }
-    public long updateVehicle(ContentValues cv)
-    {
-        int  a=  db.update(T_ADVANCE_DETAILS, cv, "VehNo=?", new String[]{"KA 001"});
+
+    public long updateVehicle(ContentValues cv) {
+        int a = db.update(T_ADVANCE_DETAILS, cv, "VehNo=?", new String[]{"KA 001"});
         //int b= db.update(T_ADVANCE_DETAILS,cv,"VehNo=?" ,new String[]{"KA 001"});
         //int c=db.update(T_ADVANCE_DETAILS,cv,"VehNo=?" ,new String[]{"KA 001"});
         return a;
     }
-
 
 
     //29. Update a -----------------------
@@ -609,7 +604,6 @@ public class DBAdapter {
     }
 
 
-
     //44. Getting All *****************
     public List<String> getAllDetails(String table) {
         List<String> labels = new ArrayList<String>();
@@ -696,8 +690,7 @@ public class DBAdapter {
     }
 
     //48. Getting All Advance Details For Different Types
-    public Cursor getAllContactsVehicleAdvance(String advanceType)
-    {
+    public Cursor getAllContactsVehicleAdvance(String advanceType) {
         Cursor c = db.rawQuery("select * from " + T_ADVANCE_DETAILS + " WHERE "
                 + DBAdapter.KEY_ADVANCE_TYPE + "='" + advanceType + "'"
                 + " ORDER BY " + getKeyDate() + " ASC" + " LIMIT 100", null);
@@ -782,6 +775,7 @@ public class DBAdapter {
         return db.query(T_EMPLOYEE_DETAILS, null, " Name=?",
                 new String[]{EmpName}, null, null, null);
     }
+
     //58. Getting *****************
     public Cursor getCleanerEntry(String name1) {
         return db.query(getEmployeeDetails(), null, " Name=?",
@@ -861,7 +855,7 @@ public class DBAdapter {
         String rowid = String.valueOf(id);
         String whereclouse = "_id=?";
         Cursor cursor = db.query(T_LOCATION, new String[]{KEY_ROWID,
-                        KEY_LONGITUDE, KEY_LATITUDE, KEY_LOC_NAME,KEY_LOCATIONTYPE}, whereclouse,
+                        KEY_LONGITUDE, KEY_LATITUDE, KEY_LOC_NAME, KEY_LOCATIONTYPE}, whereclouse,
                 new String[]{rowid}, null, null, null);
         return cursor;
     }
@@ -892,7 +886,6 @@ public class DBAdapter {
     }
 
 
-
     //68. Getting Payment Voucher For _id
     public Cursor getVoucherPayment(String id) {
         String whereclouse = "_id=?";
@@ -913,20 +906,20 @@ public class DBAdapter {
         return AdvanceDetails;
     }
 
-    public Cursor getVehNumAdvance(String id)
-    {
-        return db.query(T_ADVANCE_DETAILS,null,"_id=?",new String[]{id},null,null,null);
+    public Cursor getVehNumAdvance(String id) {
+        return db.query(T_ADVANCE_DETAILS, null, "_id=?", new String[]{id}, null, null, null);
     }
 
-    public Cursor getDriverAdvance(String id)
-    {
-        return db.query(T_ADVANCE_DETAILS,null,"_id=?",new String[]{id},null,null,null);
+    public Cursor getDriverAdvance(String id) {
+        return db.query(T_ADVANCE_DETAILS, null, "_id=?", new String[]{id}, null, null, null);
     }
+
     //70. Getting Fuel By _id
     public Cursor getOneFuelDetails(String id) {
         return db.query(T_FUEL_DETAILS, new String[]{KEY_FUELROWID},
                 "_id=?", new String[]{id}, null, null, null);
     }
+
     public Cursor getOneVehicleFuelDetails(String id) {
         return db.query(T_FUEL_DETAILS, new String[]{KEY_MVEHICLE},
                 "_id=?", new String[]{id}, null, null, null);
@@ -977,6 +970,7 @@ public class DBAdapter {
         return db.delete(table, WhereClouse, whereArgs) > 0;
 
     }
+
     // 79 deleteLocation
     public boolean deleteLocation(String table, String id) {
         return db.delete(table, KEY_LOC_NAME + "=" + id, null) > 0;
@@ -1024,7 +1018,7 @@ public class DBAdapter {
 //    }
 
     //84. Getting expense Voucher For _id
-    public Cursor getVoucherExpense(String table,String id) {
+    public Cursor getVoucherExpense(String table, String id) {
         String whereclouse = "_id=?";
         String[] whereArgs = new String[]{id};
         Cursor AdvanceDetails = db.query(table,
@@ -1048,18 +1042,16 @@ public class DBAdapter {
     }
     //87 inserting signature to table
 
-    public void addSignature( byte[] image)
-    {
-        ContentValues cv = new  ContentValues();
-        cv.put(KEY_SIGN,   image);
-        db.insert( T_SIGN, null, cv );
+    public void addSignature(byte[] image) {
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_SIGN, image);
+        db.insert(T_SIGN, null, cv);
     }
 
     //getting sign for comparison advance n payment module
-    public Cursor getSignature()
-    {
+    public Cursor getSignature() {
         Cursor c;
-        String sign = "SELECT signature FROM "+T_SIGN;
+        String sign = "SELECT signature FROM " + T_SIGN;
         c = db.rawQuery(sign, null);
         c.moveToFirst();
         return c;
@@ -1075,56 +1067,52 @@ public class DBAdapter {
             return "NOT EXIST";
         }
         cursor.moveToFirst();
-         String Vno = "EXIST";
+        String Vno = "EXIST";
         cursor.close();
 
         return Vno;
     }
 
     //88 DB Version
-    public static int getDBVersion(){
+    public static int getDBVersion() {
         return DATABASE_VERSION;
     }
 
 
-
-
-    public boolean deleteAllRowsOfTable(String table){
-        return db.delete(table,null,null)>0;
+    public boolean deleteAllRowsOfTable(String table) {
+        return db.delete(table, null, null) > 0;
     }
 
     //90. getting count of unread message
-    public int unreadMessageCount()
-    {
-        Cursor c=db.rawQuery(" select Flag from InboxDetails where Flag =0 ", null);
-        int count=c.getCount();
+    public int unreadMessageCount() {
+        Cursor c = db.rawQuery(" select Flag from InboxDetails where Flag =0 ", null);
+        int count = c.getCount();
         return count;
     }
+
     //91 reducing count of unread message after reading message
-    public void afterReadMessage(long id)
-    {
-        ContentValues cv=new ContentValues();
-        cv.put("Flag",1);
+    public void afterReadMessage(long id) {
+        ContentValues cv = new ContentValues();
+        cv.put("Flag", 1);
         db.update("InboxDetails", cv, "_id=" + id, null);
     }
+
     //92 deleting inbox messages
-    public void deleteInboxItem(long id)
-    {
-        db.delete("InboxDetails","_id=" + id,null);
+    public void deleteInboxItem(long id) {
+        db.delete("InboxDetails", "_id=" + id, null);
     }
 
-//93
-    public void deleteAllInboxItem()
-    {
-        db.execSQL("delete from "+ "InboxDetails");
+    //93
+    public void deleteAllInboxItem() {
+        db.execSQL("delete from " + "InboxDetails");
     }
 
 
     //******* START THE GETTER METHODS FROM HERE********
-    public static String getVoucherImage()
-    {
+    public static String getVoucherImage() {
         return KEY_RECEIPT;
     }
+
     public static String getEmployeeDetails() {
         return T_EMPLOYEE_DETAILS;
     }
@@ -1326,7 +1314,7 @@ public class DBAdapter {
         return KEY_MESSAGE;
     }
 
-     public static String getKeyFlag() {
+    public static String getKeyFlag() {
         return KEY_FLAG;
     }
 
@@ -1338,11 +1326,11 @@ public class DBAdapter {
         return KEY_ROWID;
     }
 
-    public static String getKeySign(){
+    public static String getKeySign() {
         return KEY_SIGN;
     }
 
-    public static String getKeyReceipt(){
+    public static String getKeyReceipt() {
         return KEY_RECEIPT;
     }
 
@@ -1350,8 +1338,6 @@ public class DBAdapter {
     //   public  static String getKeyParticular(){return  KEY_PARTICULAR; }
 
     //  public static String getExpensedetails(){return T_EXPENSEDETAILS;}
-
-
 
 
     @SuppressLint("NewApi")
@@ -1376,5 +1362,13 @@ public class DBAdapter {
         return cursor;
     }
 
+    // get max id of fuel table
+    public Cursor getMaxId() {
+        Cursor y;
+        String query = "SELECT _id from FuelDetails order by _id DESC limit 1;";
+        y = db.rawQuery(query, null);
+        y.moveToFirst();
+        return y;
+    }
 
 }
