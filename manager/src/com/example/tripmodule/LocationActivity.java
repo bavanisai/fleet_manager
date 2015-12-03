@@ -85,7 +85,10 @@ public class LocationActivity extends ActionBarActivity {
     PlacesTask placesTask;
     ParserTask parserTask;
     AutoCompleteTextView atvPlaces;
-static  int pos;
+    static int pos;
+    static ImageView search, search1, image;
+    static AutoCompleteTextView autoPlace;
+    static TextView loca;
     CharSequence Titles[] = {"LOCATION LIST", "ADD LOCATION","MAP"};
     int Numboftabs = 3;
 
@@ -103,6 +106,11 @@ static  int pos;
         sea=(ImageView)findViewById(R.id.imgVSearch);
         sea1=(ImageView)findViewById(R.id.imgVSearch1);
         img=(ImageView)findViewById(R.id.arrow_img);
+        search = sea;
+        search1 = sea1;
+        autoPlace = atvPlaces;
+        image = img;
+        loca = txtLocation;
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,34 +226,6 @@ static  int pos;
     }
 
 
-    // @Override
-    // public boolean onCreateOptionsMenu(Menu menu) {
-    //
-    // // Inflate the menu; this adds items to the action bar if it is present.
-    // getMenuInflater().inflate(R.menu.location, menu);
-    // return true;
-    // }
-    //
-    // @Override
-    // public boolean onOptionsItemSelected(MenuItem item) {
-    // // Handle action bar item clicks here. The action bar will
-    // // automatically handle clicks on the Home/Up button, so long
-    // // as you specify a parent activity in AndroidManifest.xml.
-    // int id = item.getItemId();
-    // if (id == R.id.action_settings) {
-    // return true;
-    // }
-    // return super.onOptionsItemSelected(item);
-    // }
-
-    // @Override
-    // public void onBackPressed()
-    // {
-    // super.onBackPressed();
-    // Intent i=new Intent(this,TripActivity.class);
-    // startActivity(i);
-    // }
-
     public void setCurrentItem(int item, boolean smoothScroll) {
        pager.setCurrentItem(item, smoothScroll);
     }
@@ -281,18 +261,19 @@ static  int pos;
                         atvPlaces.setVisibility(View.GONE);
                         sea.setVisibility(View.GONE);
                         sea1.setVisibility(View.GONE);
-
                     return tab1;
+
                 case 1:AddLocation tab2 = new AddLocation();
                         img.setVisibility(View.VISIBLE);
                         txtLocation.setVisibility(View.VISIBLE);
                         atvPlaces.setVisibility(View.GONE);
                         sea.setVisibility(View.GONE);
                         sea1.setVisibility(View.GONE);
+                    return tab2;
 
-                return tab2;
                 case 2:MapFragment tab3=new MapFragment();
-                        sea.setVisibility(View.VISIBLE);
+                    sea1.setVisibility(View.VISIBLE);
+
                     return tab3;
             }
             return null;

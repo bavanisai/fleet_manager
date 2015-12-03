@@ -1,7 +1,6 @@
 package com.example.tripmodule;
 
 import android.app.Dialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,23 +12,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -42,6 +33,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -69,43 +61,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListener {
 
     public static GoogleMap mMap;
+    String currPlace;
+    double dragLat, dragLng;
+    String dragPlace;
     public SupportMapFragment fragment;
     public Marker marker;
-    ImageView btnSearch;
     AutoCompleteTextView atvPlaces;
     PlacesTask placesTask;
     ParserTask parserTask;
     GetLatLong getLatLng;
     Double lat, lng;
     LatLng LocationHere;
-    MenuItem item;
-    SearchView searchView;
     public static Geocoder geocoder;
     public static Dialog d;
     public static Context con;
+    String info_Text, info_detail_text;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
        geocoder = new Geocoder(getActivity(),Locale.getDefault());
-       d = new Dialog(getActivity());
+        d = new Dialog(getActivity());
         con=getActivity();
-
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        // setUpMapIfNeeded();
         try {
-            //     ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-            atvPlaces = (AutoCompleteTextView) view.findViewById(R.id.atv_places);
-
-            // AUTOCOMPLETE TEXT VIEW
-            atvPlaces.setThreshold(3);
-            atvPlaces.addTextChangedListener(new TextWatcher() {
+            if (atvPlaces != null) {
+                atvPlaces = (AutoCompleteTextView) view.findViewById(R.id.atv_places);
+                // AUTOCOMPLETE TEXT VIEW
+                atvPlaces.setThreshold(3);
+                atvPlaces.addTextChangedListener(new TextWatcher() {
 
                     @Override
                     public void onTextChanged(CharSequence s, int start,
@@ -123,15 +112,18 @@ public class MapFragment extends Fragment {
                                     .getClass().toString(), e.toString());
                         }
                     }
+
                     @Override
                     public void beforeTextChanged(CharSequence s, int start,
                                                   int count, int after) {
                     }
-                   @Override
+
+                    @Override
                     public void afterTextChanged(Editable s) {
 
                     }
                 });
+            }
         }catch (Exception e) {
 
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
@@ -145,6 +137,7 @@ public class MapFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         FragmentManager fm = getChildFragmentManager();
         fragment = (SupportMapFragment) fm.findFragmentById(R.id.map1);
+
         if (fragment == null) {
             fragment = SupportMapFragment.newInstance();
             fm.beginTransaction().replace(R.id.map1, fragment).commit();
@@ -153,12 +146,13 @@ public class MapFragment extends Fragment {
 
     @Override
     public void onPause() {
-        // super.onDestroyView();
         Fragment f = getFragmentManager().findFragmentById(R.id.map1);
         if (f != null)
             getFragmentManager().beginTransaction().remove(f).commit();
         AddLocation.Longitude = null;
         super.onPause();
+        //map is null when fragment is not visible
+        mMap = null;
     }
 
     @Override
@@ -166,30 +160,47 @@ public class MapFragment extends Fragment {
         super.onResume();
         if (mMap == null) {
             mMap = fragment.getMap();
-            // mMap.addMarker(new MarkerOptions().position(new LatLng(0,
-            // 0)).icon(BitmapDescriptorFactory.fromResource(R.drawable.blink)));
-//            if (mMap != null) {
-                mMap.setMyLocationEnabled(true);
-                mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
+            mMap.setOnMarkerDragListener(this);
+            mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    return null;
+                }
 
-                mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-                    public void onInfoWindowClick(Marker marker) {
-                        LatLng point = marker.getPosition();
-                        AddLocation.Lattitude = String.valueOf(point.latitude);
-                        AddLocation.Longitude = String.valueOf(point.longitude);
-                        AddLocation.Name = null;
-                        ((LocationActivity) getActivity()).setCurrentItem(1, true);
-                    }
-                });
+                @Override
+                public View getInfoContents(final Marker marker) {
+                    // Getting view from the layout file info_window_layout
+                    View v = getActivity().getLayoutInflater().inflate(R.layout.info_window_layout, null);
+                    //Getting references of all views
+                    TextView heading = (TextView) v.findViewById(R.id.place_info);
+                    TextView allData = (TextView) v.findViewById(R.id.detail_place_info);
+                    //data from marker
+                    LatLng point = marker.getPosition();
+                    AddLocation.Lattitude = String.valueOf(point.latitude);
+                    AddLocation.Longitude = String.valueOf(point.longitude);
+                    AddLocation.Name = getLocation(point);
+                    //add value to info window
+                    heading.setText(info_Text);
+                    allData.setText(info_detail_text);
+                    return v;
+                }
+            });
 
-                if (AddLocation.Longitude != null) {
+            mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+                public void onInfoWindowClick(Marker marker) {
+
+                    ((LocationActivity) getActivity()).setCurrentItem(1, true);
+                }
+            });
+
+            if (AddLocation.Longitude != null) {
                     LatLng Location = new LatLng(Double.valueOf(AddLocation.Lattitude),
                             Double.valueOf(AddLocation.Longitude));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 17));
                     mMap.addMarker(new MarkerOptions().position(Location).title(
                             AddLocation.Name));
                 }
-          //  }
         }
     }
 
@@ -198,53 +209,12 @@ public class MapFragment extends Fragment {
         public void onMapLongClick(final LatLng point) {
 
             String Address;
+
             Address = getAddress1(point.latitude, point.longitude);
             if (Address == null) {
                 Address = "Location";
             }
-
-            marker = mMap.addMarker(new MarkerOptions().position(point));
-            final Dialog d = new Dialog(getActivity());
-            d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            d.setContentView(R.layout.info_window_layout2);
-            TextView t1 = (TextView) d.findViewById(R.id.locHead1);
-            TextView t2 = (TextView) d.findViewById(R.id.locInfo1);
-            Button ok=(Button)d.findViewById(R.id.ok);
-            Button cancel=(Button)d.findViewById(R.id.cancel);
-            t1.setTextColor(Color.parseColor("#009acd"));
-            t2.setTextColor(Color.BLACK);
-            t1.setText("Location");
-            String currPlace = getLocation(LocationHere);
-            t2.setText(currPlace);
-            t2.setTextSize(12);
-            marker.setTitle(currPlace);
-            //m.showInfoWindow();
-            ok.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    AddLocation.Lattitude = String.valueOf(point.latitude);
-                    AddLocation.Longitude = String.valueOf(point.longitude);
-                    AddLocation.Name = null;
-                    ((LocationActivity) getActivity()).setCurrentItem(1, true);
-                    d.dismiss();
-                }
-            });
-
-            cancel.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mMap.clear();
-                    d.dismiss();
-                }
-            });
-            d.show();
-//            marker = mMap.addMarker(new MarkerOptions().position(point).title(
-//                    Address));
-//            marker.showInfoWindow();
         }
-
     };
 
     public boolean isConnectingToInternet() {
@@ -274,17 +244,29 @@ public class MapFragment extends Fragment {
 
             String address = addresses.get(0).getAddressLine(0);
             String city = addresses.get(0).getAddressLine(1);
-            res = address + " " + city + " " ;
+            String state = addresses.get(0).getAddressLine(2);
+            info_detail_text = address + " ," + city + " ," + state;
+            String s1 = addresses.get(0).getSubLocality();
+            String s2 = addresses.get(0).getLocality();
+            System.out.println(addresses);
+            if (s1 == null) {
+                res = s2 + "\n";
+                info_Text = res;
+            } else {
+                res = s1 + ", " + s2;
+                info_Text = res;
+            }
         }
         catch (Exception e)
         {
             ExceptionMessage.exceptionLog(getActivity(), this
-                    .getClass().toString()+ " "
-                    + "[getLocation()]", e.toString());
+                    .getClass().toString() + " " + "[getLocation()]", e.toString());
             e.printStackTrace();
         }
         return res;
     }
+
+
     private String getAddress1(double LATITUDE, double LONGITUDE) {
         String strAdd = null;
      //   Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -302,8 +284,6 @@ public class MapFragment extends Fragment {
                             "\n");
                 }
                 strAdd = strReturnedAddress.toString();
-                // Log.w("My Current loction address",
-                // "" + strReturnedAddress.toString());
             } else {
                 Log.w("My Current loction", "No Address returned!");
             }
@@ -316,6 +296,34 @@ public class MapFragment extends Fragment {
                     .toString(), e.toString());
         }
         return strAdd;
+    }
+
+    @Override
+    public void onMarkerDragStart(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDrag(Marker marker) {
+
+    }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        try {
+            //drag marker to desire place
+            //invisible default marker
+            LatLng dragPosition = marker.getPosition();
+            dragLat = dragPosition.latitude;
+            dragLng = dragPosition.longitude;
+            dragPlace = getLocation(dragPosition);
+            getLatLng = new GetLatLong();
+            marker.setVisible(false);
+            getLatLng.execute(dragPlace);
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[onMarkerDragEnd()]", e.toString());
+        }
     }
 
 
@@ -397,54 +405,20 @@ public class MapFragment extends Fragment {
             if (!result.equals("No")) {
                 StringTokenizer a1 = new StringTokenizer(result, ":");
                 if (a1.hasMoreTokens()) {
-
                     lng = Double.valueOf(a1.nextToken());
                     lat = Double.valueOf(a1.nextToken());
                     LocationHere = new LatLng(lat, lng);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             LocationHere, 15));
-                 //   String currPlace =getLocation(LocationHere);
-//                    mMap.addMarker(new MarkerOptions().position(LocationHere)
-//                            .title(currPlace));
-
-                                 marker = mMap.addMarker(new MarkerOptions().position(LocationHere));
-
-
-                                d.setContentView(R.layout.info_window_layout2);
-                                TextView t1 = (TextView) d.findViewById(R.id.locHead1);
-                                TextView t2 = (TextView) d.findViewById(R.id.locInfo1);
-                                Button ok=(Button)d.findViewById(R.id.ok);
-                                Button cancel=(Button)d.findViewById(R.id.cancel);
-                                t1.setTextColor(Color.parseColor("#009acd"));
-                                t2.setTextColor(Color.BLACK);
-                                t1.setText("Location");
-                                String currPlace = getLocation(LocationHere);
-                                t2.setText(currPlace);
-                                t2.setTextSize(12);
-                                marker.setTitle(currPlace);
-                                //m.showInfoWindow();
-                                ok.setOnClickListener(new OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-
-                                        AddLocation.Lattitude = String.valueOf(LocationHere.latitude);
-                                        AddLocation.Longitude = String.valueOf(LocationHere.longitude);
-                                        AddLocation.Name = null;
-
-                                        ((LocationActivity)con).setCurrentItem(1, true);
-                                        d.dismiss();
-                                    }
-                                });
-
-                                cancel.setOnClickListener(new OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                    mMap.clear();
-                                        d.dismiss();
-                                    }
-                                });
-                                d.show();
-
+                    currPlace = getLocation(LocationHere);
+                    System.out.println("Current palce" + currPlace);
+                    System.out.println("latitude=" + dragLat);
+                    System.out.println("longitude=" + dragLng);
+                    //  mMap.setMyLocationEnabled(true);
+                    marker = mMap.addMarker(new MarkerOptions().position(LocationHere).title("Place Name")
+                            .snippet(currPlace).draggable(true));
+                    System.out.println(marker.isVisible());
+                    marker.setVisible(true);
                 }
             } else {
                 Toast.makeText(getActivity(), "Please Enter Valid Location",
@@ -560,8 +534,7 @@ public class MapFragment extends Fragment {
     /**
      * A class to parse the Google Places in JSON format
      */
-    private class ParserTask extends
-            AsyncTask<String, Integer, List<HashMap<String, String>>> {
+    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
 
         JSONObject jObject;
 
@@ -601,13 +574,10 @@ public class MapFragment extends Fragment {
         }
     }
 
-    public void getSearchData(String loc){
-
+    public void getSearchData(String loc) {
         getLatLng = new GetLatLong();
         try {
-
             getLatLng.execute(loc);
-
         } catch (Exception e) {
             Toast.makeText(getActivity(),
                     "Try after some time",
@@ -625,6 +595,12 @@ public class MapFragment extends Fragment {
         if(isVisibleToUser)
         {
             LocationActivity.pos=3;
+            //some times search icon was invisible(contol is moving between AddLocation & MapFragment)
+            //below code is a solution
+            LocationActivity.search1.setVisibility(View.VISIBLE);
+            LocationActivity.autoPlace.setVisibility(View.VISIBLE);
+            LocationActivity.image.setVisibility(View.GONE);
+            LocationActivity.loca.setVisibility(View.GONE);
         }
     }
 }

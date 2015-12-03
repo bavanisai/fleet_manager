@@ -314,7 +314,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
 
                 } catch (Exception e) {
                     ExceptionMessage.exceptionLog(getActivity(), this
-                            .getClass().toString(), e.toString());
+                            .getClass().toString() + " " + "[TripData]", e.toString());
                 }
 //                 } else {
 //                     Toast.makeText(getActivity().getBaseContext(),
@@ -436,10 +436,10 @@ public class TripManageFragment extends Fragment implements OnClickListener,
 
         } catch (SQLiteException e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[SaveTripData]", e.toString());
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[SAveTripData]", e.toString());
         }
         refreshActivity();
     }
@@ -518,10 +518,10 @@ public class TripManageFragment extends Fragment implements OnClickListener,
 //                    });
         } catch (SQLiteException e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadSourceSpinnerData]", e.toString());
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadSourceSpinnerData]", e.toString());
         }
     }
 
@@ -610,7 +610,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 DriverSpinner.setSelection(position);
             }
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadDriverSpinnerData]", e.toString());
         }
     }
 
@@ -699,7 +699,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 VehicleSpinner.setSelection(position);
             }
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadVehicleSpinnerData]", e.toString());
         }
 
     }
@@ -749,10 +749,10 @@ public class TripManageFragment extends Fragment implements OnClickListener,
 
         } catch (SQLiteException e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadCleanerSpinnerData]", e.toString());
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[loadCleanerSpinnerData]", e.toString());
         }
     }
 
@@ -841,7 +841,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
             }
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString(), e.toString());
+                    .toString() + " " + "[onSaveSourceDestinationDetails]", e.toString());
         }
 
     }
@@ -921,7 +921,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
     }
     catch (Exception e){
         ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                .toString(), e.toString());
+                .toString() + " " + "[onStart()]", e.toString());
     }
 
     }

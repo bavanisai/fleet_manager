@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Interface.IAddLocation;
@@ -41,7 +41,8 @@ public class AddLocation extends Fragment implements OnClickListener,
         IAddLocation {
 
     Button savebtn, pasteBtn;
-    EditText Long, Latt, DestName;
+    EditText DestName;
+    TextView Long, Latt;
     Spinner LocType;
     ArrayList<String> LocationType = new ArrayList<String>();
     // LinearLayout l1,l2;
@@ -81,7 +82,15 @@ public class AddLocation extends Fragment implements OnClickListener,
                 }
 
             }
+            DestName.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // ((AddLocation)).setCurrentItem(2, true);
+                    //getFragmentManager().beginTransaction().replace(container, new AddLocation()).commit();
+                }
+            });
             db = new DBAdapter(getActivity());
+
             pasteBtn.setOnClickListener(this);
             savebtn.setOnClickListener(this);
             LocationType.add("Destination");
@@ -118,12 +127,10 @@ public class AddLocation extends Fragment implements OnClickListener,
     }
 
     private void bindData() {
-        Long = (EditText) view.findViewById(R.id.LongText);
-        Latt = (EditText) view.findViewById(R.id.LatText);
+        Long = (TextView) view.findViewById(R.id.LongText);
+        Latt = (TextView) view.findViewById(R.id.LatText);
         DestName = (EditText) view.findViewById(R.id.DestAddText);
         savebtn = (Button) view.findViewById(R.id.AddDestSavebtn);
-        // l1 = (LinearLayout) view.findViewById(R.id.AmountLayout);
-        // l2 = (LinearLayout) view.findViewById(R.id.DistanceLayout);
         LocType = (Spinner) view.findViewById(R.id.AddLocTypeSpinner);
         pasteBtn = (Button) view.findViewById(R.id.fragmentaddlocationpasteBtn);
     }
@@ -180,6 +187,8 @@ public class AddLocation extends Fragment implements OnClickListener,
                 }
                 Long.setText(Longitude);
                 Latt.setText(Lattitude);
+                DestName.setText(Name);
+
             }
         }
 
@@ -204,7 +213,6 @@ public class AddLocation extends Fragment implements OnClickListener,
         {
             Toast.makeText(getActivity(),"Please add Destination name!",Toast.LENGTH_LONG).show();
         }
-
         else
         {
             db.open();
@@ -495,6 +503,8 @@ public class AddLocation extends Fragment implements OnClickListener,
         if(isVisibleToUser)
         {
             LocationActivity.pos=2;
+            LocationActivity.search1.setVisibility(View.GONE);
+            LocationActivity.search.setVisibility(View.GONE);
         }
     }
 }
