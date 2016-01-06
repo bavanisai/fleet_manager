@@ -1,30 +1,30 @@
 package com.example.tripmodule;
 
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.StringTokenizer;
 
 import com.example.TabView.SlidingTabLayout;
-
 import com.example.anand_roadwayss.AboutUs;
 import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 
-public class TripActivity extends ActionBarActivity {
+import java.util.StringTokenizer;
 
+public class TripActivity extends AppCompatActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a {@link FragmentPagerAdapter}
@@ -32,8 +32,6 @@ public class TripActivity extends ActionBarActivity {
      * becomes too memory intensive, it may be best to switch to a
      * {@link FragmentStatePagerAdapter}.
      */
-
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -46,11 +44,9 @@ public class TripActivity extends ActionBarActivity {
     ViewPageAdapter adapter;
     SlidingTabLayout tabs;
     static int pos;
-
-    CharSequence Titles[] = {"MANAGE TRIP","TRIP LIST"};
+    ProgressDialog pd;
+    CharSequence Titles[] = {"TRIP LIST","MANAGE TRIP"};
     int Numboftabs = 2;
-
-    // public static String gcmVehicleNo=null;
     public static boolean isRunningActivity2;
 
     @Override
@@ -58,34 +54,18 @@ public class TripActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
         isRunningActivity2 = true;
-
-        // Message From Notification
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            String Message = extras.getString("Message");
-            if (Message.contains(at)) {
-                StringTokenizer Trip = new StringTokenizer(Message, "@");
-                // String TripMessage = Trip.nextToken();
-                TripVoucherId = Trip.nextToken();
-            }
-
-            // gcmVehicleNo=Message.substring(Message.lastIndexOf("@")+1);
-        }
-        // End
-
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.setTitle("TRIP");
         setSupportActionBar(toolbar);
-
+        pd=new ProgressDialog(TripActivity.this);
         //CODE FOR TAB WITH SWIPE VIEW
         adapter = new ViewPageAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
-
         // Assiging the Sliding Tab Layout View
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
@@ -97,12 +77,23 @@ public class TripActivity extends ActionBarActivity {
                 return getResources().getColor(R.color.white);
             }
         });
-
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Message From Notification
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            String Message = extras.getString("Message");
+            if (Message.contains(at)) {
+                StringTokenizer Trip = new StringTokenizer(Message, "@");
+                TripVoucherId = Trip.nextToken();
+            }
+        }
     }
 
     public void setCurrentItem(int item, boolean smoothScroll) {
@@ -185,10 +176,12 @@ public class TripActivity extends ActionBarActivity {
             check=position;
             switch (position)
             {
-                case 0:TripManageFragment tab1 = new TripManageFragment();
-                    return tab1;
-                case 1:TripListFragment tab2 = new TripListFragment();
+                case 0:
+                    TripListFragment tab2 = new TripListFragment();
                     return tab2;
+                case 1:
+                    TripManageFragment tab1 = new TripManageFragment();
+                    return tab1;
             }
             return null;
         }
@@ -219,43 +212,5 @@ public class TripActivity extends ActionBarActivity {
                 break;
         }
     }
+
     }
-
-
-    // /**
-    // * A placeholder fragment containing a simple view.
-    // */
-    // public static class PlaceholderFragment extends Fragment {
-    // /**
-    // * The fragment argument representing the section number for this
-    // * fragment.
-    // */
-    // private static final String ARG_SECTION_NUMBER = "section_number";
-    //
-    // /**
-    // * Returns a new instance of this fragment for the given section number.
-    // */
-    // public static PlaceholderFragment newInstance(int sectionNumber) {
-    // PlaceholderFragment fragment = new PlaceholderFragment();
-    // Bundle args = new Bundle();
-    // args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-    // fragment.setArguments(args);
-    // return fragment;
-    // }
-    //
-    // public PlaceholderFragment() {
-    // }
-    //
-    // @Override
-    // public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    // Bundle savedInstanceState) {
-    // View rootView = inflater.inflate(R.layout.fragment_trip, container,
-    // false);
-    // TextView textView = (TextView) rootView
-    // .findViewById(R.id.section_label);
-    // textView.setText(Integer.toString(getArguments().getInt(
-    // ARG_SECTION_NUMBER)));
-    // return rootView;
-    // }
-    // }
-

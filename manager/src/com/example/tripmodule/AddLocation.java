@@ -85,12 +85,13 @@ public class AddLocation extends Fragment implements OnClickListener,
             DestName.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // ((AddLocation)).setCurrentItem(2, true);
-                    //getFragmentManager().beginTransaction().replace(container, new AddLocation()).commit();
+                    //click on add location n move to map
+
+                    ((LocationActivity) getActivity()).setCurrentItem(2, true);
+
                 }
             });
             db = new DBAdapter(getActivity());
-
             pasteBtn.setOnClickListener(this);
             savebtn.setOnClickListener(this);
             LocationType.add("Destination");

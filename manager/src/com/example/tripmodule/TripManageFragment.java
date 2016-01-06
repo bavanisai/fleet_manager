@@ -3,28 +3,39 @@ package com.example.tripmodule;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+
+import com.example.Interface.IDriverNotInTrip;
+import com.example.Interface.ITripManageFragment;
+import com.example.Interface.IVehicleNotInTrip;
+import com.example.anand_roadwayss.ConnectionDetector;
+import com.example.anand_roadwayss.DBAdapter;
+import com.example.anand_roadwayss.ExceptionMessage;
+import com.example.anand_roadwayss.R;
+import com.example.anand_roadwayss.SendToWebService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,73 +43,62 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.example.Interface.ITripManageFragment;
-import com.example.anand_roadwayss.ConnectionDetector;
-import com.example.anand_roadwayss.DBAdapter;
-import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
-import com.example.anand_roadwayss.R;
-import com.example.anand_roadwayss.SendToWebService;
 
 public class TripManageFragment extends Fragment implements OnClickListener,
-        ITripManageFragment{
-
-    String  formattedDate, CleanerStr, TripVoucherId = null, Voucher,TripId;
-    Button Save, AddDest, AddSource,DestinationButton;//ViewDestination;
+        ITripManageFragment,IVehicleNotInTrip,IDriverNotInTrip {
+    List val,Dval;
+    String formattedDate, CleanerStr, TripVoucherId = null, Voucher, TripId;
+    Button Save, AddSource, DestinationButton;//ViewDestination;
     Spinner VehicleSpinner, DriverSpinner, CleanerSpinner,
             SourceSpinner; //DestSpinner,
-    List<String> Destination,  CleanerList;
-    List<String> Source=new ArrayList<>();
-    List<String>  DriverList=new ArrayList<>();
-    List<String> VehicleList=new ArrayList<>();
-    ListView trip;
-    String regid = "", selDest, selSource, selDriver, selVehicle, selCeaner,
+    List<String> CleanerList;
+    List<String> Source = new ArrayList<>();
+    List<String> DriverList = new ArrayList<>();
+    List<String> VehicleList = new ArrayList<>();
+    ProgressDialog pd;
+    String selSource, selDriver, selVehicle, selCeaner,
             DriverId, CleanerId;
     //	CharSequence at = "@";
-    Context context;
     View view;
     DBAdapter db;
     final ITripManageFragment mTripManageFragment = this;
+    final IVehicleNotInTrip mVehicleNotInTrip = this;
+    final IDriverNotInTrip mDriverNotInTrip=this;
     public static boolean isRunningActivity;
-   // CheckBox isRegularCB;
-    Boolean isRegular;
-    int selPosition;
-    public static String VehicleStr, DriverStr, DestStr,SourceStr;
+    // CheckBox isRegularCB;
+    public static String VehicleStr, DriverStr, SourceStr;
 
     // @SuppressLint("SimpleDateFormat")
     @SuppressLint("SimpleDateFormat")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Bundle bundle = getArguments();
-        if (bundle != null)
-            TripVoucherId = bundle.getString("VoucherId");
         view = inflater.inflate(R.layout.fragment_trip_manage, container, false);
         isRunningActivity = true;
         db = new DBAdapter(getActivity());
-
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            TripVoucherId = bundle.getString("VoucherId");
         //Selecting Values For Spinner
         selCeaner = "Select The Cleaner";
         selDriver = "Select Driver";
         selVehicle = "Select Vehicle";
-       // selDest = "SELECT DESTINATION";
         selSource = "Select Source";
         //Calling All Views
         bindData();
-
+        bindVehicleData(TripVoucherId);
+        bindDriverData(null);
+        loadSourceSpinnerData(null);
+        loadCleanerSpinnerData(null);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         formattedDate = df.format(date);
+        return view;
+    }
 
-        loadCleanerSpinnerData(null);
-        //Pravitha commented code
-        //loadDestSpinnerData(null);
-        loadVehicleSpinnerData(TripVoucherId);
-        loadDriverSpinnerData(null);
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         SharedPreferences UserType = getActivity().getSharedPreferences(
                 "RegisterName", 0);
@@ -119,10 +119,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                     public void onItemSelected(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
                         SourceStr = SourceSpinner.getSelectedItem().toString();
-
-                        // selPosition=(int)SourceSpinner.getSelectedItemId();
-
-
                     }
 
                     @Override
@@ -136,21 +132,13 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                         .toString() + " " + "[onCreateView]", e.toString());
             }
         }
-
-            else{
-                loadSourceSpinnerData(null);
-            }
-
-
-
-
         AddSource.setOnClickListener(this);
         Save.setOnClickListener(this);
         DestinationButton.setOnClickListener(this);
-        return view;
+
     }
 
-	/*
+    /*
      * Purpose - Binds XMl Id reference to java Method Name - bindData()
 	 * Parameters - No parameters Return Type - No Return Type
 	 */
@@ -162,53 +150,18 @@ public class TripManageFragment extends Fragment implements OnClickListener,
         Save = (Button) view.findViewById(R.id.fragmentTripManageBtnSave);
         AddSource = (Button) view.findViewById(R.id.fragmentTripManageBtnAddSource);
         SourceSpinner = (Spinner) view.findViewById(R.id.fragmentTripManageSourceSpinner);
-       // DestSpinner = (Spinner) view.findViewById(R.id.DestinationSpinner);
-        DestinationButton=(Button)view.findViewById(R.id.fragmentTripManageBtnDestination);
-       // ViewDestination=(Button)view.findViewById(R.id.fragmentTripManageBtnDestinationView);
-       // isRegularCB = (CheckBox) view.findViewById(R.id.IsRegularCheckBox);
-
+        DestinationButton = (Button) view.findViewById(R.id.fragmentTripManageBtnDestination);
     }
 
-    private void attachSpinnerValues(String vehicle, String dri, String cle, String source, String dest,
-                                     boolean isTrue) {
-        if (VehicleList.contains(vehicle) && vehicle != null) {
-            int pos = VehicleList.indexOf(vehicle);
-            VehicleSpinner.setSelection(pos);
-        }
-        if (DriverList.contains(dri) && dri != null) {
-            int pos = DriverList.indexOf(dri);
-            DriverSpinner.setSelection(pos);
-        }
-
-        if (CleanerList.contains(cle) && cle != null) {
-            int pos = CleanerList.indexOf(cle);
-            CleanerSpinner.setSelection(pos);
-        }
-
-//        if (Destination.contains(dest) && dest != null) {
-//            int pos = Destination.indexOf(dest);
-//            DestSpinner.setSelection(pos);
-//        }
-
-        if (Source.contains(source) && source != null) {
-            int pos = Source.indexOf(source);
-            SourceSpinner.setSelection(pos);
-        }
-        //isRegularCB.setChecked(isTrue);
-    }
 
     @SuppressLint("SimpleDateFormat")
     private void getSetData() {
         try {
             VehicleStr = String.valueOf(VehicleSpinner.getSelectedItem());
             DriverStr = String.valueOf(DriverSpinner.getSelectedItem());
-            // DestStr = String.valueOf(DestSpinner.getSelectedItem());
             CleanerStr = String.valueOf(CleanerSpinner.getSelectedItem());
             SourceStr = String.valueOf(SourceSpinner.getSelectedItem());
-            // isRegular = isRegularCB.isChecked();
-            //    IsReg = isRegular.toString();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[getSetData]", e.toString());
         }
@@ -236,28 +189,11 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                         Toast.makeText(getActivity(),
                                 "Please Select all Values", Toast.LENGTH_LONG).show();
                     }
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                             .toString() + " " + "[fragmentTripManageBtnDestination button click]", e.toString());
                 }
                 break;
-//             case R.id.fragmentTripManageBtnDestinationView:
-//                 if (VehicleStr != selVehicle && DriverStr != selDriver && SourceStr != selSource) {
-//                     Intent intent2=new Intent(getActivity(),TripDetailsActivity.class);
-////                     intent2.putExtra("vehNo",VehicleStr);
-////                     intent2.putExtra("driv",DriverStr);
-////                     intent2.putExtra("src",SourceStr);
-////                     intent2.putExtra("clnr", CleanerStr);
-//                     intent2.putExtra("vehNo","KA001");
-//                     intent2.putExtra("driv","DARISH");
-//                     intent2.putExtra("src","MNK");
-//                     intent2.putExtra("clnr", "HARI");
-//                     startActivity(intent2);
-//                 }
-
-           //      break;
-
             case R.id.fragmentTripManageBtnSave:
                 TripData();
                 break;
@@ -285,10 +221,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
             // Checking All input values are correct or What?
             if (VehicleStr != selVehicle && DriverStr != selDriver
                     && SourceStr != selSource) {
-//             if(MultipleDestinationActivity.arrayList.size()!=0)
-//             {
-                SendToWebService send = new SendToWebService(getActivity(),
-                        mTripManageFragment);
+                SendToWebService send = new SendToWebService(getActivity(), mTripManageFragment);
 
 
                 //   a=MultipleDestinationActivity.arrayList.toString();
@@ -296,14 +229,11 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 try {
                     JSONObject subTripObject = getJsonObjectData();
                     a = subTripObject.toString();
-                } catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                             .toString() + " " + "[TripData()]", e.toString());
                     e.printStackTrace();
                 }
-
-//            if (send.isConnectingToInternet()) {
                 try {
                     send.execute("11", "saveTripDetails",
                             DriverId, VehicleStr, CleanerId, SourceStr,
@@ -316,22 +246,11 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                     ExceptionMessage.exceptionLog(getActivity(), this
                             .getClass().toString() + " " + "[TripData]", e.toString());
                 }
-//                 } else {
-//                     Toast.makeText(getActivity().getBaseContext(),
-//                             "INTERNET CONNECTION ERROR!! PLEASE CHECK NETWORK",
-//                             Toast.LENGTH_SHORT).show();
-//                 }
-//             }
-//            else{
-//                 Toast.makeText(getActivity().getBaseContext(),
-//                         "Please Add minimum 1 Destination", Toast.LENGTH_SHORT).show();
-//             }
             } else {
                 Toast.makeText(getActivity().getBaseContext(),
                         "Please Select all Values", Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[TripData]", e.toString());
         }
@@ -340,76 +259,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
 
     private void saveTripData(String parsedValue) {
         try {
-
-
-             //   bindData();
-             //   getSetData();
-//                //addToSharedPreference();
-//                db.open();
-//                ContentValues cv = new ContentValues();
-//                cv.put(DBAdapter.getKeyDate(), formattedDate);
-//                cv.put(DBAdapter.getKeyVehicleNo(), VehicleStr);
-//                cv.put(DBAdapter.getKeyDriver(), DriverStr);
-//                cv.put(DBAdapter.getKeyCleaner(), CleanerStr);
-//                cv.put(DBAdapter.getKeyDestination(), DestStr);
-//                cv.put(DBAdapter.getKeySource(), SourceStr);
-//                cv.put(DBAdapter.getKeyVoucherNo(), Voucher);
-//                cv.put(DBAdapter.getKeyIsregular(), IsReg);
-//                cv.put(DBAdapter.getKeyTripstatus(), "true");
-//                long id = db
-//                        .insertTripDetails(cv);
-//                db.close();
-//                ContentValues cv1=new ContentValues();
-//                int jj;
-//                String firstRow =MultipleDestinationActivity.arrayList.get(0).toString();
-//                String[] firstRowArr=firstRow.split(",");
-//                for(jj=0;jj<firstRowArr.length;jj++)
-//                {
-//                    cv1.put(DBAdapter.getKeyDate(), formattedDate);
-//                    cv1.put(DBAdapter.getKeyTripId(),TripId);
-//                    cv1.put(DBAdapter.getKeyVehicleNo(), VehicleStr);
-//                    cv1.put(DBAdapter.getKeyDriver(), DriverStr);
-//                    cv1.put(DBAdapter.getKeyCleaner(), CleanerStr);
-//                    cv1.put(DBAdapter.getKeyDestination(), firstRowArr[3]);
-//                    cv1.put(DBAdapter.getKeySource(), SourceStr);
-//                    cv1.put(DBAdapter.getKeyVoucherNo(), Voucher);
-//                    cv1.put(DBAdapter.getKeyIsregular(), "false");
-//                    cv1.put(DBAdapter.getKeyTripstatus(), "true");
-//                    long id=db.insertTripDetails(cv1);
-//
-//                }
-
-
-//                int i,j;
-//                ContentValues cv=new ContentValues();
-//                for ( i=0;i<MultipleDestinationActivity.arrayList.size();i++)
-//                {
-//
-//                    String s =MultipleDestinationActivity.arrayList.get(i).toString();
-//                    String[] arr=s.split(",");
-//                    for(j=0;j<arr.length;j++)
-//                    {
-//                        cv.put(DBAdapter.getKeyTripid(),arr[0]);
-//                        cv.put(DBAdapter.getKeyLastdestination(),arr[1]);
-//                        cv.put(DBAdapter.getKeyProduct(),arr[2]);
-//                        cv.put(DBAdapter.getKeyQuantity(),arr[3]);
-//                        cv.put(DBAdapter.getKeyDestname(),arr[4]);
-//                        cv.put(DBAdapter.getKeyDestdistance(),arr[5]);
-//                        cv.put(DBAdapter.getKeyRoutename(),arr[6]);
-//                        cv.put(DBAdapter.getKeyRent(),arr[7]);
-//                        cv.put(DBAdapter.getKeyType(),arr[8]);
-//                        cv.put(DBAdapter.getKeyPaymentValue(),arr[9]);
-//                    }
-//                    db.open();
-//                    long id=db.insertRows(cv,DBAdapter.gettMultidestination());
-//                    db.close();
-//                    Toast.makeText(getActivity(), "after spliting (cv) =" + cv, Toast.LENGTH_LONG).show();
-//                    Toast.makeText(getActivity(), "single row=" + s, Toast.LENGTH_LONG).show();
-                  //  if (id != -1) {
-
-                  //  }
-              //  }
-
             if (parsedValue.equals("inserted")) {
 
                 Toast.makeText(getActivity().getApplicationContext(),
@@ -420,13 +269,11 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 Toast.makeText(getActivity().getApplicationContext(),
                         "Vehicle Already in trip...",
                         Toast.LENGTH_SHORT).show();
-            }
-            else if (parsedValue.equals("driver already in trip")) {
+            } else if (parsedValue.equals("driver already in trip")) {
                 Toast.makeText(getActivity().getApplicationContext(),
                         "Driver Already in trip...",
                         Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                         .toString(), parsedValue);
                 Toast.makeText(getActivity().getApplicationContext(),
@@ -444,18 +291,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
         refreshActivity();
     }
 
-    //	private void addToSharedPreference() {
-    //		SharedPreferences LatestTrip = getActivity().getSharedPreferences("LatestTrip",
-    //getActivity().MODE_PRIVATE);
-    //		SharedPreferences.Editor edit = LatestTrip.edit();
-    //		edit.putString("Vehicle", VehicleStr);
-    //		edit.putString("Driver", DriverStr);
-    //		edit.putString("Cleaner", CleanerStr);
-    //		edit.putString("Source", SourceStr);
-    //		edit.putString("Dest", DestStr);
-    //		edit.commit();
-    //	}
-
     @SuppressLint("ShowToast")
     private void loadSourceSpinnerData(Object object) {
 
@@ -471,7 +306,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                     getActivity(), android.R.layout.simple_spinner_item, Source);
 
             // Drop down layout style - list view with radio button
-          //  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             // attaching data adapter to spinner
             SourceSpinner.setAdapter(dataAdapter);
@@ -487,10 +322,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 public void onItemSelected(AdapterView<?> arg0, View arg1,
                                            int arg2, long arg3) {
                     SourceStr = SourceSpinner.getSelectedItem().toString();
-
-                   // selPosition=(int)SourceSpinner.getSelectedItemId();
-
-
                 }
 
                 @Override
@@ -499,23 +330,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 }
             });
 
-//            if (Source.contains(object) && object != null) {
-//                int position = Source.indexOf(object);
-//                SourceSpinner.setSelection(position);
-//            }
-//            // Set the ClickListener for Spinner
-//            SourceSpinner
-//                    .setOnItemSelectedListener(new OnItemSelectedListener() {
-//
-//                        public void onItemSelected(AdapterView<?> adapterView,
-//                                                   View view, int i, long l) {
-//
-//                        }
-//
-//                        // If no option selected
-//                        public void onNothingSelected(AdapterView<?> arg0) {
-//                        }
-//                    });
         } catch (SQLiteException e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[loadSourceSpinnerData]", e.toString());
@@ -525,179 +339,102 @@ public class TripManageFragment extends Fragment implements OnClickListener,
         }
     }
 
+
     @SuppressLint("ShowToast")
-    private void loadDriverSpinnerData(Object object) {
+    private void bindDriverData(Object object) {
         try {
+             if(DriverList.size()==0) {
+                 DriverList.add(0, selDriver);
+                 // Creating adapter for spinner
+                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                         getActivity(), android.R.layout.simple_spinner_item,
+                         DriverList);
 
-                    String jsonData = null;
-                    String status = null;
-                    DriverList.add(0, selDriver);
-                     SendToWebService send = new SendToWebService(getActivity(), 1);
-                     String response=send.execute("46","GetDriversNotInTrip").get();
-                     if(response!=null){
-
-                         JSONObject obj=new JSONObject(response);
-                         jsonData=obj.getString("d");
-                         JSONArray arr=new JSONArray(jsonData);
-                         JSONObject d = arr.getJSONObject(0);
-                         status=d.getString("status");
-
-                         if(status.equals("OK")){
-
-                             JSONObject o=arr.getJSONObject(1);
-                             JSONArray driver=o.getJSONArray("drivers");
-                             for(int i=0;i<driver.length();i++){
-                                 DriverList.add(i+1,driver.get(i).toString().toUpperCase());
-                             }
-
-                         }
-
-                     }
-
-//            db.open();
-//            DriverList = db.getAllLabels(DBAdapter.getEmployeeDetails(),
-//                    "Driver");
-//            DriverList.add(0, selDriver);
-//            db.close();
-            // Creating adapter for spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
-                    DriverList);
-
-            // Drop down layout style - list view with radio button
-       //     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            // attaching data adapter to spinner
-            DriverSpinner.setAdapter(dataAdapter);
+                 // attaching data adapter to spinner
+                 DriverSpinner.setAdapter(dataAdapter);
+             }
 
             if (DriverList.contains(object) && object != null) {
                 int position = DriverList.indexOf(object);
                 DriverSpinner.setSelection(position);
             }
 
+            //on click of spinner only data should load
+            View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
 
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        try {
+                            if(Dval==null) {
 
-            DriverSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                                SendToWebService send = new SendToWebService(getActivity(), mDriverNotInTrip);
+                                send.execute("46", "GetDriversNotInTrip");
+                            }
+                        } catch (Exception e) {
+                            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[loadVehicleSpinnerData]", e.toString());
+                        }
 
-                @Override
-                public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                           int arg2, long arg3) {
-                    DriverStr = DriverSpinner.getSelectedItem().toString();
-
-
+                    }
+                    return false;
                 }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+            };
+           DriverSpinner.setOnTouchListener(spinnerOnTouch);
 
         } catch (Exception e) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
-                    DriverList);
-
-            // Drop down layout style - list view with radio button
-            dataAdapter
-                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-            // attaching data adapter to spinner
-            DriverSpinner.setAdapter(dataAdapter);
-
-            if (DriverList.contains(object) && object != null) {
-                int position = DriverList.indexOf(object);
-                DriverSpinner.setSelection(position);
-            }
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString() + " " + "[loadDriverSpinnerData]", e.toString());
+                    .toString() + " " + "[bindDriverSpinnerData]", e.toString());
         }
     }
 
+
     @SuppressLint("ShowToast")
-    private void loadVehicleSpinnerData(Object object) {
+    private void bindVehicleData(Object object)
+    {
         try {
-//            db.open();
-//            // Spinner Drop down elements
-//            VehicleList = db.getAllLabels(DBAdapter.getVehicleDetails());
+            if(VehicleList.size()==0) {
+                // Spinner Drop down elements
+                VehicleList.add(0, selVehicle);
+                // Creating adapter for spinner
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                        getActivity(), android.R.layout.simple_spinner_item,
+                        VehicleList);
+                // attaching data adapter to spinner
+                VehicleSpinner.setAdapter(dataAdapter);
+            }
 
-            String jsonData = null;
-            String status = null;
-            VehicleList.add(0, selVehicle);
+            if (VehicleList.contains(object) && object != null)
+            {
+                int position = VehicleList.indexOf(object);
+                VehicleSpinner.setSelection(position);
+            }
 
-            SendToWebService send1 = new SendToWebService(getActivity(), 1);
-            String response=send1.execute("46","GetVehiclesNotInTrip").get();
-            if(response!=null){
+            //on click of spinner only data should load
+            View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
 
-                JSONObject obj=new JSONObject(response);
-                jsonData=obj.getString("d");
-                JSONArray arr=new JSONArray(jsonData);
-                JSONObject d = arr.getJSONObject(0);
-                status=d.getString("status");
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        try {
+                            if(val==null) {
+                                SendToWebService send = new SendToWebService(getActivity(), mVehicleNotInTrip);
+                                send.execute("47", "GetVehiclesNotInTrip");
 
-                if(status.equals("OK")){
+                            }
 
-                    JSONObject o=arr.getJSONObject(1);
-                    JSONArray vehicle=o.getJSONArray("vehicles");
-                    for(int i=0;i<vehicle.length();i++){
-                        VehicleList.add(i+1,vehicle.get(i).toString().toUpperCase());
+                        } catch (Exception e) {
+
+                            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[loadVehicleSpinnerData]", e.toString());
+                 }
+
                     }
-
+                    return false;
                 }
 
-            }
-
-
-//            VehicleList.add(0, selVehicle);
-//            db.close();
-
-            // Creating adapter for spinner
-
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
-                    VehicleList);
-            // Drop down layout style - list view with radio button
-           // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // attaching data adapter to spinner
-            VehicleSpinner.setAdapter(dataAdapter);
-            // VehicleList.contains(object) && !
-            if (VehicleList.contains(object) && object != null) {
-                int position = VehicleList.indexOf(object);
-                VehicleSpinner.setSelection(position);
-            }
-
-
-
-
-            VehicleSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-                @Override
-                public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                           int arg2, long arg3) {
-                     VehicleStr = VehicleSpinner.getSelectedItem().toString();
-
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-        }  catch (Exception e) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
-                    VehicleList);
-            // Drop down layout style - list view with radio button
-       //     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // attaching data adapter to spinner
-            VehicleSpinner.setAdapter(dataAdapter);
-            // VehicleList.contains(object) && !
-            if (VehicleList.contains(object) && object != null) {
-                int position = VehicleList.indexOf(object);
-                VehicleSpinner.setSelection(position);
-            }
+            };
+            VehicleSpinner.setOnTouchListener(spinnerOnTouch);
+        } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[loadVehicleSpinnerData]", e.toString());
         }
@@ -718,7 +455,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                     getActivity(), android.R.layout.simple_spinner_item,
                     CleanerList);
             // Drop down layout style - list view with radio button
-           // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             // attaching data adapter to spinner
             CleanerSpinner.setAdapter(dataAdapter);
 
@@ -726,7 +463,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 int position = CleanerList.indexOf(object);
                 CleanerSpinner.setSelection(position);
             }
-
 
 
             CleanerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -746,7 +482,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
             });
 
 
-
         } catch (SQLiteException e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[loadCleanerSpinnerData]", e.toString());
@@ -755,40 +490,6 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                     .toString() + " " + "[loadCleanerSpinnerData]", e.toString());
         }
     }
-
-//    private void loadDestSpinnerData(Object object) {
-//        try {
-//            db.open();
-//            Destination = db.getLocationForSpinner("DESTINATION");
-//            Destination.add(0, selDest);
-//            // Destination.add(1,"Maintenance");
-//            db.close();
-//
-//            // Creating adapter for spinner
-//            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-//                    getActivity(), android.R.layout.simple_spinner_item,
-//                    Destination);
-//
-//            // Drop down layout style - list view with radio button
-//            dataAdapter
-//                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//            // attaching data adapter to spinner
-//            DestSpinner.setAdapter(dataAdapter);
-//
-//            if (Destination.contains(object) && object != null) {
-//                int position = Destination.indexOf(object);
-//                DestSpinner.setSelection(position);
-//            }
-//
-//        } catch (SQLiteException e) {
-//            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-//                    .toString(), e.toString());
-//        } catch (Exception e) {
-//            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-//                    .toString(), e.toString());
-//        }
-//    }
 
     public void refreshActivity() {
         getActivity().finish();
@@ -857,7 +558,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
                 jsonData = jsonResponse.getString("d");
                 JSONObject d = new JSONObject(jsonData);
                 status = d.getString("status");
-              //  TripId=d.getString("tripId");
+                //  TripId=d.getString("tripId");
                 return status;
 
             } catch (JSONException e) {
@@ -900,31 +601,23 @@ public class TripManageFragment extends Fragment implements OnClickListener,
     @Override
     public void onStart() {
         super.onStart();
-        //SharedPreferences LatestTrip = getActivity().getSharedPreferences("LatestTrip",
-        //getActivity().MODE_PRIVATE);
-        //Pravitha commented code
-        //loadDestSpinnerData(null);//LatestTrip.getString("Dest", null));
-    try {
-        SharedPreferences UserType = getActivity().getSharedPreferences(
-                "RegisterName", 0);
-        String UserTyp = UserType.getString("Name", "");
-
-        if (UserTyp.equals("DEMO")) {
-
-        } else {
+        try {
+            SharedPreferences UserType = getActivity().getSharedPreferences(
+                    "RegisterName", 0);
+            String UserTyp = UserType.getString("Name", "");
             loadSourceSpinnerData(SourceStr);///LatestTrip.getString("Source", null));
+
+            isRunningActivity = true;
+            if (MultipleDestinationActivity.arrayList.size() != 0) {
+                DestinationButton.setEnabled(false);
+            }
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[onStart()]", e.toString());
         }
-        isRunningActivity = true;
-        if (MultipleDestinationActivity.arrayList.size() != 0) {
-            DestinationButton.setEnabled(false);
-        }
-    }
-    catch (Exception e){
-        ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                .toString() + " " + "[onStart()]", e.toString());
-    }
 
     }
+
 
     @Override
     public void onStop() {
@@ -970,64 +663,207 @@ public class TripManageFragment extends Fragment implements OnClickListener,
         return finalobject;
     }
 
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position,
-//                               long id) {
-//        String selectedItem = parent.getItemAtPosition(position).toString();
-//        db.open();
-//        boolean check;
-//        switch (parent.getId()) {
-//            case R.id.fragmentTripManageVehicleSpinner:
-//                if (!selectedItem.equals(selVehicle)) {
-//                    check = db.checkVehicleInTrip(selectedItem, true);
-//                    if (check) {
-//                        Cursor c = db.getParticularTripDetails(selectedItem);
-//                        if (c.getCount() > 0) {
-//                            c.moveToFirst();
-//                            String Dri = c.getString(c.getColumnIndex(DBAdapter.getKeyDriver()));
-//                            String cle = c.getString(c.getColumnIndex(DBAdapter.getKeyCleaner()));
-//                            String dest = c.getString(c.getColumnIndex(DBAdapter.
-//                                    getKeyDestination()));
-//                            String source = c.getString(c.getColumnIndex(DBAdapter.
-//                                    getKeySource()));
-//                            attachSpinnerValues(selectedItem, Dri, cle, source, dest, true);
-//                        }
-//                    } else {
-//                        Toast.makeText(getActivity(), "Sorry Vehicle Is Already In Trip",
-//                                Toast.LENGTH_SHORT).show();
-//                        attachSpinnerValues(selVehicle, selDriver, selCeaner, selSource, selDest, false);
-//                    }
-//                }
-//                break;
-//            case R.id.fragmentTripManageDriverSpinner:
-//                if (!selectedItem.equals(selDriver)) {
-//                    check = db.checkVehicleInTrip(selectedItem, false);
-//                    if (!check) {
-//                        Toast.makeText(getActivity(), "Sorry Driver Is Already In Trip",
-//                                Toast.LENGTH_SHORT).show();
-//                        attachSpinnerValues(null, selDriver, selCeaner, selSource, selDest, false);
-////					loadDriverSpinnerData(null);
-//                    }
-//                }
-//                break;
-//        }
-//    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        try {
+            if (isVisibleToUser) {
+                TripActivity.pos = 2;
+            }
 
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
-@Override
-public void setUserVisibleHint(boolean isVisibleToUser) {
-    super.setUserVisibleHint(isVisibleToUser);
-    try {
-        if (isVisibleToUser) {
-            TripActivity.pos = 1;
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[setUserVisibleHint]", e.toString());
         }
     }
-    catch (Exception e){
-        ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                .toString() + " " + "[setUserVisibleHint]", e.toString());
+
+    //vehicle list which are not in trip
+    //live data from server
+    @Override
+    public void onVehicleData(String response) {
+        try {
+            if (response.equals("No Internet")) {
+                ConnectionDetector cd = new ConnectionDetector(getActivity());
+                cd.ConnectingToInternet();
+            } else if (response.contains("refused")) {
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity()).setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).setView(image);
+                builder.create().show();
+
+            } else if (response.contains("java.net.SocketTimeoutException")) {
+
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity()).setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).setView(image);
+                builder.create().show();
+
+            } else  {
+                String jsonData = null;
+                String status = null;
+                if (response != null) {
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                        jsonData = obj.getString("d");
+                        JSONArray arr = new JSONArray(jsonData);
+                        JSONObject d = arr.getJSONObject(0);
+                        status = d.getString("status");
+
+                        if (status.equals("OK")) {
+
+                            JSONObject o = arr.getJSONObject(1);
+                            JSONArray vehicle = o.getJSONArray("vehicles");
+                            for (int i = 0; i < vehicle.length(); i++) {
+                                VehicleList.add(i + 1, vehicle.get(i).toString().toUpperCase());
+                                val=VehicleList;
+                            }
+                            //binding server data to spinner
+                                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                                        getActivity(), android.R.layout.simple_spinner_item,
+                                        val);
+                                //refresh the spinner
+                                dataAdapter.notifyDataSetChanged();
+                                // attaching data adapter to spinner
+                                VehicleSpinner.setAdapter(dataAdapter);
+
+                                VehicleSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                                               int arg2, long arg3) {
+                                        VehicleStr = VehicleSpinner.getSelectedItem().toString();
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                          //  }
+
+
+                        }
+                    } catch (Exception e) {
+                        ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                .toString() + " " + "[onVehicleNotInTrip]", e.toString());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[onSaveSourceDestinationDetails]", e.toString());
+        }
     }
-}
+    //driver list which are not in trip
+    //live data from server
+    @Override
+    public void onDriverData(String response) {
+        try {
+            if (response.equals("No Internet")) {
+                ConnectionDetector cd = new ConnectionDetector(getActivity());
+                cd.ConnectingToInternet();
+            } else if (response.contains("refused")) {
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity()).setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).setView(image);
+                builder.create().show();
+
+            } else if (response.contains("java.net.SocketTimeoutException")) {
+
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        getActivity()).setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).setView(image);
+                builder.create().show();
+
+            } else {
+                String jsonData = null;
+                String status = null;
+                if (response != null) {
+                    try {
+                        JSONObject obj = new JSONObject(response);
+                            jsonData = obj.getString("d");
+                            JSONArray arr = new JSONArray(jsonData);
+                            JSONObject d = arr.getJSONObject(0);
+                            status = d.getString("status");
+
+                            if (status.equals("OK")) {
+
+                                JSONObject o = arr.getJSONObject(1);
+                                JSONArray driver = o.getJSONArray("drivers");
+                                for (int i = 0; i < driver.length(); i++) {
+                                    DriverList.add(i + 1, driver.get(i).toString().toUpperCase());
+                                    Dval=DriverList;
+                                }
+
+                            //binding server data to spinner
+                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                                    getActivity(), android.R.layout.simple_spinner_item,
+                                    Dval);
+                            //refresh the spinner
+                                dataAdapter.notifyDataSetChanged();
+                            // attaching data adapter to spinner
+                           DriverSpinner.setAdapter(dataAdapter);
+
+                                DriverSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                                               int arg2, long arg3) {
+                                        DriverStr = DriverSpinner.getSelectedItem().toString();
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+
+                        }
+                    } catch (Exception e) {
+                        ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                .toString() + " " + "[onVehicleNotInTrip]", e.toString());
+                    }
+                }
+            }
+        }catch (Exception e)
+        {
+
+        }
+    }
 }

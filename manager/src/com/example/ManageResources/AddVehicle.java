@@ -24,52 +24,50 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Interface.IGetImeiNumbers;
+import com.example.Interface.IManageResourcesVehicle;
+import com.example.anand_roadwayss.ConnectionDetector;
+import com.example.anand_roadwayss.DBAdapter;
+import com.example.anand_roadwayss.ExceptionMessage;
+import com.example.anand_roadwayss.R;
+import com.example.anand_roadwayss.SendToWebService;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
-import com.example.Interface.IManageResourcesVehicle;
-import com.example.anand_roadwayss.ConnectionDetector;
-import com.example.anand_roadwayss.DBAdapter;
-import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
-import com.example.anand_roadwayss.R;
-import com.example.anand_roadwayss.SendToWebService;
-import com.example.anand_roadwayss.Welcome;
-
-public class AddVehicle extends Fragment implements IManageResourcesVehicle,View.OnTouchListener {
-
+public class AddVehicle extends Fragment implements IManageResourcesVehicle,View.OnTouchListener
+                     ,IGetImeiNumbers {
+    IGetImeiNumbers mGetImeiNumbers=this;
+    List deviceCount;
     DBAdapter db;
-    ListView cleanerList;
     private ArrayList<String> vehicleType;
     Spinner spinnerVehicleType, spinnerVehicleImeiNo;
     EditText manVehVNoEt, manVehMileage;
     int val;
     String prevImei;
     MatrixCursor addVehicleCursor = null;
-
-
-    Boolean isInternetPresent = false;
-    ConnectionDetector cd = new ConnectionDetector(getActivity());
+    String statuschk = null;
+    int sKey = 1;
     Button manVBtnSave;
     String VehNo, sImei, sVehPhNo, vehMileage, typeOfVehicle,
             srvrStatus, srvrVehicleId, srvrIMEINumber, srvrMobileNumber, sProtocol;
     ContentValues cv = new ContentValues();
     IManageResourcesVehicle mInterfaceManageResourcesVehicle = this;
-    String authKey = "mnk", VehicleNumber = null;
-    String adress = new IpAddress().getIpAddress();
+    String VehicleNumber = null;
     List<String> lables1 = new ArrayList<>();
     ArrayAdapter<String> imeiDataAdapter;
     TextView message, ok, cancel;
+    public static MatrixCursor imeiList = null;
+    String clientName = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,52 +79,17 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
 
         manVehVNoEt = (EditText) view
                 .findViewById(R.id.EtfragmentAddVehicleVehNumber);
-//        manVehPhNoEt = (EditText) view
-//                .findViewById(R.id.EtfragmentAddVehiclePhNo);
         manVehMileage = (EditText) view
                 .findViewById(R.id.EtfragmentAddVehicleMileage);
         spinnerVehicleImeiNo = (Spinner) view
                 .findViewById(R.id.SpinnerfragmentAddVehicleVehImei);
-//        manVehImeiChk = (EditText) view
-//                .findViewById(R.id.EtfragmentAddVehicleVehConfirmImei);
         manVBtnSave = (Button) view
                 .findViewById(R.id.btnFragmentNewEntryVehicleListSave);
 
         spinnerVehicleType = (Spinner) view.findViewById(R.id.SpinnerfragmentAddVehicleVehType);
 
-        lables1.add(0, "Select Imei Number");
-
-        imeiDataAdapter = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.simple_spinner_item,
-                lables1);
-        spinnerVehicleImeiNo.setAdapter(imeiDataAdapter);
-
-     View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if(Welcome.imeiList==null) {
-
-                            Toast.makeText(getActivity(),"No new devices found",Toast.LENGTH_LONG).show();
-                    }
-                }
-                return false;
-            }
-     };
-        spinnerVehicleImeiNo.setOnTouchListener(spinnerOnTouch);
-
-        spinnerVehicleImeiNo
-                .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> adapterView,
-                                               View view, int i, long l) {
-                          loadImeiSpinnerData();
-                        sImei = lables1.get(i);
-                       val = i;
-                    }
-                    public void onNothingSelected(AdapterView<?> arg0) {
-                    }
-                });
-
-
+        //bind imei number to spinner
+        bindImeiToSpinner();
 
         manVBtnSave.setText("ADD");
         Bundle savedData = this.getArguments();
@@ -200,16 +163,8 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                     sVehPhNo = cursor.getString(cursor
                             .getColumnIndex(DBAdapter.getKeyVehPhNo()));
 
-//                    manVehImei.setText(cursor.getString(cursor
-//                            .getColumnIndex(DBAdapter.getKeyImei())));
-//                    manVehImeiChk.setText(cursor.getString(cursor
-//                            .getColumnIndex(DBAdapter.getKeyImei())));
-//                    manVehPhNoEt.setText(cursor.getString(cursor
-//                            .getColumnIndex(DBAdapter.getKeyVehPhNo())));
                     cursor.close();
                     db.close();
-
-
                 }
             } catch (SQLiteException e) {
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
@@ -220,8 +175,6 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
             }
 
         }
-
-
         vehicleType.add("Select Vehicle Type");
         vehicleType.add("Car");
         vehicleType.add("Mini Truck");
@@ -247,12 +200,9 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                     public void onItemSelected(AdapterView<?> arg0, View arg1,
                                                int arg2, long arg3) {
                         typeOfVehicle = vehicleType.get(arg2);
-
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> arg0) {
-
                     }
                 });
 
@@ -382,112 +332,7 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     public void onPause() {
         super.onPause();
         //spinner to load imei numbers
-
     }
-
-    //        manVBtnSave.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                ((MainActivity) getActivity()).refresh(0);
-//                try {
-//
-//                    VehNo = manVehVNoEt.getText().toString()
-//                            .toUpperCase(Locale.getDefault());
-//                    //sImei = manVehImei.getText().toString();
-//
-//                    sImei=spinnerVehicleImeiNo.getSelectedItem().toString();
-//                  //  sImeiChk = manVehImeiChk.getText().toString();
-//                    getCursorData();
-//                   // sVehPhNo = manVehPhNoEt.getText().toString();
-//                    vehMileage = manVehMileage.getText().toString();
-//                    typeOfVehicle=spinnerVehicleType.getSelectedItem().toString();
-//                    if (VehNo.equals("")) {
-//                        Toast.makeText(getActivity(),
-//                                "PLEASE ENTER THE VEHICLE NUMBER",
-//                                Toast.LENGTH_LONG).show();
-//                    } else if ((typeOfVehicle.equals("Select Vehicle Type"))) {
-//                        Toast.makeText(getActivity(),
-//                                "PLEASE SELECT THE VEHICLE TYPE",
-//                                Toast.LENGTH_LONG).show();
-//                    } else if ((vehMileage.equals(""))) {
-//                        Toast.makeText(getActivity(),
-//                                "PLEASE ENTER THE MILEAGE", Toast.LENGTH_LONG)
-//                                .show();
-//                    } else if ((sImei.equals("Select Imei Number"))) {
-//                        Toast.makeText(getActivity(), "PLEASE SELECT THE IMEI",
-//                                Toast.LENGTH_LONG).show();
-//                    }  else if (sVehPhNo.equals("")) {
-//                        Toast.makeText(getActivity(),
-//                                "PLEASE ENTER THE VEHICLE PHONE NUMBER",
-//                                Toast.LENGTH_LONG).show();
-//                    } else {
-//                        DBAdapter db = new DBAdapter(getActivity());
-//                        db.open();
-//                        //
-//                        cv.put(DBAdapter.getKeyVehicleNo(), VehNo);
-//                        cv.put(DBAdapter.getKeyVehType(), typeOfVehicle);
-//                        cv.put(DBAdapter.getKeyVehMileage(), vehMileage);
-//                        cv.put(DBAdapter.getKeyImei(), sImei);
-//                        cv.put(DBAdapter.getKeyVehPhNo(), sVehPhNo);
-//                        //
-//                        // // METHOD TO CHECK WHETHER VEHICLE EXIST
-//                        String storedVeh = db.checkvehTforDataExist(VehNo);
-//
-//                        // IF PRESENT UPDATE EXISTING VEHICLE
-//                        if (storedVeh.equals(VehNo)) {
-//                            alertUpdate();
-//
-//                        }
-//
-//                        // IF VEHICLE NUMBER IS NOT THERE INSERT NEW
-//                        // VEHICLE
-//                        else {
-//
-//                            try {
-//
-//                                new SendToWebService(getActivity(),
-//                                        mInterfaceManageResourcesVehicle)
-//                                        .execute("8", "ManageVehicle", VehNo,
-//                                                typeOfVehicle, vehMileage,
-//                                                sImei, sVehPhNo,sProtocol, "4");
-//
-//                            } catch (Exception e) {
-//                                Toast.makeText(getActivity(),
-//                                        "Try after sometime...",
-//                                        Toast.LENGTH_SHORT).show();
-//                                ExceptionMessage
-//                                        .exceptionLog(
-//                                                getActivity(),
-//                                                this.getClass().toString()
-//                                                        + " "
-//                                                        + "[manVBtnSave.setOnClickListener]",
-//                                                e.toString());
-//                            }
-//                            //
-//
-//                        }
-//
-//                        db.close();
-//
-//                    }
-//
-//                } catch (SQLiteException e) {
-//                    ExceptionMessage.exceptionLog(getActivity(), this
-//                            .getClass().toString()
-//                            + " "
-//                            + "[manVBtnSave.setOnClickListener]", e.toString());
-//                } catch (Exception e) {
-//                    Toast.makeText(getActivity(), "Error While Saving Data",
-//                            Toast.LENGTH_SHORT).show();
-//                    ExceptionMessage.exceptionLog(getActivity(), this
-//                            .getClass().toString()
-//                            + " "
-//                            + "[manVBtnSave.setOnClickListener]", e.toString());
-//                }
-//                //
-//            }
-//        });
 
 
     @Override
@@ -510,22 +355,9 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
         }
     }
 
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//
-//
-//        if (VehicleList.VehicleNumber1 != null) {
-//
-//                    VehicleNumber = VehicleList.VehicleNumber1;
-//                    populateVehicle(VehicleNumber);
-//        }
-//
-//    }
-
     public String jsonParsing(String response) {
         String jsonData = null;
-        if (response != null)
+        if (response != null) {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
 
@@ -550,6 +382,7 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                         .toString() + " " + "[jsonParsing]", e.toString());
             }
+        }
 
         return jsonData;
 
@@ -672,12 +505,6 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                 sVehPhNo = cursor.getString(cursor
                         .getColumnIndex(DBAdapter.getKeyVehPhNo()));
 
-//                manVehImei.setText(cursor.getString(cursor
-//                        .getColumnIndex(DBAdapter.getKeyImei())));
-//                manVehImeiChk.setText(cursor.getString(cursor
-//                        .getColumnIndex(DBAdapter.getKeyImei())));
-//                manVehPhNoEt.setText(cursor.getString(cursor
-//                        .getColumnIndex(DBAdapter.getKeyVehPhNo())));
                 cursor.close();
                 db.close();
                 manVBtnSave.setText("UPDATE");
@@ -841,19 +668,20 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     public void loadImeiSpinnerData() {
         try {
 
-            if (Welcome.imeiList == null) {
-
+            if (imeiList == null)
+            {
+             //code here
             } else {
                 try {
-                    if (Welcome.imeiList.moveToFirst()) {
-                        for (int i = 0; i < Welcome.imeiList.getCount(); i++) {
+                    if (imeiList.moveToFirst()) {
+                        for (int i = 0; i < imeiList.getCount(); i++) {
 
-                            lables1.add(i + 1, Welcome.imeiList.getString(1));
+                            lables1.add(i + 1, imeiList.getString(1));
 
-                            Welcome.imeiList.moveToNext();
+                            imeiList.moveToNext();
                         }
                     }
-                    Welcome.imeiList.close();
+                    imeiList.close();
                 } catch (Exception e) {
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                                     .toString() + " " + "[loadImeiSpinnerData]",
@@ -870,18 +698,18 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
 
     public void getCursorData() {
         try {
-            if (Welcome.imeiList.moveToFirst()) {
-                for (int i = 1; i <= Welcome.imeiList.getCount(); i++) {
+            if (imeiList.moveToFirst()) {
+                for (int i = 1; i <= imeiList.getCount(); i++) {
 
                     if (i == val) {
-                        sProtocol = Welcome.imeiList.getString(2);
-                        sVehPhNo = Welcome.imeiList.getString(3);
+                        sProtocol = imeiList.getString(2);
+                        sVehPhNo = imeiList.getString(3);
                     }
 
-                    Welcome.imeiList.moveToNext();
+                    imeiList.moveToNext();
                 }
             }
-            Welcome.imeiList.close();
+            imeiList.close();
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass().toString()
                     + " " + "[getCursorData()]", e.toString());
@@ -895,24 +723,24 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
         String[] columnNames = {"_id", "Imei", "Protocol", "PhoneNumber"};
         addVehicleCursor = new MatrixCursor(columnNames);
         try {
-            if (Welcome.imeiList.moveToFirst()) {
-                for (int i = 1; i <= Welcome.imeiList.getCount(); i++) {
-                    if (i != val) {
-                        sKey = Welcome.imeiList.getInt(0);
-                        imei = Welcome.imeiList.getString(1);
-                        protocol = Welcome.imeiList.getString(2);
-                        phone = Welcome.imeiList.getString(3);
-
-                        addVehicleCursor.addRow(new Object[]{sKey, imei, protocol, phone});
+            if (imeiList != null) {
+                if (imeiList.moveToFirst()) {
+                    for (int i = 1; i <= imeiList.getCount(); i++) {
+                        if (i != val) {
+                            sKey = imeiList.getInt(0);
+                            imei = imeiList.getString(1);
+                            protocol = imeiList.getString(2);
+                            phone = imeiList.getString(3);
+                            addVehicleCursor.addRow(new Object[]{sKey, imei, protocol, phone});
+                        }
+                        imeiList.moveToNext();
                     }
-
-                    Welcome.imeiList.moveToNext();
                 }
+                imeiList.close();
+                imeiList = null;
+                imeiList = addVehicleCursor;
+                addVehicleCursor = null;
             }
-            Welcome.imeiList.close();
-            Welcome.imeiList = null;
-            Welcome.imeiList = addVehicleCursor;
-            addVehicleCursor = null;
 
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass().toString()
@@ -921,6 +749,7 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
         }
 
     }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -931,8 +760,172 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
         }
     }
 
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         return false;
+    }
+
+    @Override
+    public void onGetImeiNums(String result) {
+        if (result.equals("No Internet")) {
+            ConnectionDetector cd = new ConnectionDetector(getActivity());
+            cd.ConnectingToInternet();
+        } else if (result.contains("refused") || result.contains("timed out")) {
+            ImageView image = new ImageView(getActivity());
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+        }else if(result.contains("data does not exist"))
+        {
+            Toast.makeText(getActivity(),"Sorry! no device exist",Toast.LENGTH_LONG).show();
+        }
+        else if (result.contains("java.net.SocketTimeoutException")) {
+
+            ImageView image = new ImageView(getActivity());
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+        } else {
+            try {
+                JSONObject jsonResponse = new JSONObject(result);
+                // getting the data with tag d
+                String jsonData = null;
+                jsonData = jsonResponse.getString("d");
+
+                // convert the string to Json array
+                JSONArray imeiArray = new JSONArray(jsonData);
+                JSONObject status1 = imeiArray.getJSONObject(0);
+                statuschk = status1.getString("status").trim();
+                // iterating the array
+                if (statuschk.equals("invalid authkey")) {
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[getClientDevices]", statuschk);
+
+                } else if (statuschk.equals("ok"))
+                {
+                    String[] columnNames = {"_id", "Imei", "Protocol", "PhoneNumber"};
+                    imeiList = new MatrixCursor(columnNames);
+
+                    JSONArray clientArray = imeiArray.getJSONArray(1);
+
+                    for (int i = 0; i < clientArray.length(); i++)
+                    {
+                        JSONObject Performance = clientArray
+                                .getJSONObject(i);
+                        String imei = Performance.getString("imei");
+                        String protocol = Performance.getString("protocol");
+                        String phone = Performance.getString("phone");
+                        imeiList.addRow(new Object[]{sKey, imei, protocol, phone});
+//                        deviceCount=imeiList;
+                        sKey++;
+                    }
+                    if(imeiList!=null)
+                    {
+                        if (imeiList.moveToFirst()) {
+                            for (int i = 0; i < imeiList.getCount(); i++) {
+
+                                lables1.add(i + 1, imeiList.getString(1));
+
+                                imeiList.moveToNext();
+                            }
+                            deviceCount=lables1;
+
+                            imeiDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
+                                    deviceCount);
+                            imeiDataAdapter.notifyDataSetChanged();
+                            spinnerVehicleImeiNo.setAdapter(imeiDataAdapter);
+                        }
+                    }
+
+                }
+            } catch (Exception e)
+            {
+
+            }
+        }
+    }
+
+    public void bindImeiToSpinner()
+    {
+        DBAdapter db = new DBAdapter(getActivity());
+        try {
+            db.open();
+            Cursor profileDataCursor = db.retrieveProfileData();
+            if (profileDataCursor.getCount() == 1) {
+                profileDataCursor.moveToFirst();
+                clientName = profileDataCursor.getString(profileDataCursor
+                        .getColumnIndex(DBAdapter.getKeyClientname()));
+
+                clientName = profileDataCursor.getString(profileDataCursor
+                        .getColumnIndex(db.getKeyClientname()));
+
+                profileDataCursor.close();
+            }
+            db.close();
+
+        } catch (Exception e) {
+            ExceptionMessage.exceptionLog(getActivity(), this
+                    .getClass().toString()
+                    + " "
+                    + "New Entries GetClientName", e.toString());
+        }
+        //@first seen it should contain "Select Imei Number"
+         if(lables1.size()==0) {
+             lables1.add(0, "Select Imei Number");
+
+             imeiDataAdapter = new ArrayAdapter<String>(
+                     getActivity(), android.R.layout.simple_spinner_item,
+                     lables1);
+             spinnerVehicleImeiNo.setAdapter(imeiDataAdapter);
+         }
+        //on touch of spinner spinner should load data
+        View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                    //first time it should fetch data from server
+                   if (deviceCount==null) {
+                        SendToWebService send = new SendToWebService(getActivity(), mGetImeiNumbers);
+                        send.execute("50", "GetClientsDevices", clientName);
+                    }
+
+                }
+                return false;
+            }
+        };
+        spinnerVehicleImeiNo.setOnTouchListener(spinnerOnTouch);
+
+        spinnerVehicleImeiNo.setOnItemSelectedListener(new OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView,
+                                       View view, int i, long l)
+            {
+                System.out.println(lables1);
+           //     loadImeiSpinnerData();
+                sImei = lables1.get(i);
+                val = i;
+            }
+            public void onNothingSelected(AdapterView<?> arg0)
+            {
+            }
+        });
     }
 }

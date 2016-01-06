@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.RemoteLogger;
 import com.example.anand_roadwayss.Welcome;
 
-public class ReminderEditActivity extends ActionBarActivity {
+public class ReminderEditActivity extends AppCompatActivity {
 
     //
     // Dialog Constants
@@ -88,12 +89,6 @@ public class ReminderEditActivity extends ActionBarActivity {
                     startActivity(intent);
                 }
             });
-//            final android.app.ActionBar actionBar = getActionBar();
-//            actionBar.setTitle("REMINDER");
-//            actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
-
-            // String[] countries = { "apple", "orange", "banana" };
 
             db = new DBAdapter(getApplicationContext());
             db.open();
@@ -448,14 +443,14 @@ public class ReminderEditActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        try {
-            outState.putLong(RemindersDbAdapter.KEY_ROWID, mRowId);
-        }
-        catch(Exception e)
-        {
-            ExceptionMessage.exceptionLog(this, this.getClass()
-                    .toString() + " " + "[onSaveInstanceState()]", e.toString());
+       // super.onSaveInstanceState(outState);
+        if(mRowId!=null) {
+            try {
+                outState.putLong(RemindersDbAdapter.KEY_ROWID, mRowId);
+            } catch (Exception e) {
+                ExceptionMessage.exceptionLog(this, this.getClass()
+                        .toString() + " " + "[onSaveInstanceState()]", e.toString());
+            }
         }
     }
 

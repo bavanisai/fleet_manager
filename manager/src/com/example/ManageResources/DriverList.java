@@ -86,14 +86,12 @@ public class DriverList extends Fragment {
                     }
                 });
 
-                driverList
-                        .setOnItemLongClickListener(new OnItemLongClickListener() {
+                driverList.setOnItemLongClickListener(new OnItemLongClickListener() {
                             @Override
                             public boolean onItemLongClick(AdapterView<?> parent,
                                                            View view, int position, long id) {
                                 // VEHICLE NUMBER TO DLETE FROM SERVER DATABASE
-                           tDeletDriver = (TextView) view
-                                        .findViewById(R.id.vehNumbersListViewTrackVehicle);
+                           tDeletDriver = (TextView) view.findViewById(R.id.vehNumbersListViewTrackVehicle);
                                 db.open();
                                 String deleteEmpId = db.checkDrvierTableforDataExist(tDeletDriver
                                         .getText().toString());

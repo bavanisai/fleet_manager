@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import com.example.anand_roadwayss.R;
 
 import org.json.JSONObject;
 
-public class InboxCommonDetails extends ActionBarActivity {
+public class InboxCommonDetails extends AppCompatActivity {
     TextView inboxCommonDetailsTvSubject, inboxCommonDetailsTvDate, inboxCommonDetailsTvName,
             inboxCommonDetailsTvMessage;
     String Id;

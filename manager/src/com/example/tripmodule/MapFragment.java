@@ -1,6 +1,7 @@
 package com.example.tripmodule;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -79,12 +80,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
     public static Dialog d;
     public static Context con;
     String info_Text, info_detail_text;
+    ProgressDialog pd;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
        geocoder = new Geocoder(getActivity(),Locale.getDefault());
+        pd=new ProgressDialog(getActivity());
         d = new Dialog(getActivity());
         con=getActivity();
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -259,8 +262,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
         }
         catch (Exception e)
         {
-            ExceptionMessage.exceptionLog(getActivity(), this
-                    .getClass().toString() + " " + "[getLocation()]", e.toString());
+//            ExceptionMessage.exceptionLog(getActivity(), this
+//                    .getClass().toString() + " " + "[getLocation()]", e.toString());
             e.printStackTrace();
         }
         return res;
@@ -384,8 +387,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
                     latlng = Double.toString(lng) + ":" + Double.toString(lat);
                 } else {
                     latlng = "No";
-                    // Toast.makeText(getActivity(),
-                    // "Data not available", 0).show();
                 }
             } catch (JSONException e) {
 
@@ -431,7 +432,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
     }
 
     // Fetches all places from GooglePlaces AutoComplete Web Service
-    private class PlacesTask extends AsyncTask<String, Void, String> {
+    private class PlacesTask extends AsyncTask<String, Void, String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setMessage("please wait");
+            pd.show();
+        }
 
         @Override
         protected String doInBackground(String... place) {
@@ -485,6 +493,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
 
             // Starting Parsing the JSON string returned by Web Service
             parserTask.execute(result);
+            if(pd!=null)
+                pd.dismiss();
         }
     }
 
@@ -539,6 +549,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
         JSONObject jObject;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setMessage("Please wait");
+            pd.show();
+        }
+
+        @Override
         protected List<HashMap<String, String>> doInBackground(
                 String... jsonData) {
 
@@ -571,6 +588,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
 
             // Setting the adapter
             atvPlaces.setAdapter(adapter);
+            if(pd!=null)
+                pd.dismiss();
         }
     }
 

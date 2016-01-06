@@ -1,9 +1,5 @@
 package com.example.tripmodule;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,37 +15,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Interface.IGetTripList;
 import com.example.Interface.ITripListFragment;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TripListFragment extends Fragment implements ITripListFragment, IGetTripList {
     DBAdapter db;
     View view;
-    // public static long tripId=0;
     public static boolean isRunningActivity1;
     final ITripListFragment mTripListFragment = this;
     final IGetTripList mGetTripList = this;
-    String adress = new IpAddress().getIpAddress();
-    TextView tripListfragmentTvGetTripList;
+    Button tripListfragmentTvGetTripList;
     MatrixCursor tripCursor;
     private int sKey = 0;
     LinearLayout fragmentTripLayout;
     ListView trip;
-    LinearLayout noDataLayout;
     public int rowid;
     SimpleCursorAdapter tripAdapter;
     String vehicle;
@@ -60,20 +57,15 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
 
         view = inflater.inflate(R.layout.fragment_trip_list, container, false);
         isRunningActivity1 = true;
-        //noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
-        //titlelayout=(LinearLayout)view.findViewById(R.id.fragment_trip_list_img);
         bindData();
-        db=new DBAdapter(getActivity());
-       db.open();
         tripListfragmentTvGetTripList.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 try {
+                    System.out.println("clicked");
                     SendToWebService send = new SendToWebService(getActivity(), mGetTripList);
                     send.execute("43", "GetActiveTrips");
-                }
-
-                catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getActivity(),
                             "Try after sometime...",
                             Toast.LENGTH_SHORT).show();
@@ -83,31 +75,24 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
                                     this.getClass().toString()
                                             + " "
                                             + "[tripListfragmentTvGetTripList.setOnClickListener]",
-                                    e.toString());
-                }
-
+                                    e.toString());}
             }
         });
-
         return view;
     }
 
     public void bindData() {
 
-        trip = (ListView) view
-                .findViewById(R.id.fragmentTripEntryListLV);
-
+        trip = (ListView) view.findViewById(R.id.fragmentTripEntryListLV);
         fragmentTripLayout = (LinearLayout) view.findViewById(R.id.fragment_trip_list_img);
-        tripListfragmentTvGetTripList = (TextView) view.findViewById(R.id.fragmentTripListTVGetTripList);
+        tripListfragmentTvGetTripList = (Button) view.findViewById(R.id.fragmentTripListTVGetTripList);
     }
-
 
     public void deleteTrip(final int pos, String Sflag) {
 
         try {
             String Voucher = null;
-            SendToWebService send = new SendToWebService(getActivity(),
-                    mTripListFragment);
+            SendToWebService send = new SendToWebService(getActivity(), mTripListFragment);
             rowid = pos;
 
             if (tripCursor.moveToFirst()) {
@@ -135,11 +120,6 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
                                         .getClass().toString() + " " + "[deleteTrip]",
                                 e.toString());
                     }
-//                } else {
-//                    Toast.makeText(getActivity().getBaseContext(),
-//                            "INTERNET CONNECTION ERROR!! PLEASE CHECK NETWORK",
-//                            Toast.LENGTH_SHORT).show();
-//                }
             }
 
             db.close();
@@ -327,9 +307,8 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
                     layoutParams1.topMargin = 20;
                     textView.setLayoutParams(layoutParams1);
                     fragmentTripLayout.addView(textView);
-                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                                    .toString() + " " + "[getTripListjsonParsing]",
-                            statuschk);
+//                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+//                                    .toString() + " " + "[getTripListjsonParsing]", statuschk);
                 } else if(statuschk.equals("OK")) {
                     fragmentTripLayout.removeAllViews();
                     fragmentTripLayout.setVisibility(View.GONE);
@@ -612,7 +591,7 @@ catch (Exception e){
             super.setUserVisibleHint(isVisibleToUser);
         try {
             if (isVisibleToUser) {
-                TripActivity.pos = 2;
+                TripActivity.pos = 1;
             }
         }
         catch (Exception e){
@@ -620,4 +599,5 @@ catch (Exception e){
                     .toString() + " " + "[setUserVisibleHint]", e.toString());
         }
     }
+
 }

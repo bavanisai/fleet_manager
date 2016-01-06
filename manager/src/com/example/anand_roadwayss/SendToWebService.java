@@ -76,6 +76,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     private IGetTripStatus mGetTripStatus;
     private IGetTripList mGetTripList;
     private IFuelGraph mFuelGraph;
+    private IGetImeiNumbers mGetImeiNumbers;
+    private IVehicleNotInTrip mVehicleNotInTrip;
+    private IDriverNotInTrip mDriverNotInTrip;
     ProgressDialog dialog;
 
     public SendToWebService(Context context, int a) {
@@ -315,6 +318,28 @@ public class SendToWebService extends AsyncTask<String, String, String> {
         this.mFuelGraph = mFuelGraph;
     }
 
+    public  SendToWebService(Context context,IVehicleNotInTrip mVehicleNotInTrip)
+    {
+        _context = context;
+        dialog = new ProgressDialog(_context);
+        this.mVehicleNotInTrip = mVehicleNotInTrip;
+    }
+
+    public  SendToWebService(Context context,IDriverNotInTrip mDriverNotInTrip)
+    {
+        _context = context;
+        dialog = new ProgressDialog(_context);
+        this.mDriverNotInTrip = mDriverNotInTrip;
+    }
+
+    public SendToWebService(Context context,IGetImeiNumbers mGetImeiNumbers)
+    {
+        _context=context;
+        dialog=new ProgressDialog(_context);
+        this.mGetImeiNumbers=mGetImeiNumbers;
+    }
+
+
     public boolean isConnectingToInternet() {
         ConnectivityManager connectivity = (ConnectivityManager) _context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -477,19 +502,31 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                 case 35:
                     mExpenseList.onGetExpenseList(response);
                     break;
+
                 case 36:
                     mGetTripList.onGetTripList(response);
                     break;
+
                 case 37:
                     mGetParticularTripData.onGetParticularTripData(response);
                     break;
+
                 case 38:mGetTripStatus.onGetTripStatus(response);
                     break;
+
                 case 39:mLiveTrack.onTrackLive(response);
                     break;
 
                 case 40:mFuelGraph.onFuelGraph(response);
                     break;
+
+                case 46:mVehicleNotInTrip.onVehicleData(response);
+                    break;
+
+                case 47:mDriverNotInTrip.onDriverData(response);
+                    break;
+
+                case 48:mGetImeiNumbers.onGetImeiNums(response);
                 default:
                     break;
             }
@@ -991,29 +1028,15 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     break;
 
                 case 46:
-
-                    if (isDemoApp && methodN.equals("GetDriversNotInTrip")) {
-                        responseData = offlineWebService
-                                .fetchOfflineDataByMethodName(methodNo);
-                    }
-                   else if (isDemoApp && methodN.equals("GetVehiclesNotInTrip")) {
-                        responseData = offlineWebService
-                                .fetchOfflineDataByMethodName(47);
-                    }
-
-                    else {
-                        GetDriversNotInTrip();
-                    }
+                    interfaceToBeExecuted=47;
+                    GetDriversNotInTrip();
                     break;
 
                 case 47:
+                    interfaceToBeExecuted=46;
+                    GetVehiclesNotInTrip();
+                    break;
 
-                    if (isDemoApp) {
-                        responseData = offlineWebService
-                                .fetchOfflineDataByMethodName(methodNo);
-                    } else {
-                        GetVehiclesNotInTrip();
-                    }
 
                 case 48:
                     interfaceToBeExecuted=11;
@@ -1038,6 +1061,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     break;
 
                 case 50:
+                    interfaceToBeExecuted=48;
                     if(isDemoApp){
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
@@ -1092,46 +1116,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     responseData = "No Internet";
                 }
             }
-
-            else{
-
-            }
-
-//            else if(netPrerequisites & isDemoApp ) {
-//                if (isConnectingToInternet()) {
-//                    if(methodToBeCalled=="33") {
-//                        try {
-//
-//                            StringEntity entity = new StringEntity(data.toString(),
-//                                    HTTP.UTF_8);
-//                            httpPost.setEntity(entity);
-//
-//                            // publishProgress("Progress Update : Connecting to server..");
-//
-//                            // Creating the http call.
-//                            HttpResponse response = httpClient.execute(httpPost);
-//                            // publishProgress("Progress Update : Connected to server!");
-//
-//                            // Getting data from the response to see if it was a
-//                            // success.
-//                            BufferedReader reader = new BufferedReader(
-//                                    new InputStreamReader(response.getEntity()
-//                                            .getContent(), "UTF-8"));
-//                            String jsonResultStr = reader.readLine();
-//                            data = new JSONObject(jsonResultStr);
-//
-//                            if (data.toString() == "") {
-//                                responseData = "";
-//                            } else {
-//                                responseData = data.toString();
-//                            }
-//                        } catch (Exception e) {
-//                            responseData = e.toString();
-//
-//                        }
-//                    }
-//                }
-//            }
 
 
         } catch (Exception e) {
@@ -1956,7 +1940,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
     //Method 45
     public void GetDriversNotInTrip() {
-
+interfaceToBeExecuted=47;
         try {
             data.put("authKey", authKey);
         } catch (JSONException e) {
@@ -1969,7 +1953,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
     //Method 46
     public void GetVehiclesNotInTrip() {
-
+        interfaceToBeExecuted=46;
         try {
             data.put("authKey", authKey);
         } catch (JSONException e) {
@@ -2013,7 +1997,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
 
     //Method 48
-    public void GetClientsDevices(String clientName) {
+    public void GetClientsDevices(String clientName)
+    {
+        interfaceToBeExecuted=48;
 
         try {
             data.put("regAuthKey", "regmnk");

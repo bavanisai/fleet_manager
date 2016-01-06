@@ -74,8 +74,6 @@ public class InboxList extends AppCompatActivity {
         cancle=(TextView)findViewById(R.id.cancle);
         lenearCheck=(LinearLayout)findViewById(R.id.lenearCheck);
         checkAll = (CheckBox)findViewById(R.id.checkall);
-
-
     }
 
     @Override
@@ -527,7 +525,6 @@ public class InboxList extends AppCompatActivity {
                 {
                     if(checkAll.isChecked()==true)
                     {
-
                         final AlertDialog.Builder builder = new AlertDialog.Builder(InboxList.this);
                         LayoutInflater inflater = LayoutInflater.from(InboxList.this);
                         View dialogView = inflater.inflate(R.layout.dialog_two_btn, null);

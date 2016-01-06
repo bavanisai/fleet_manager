@@ -139,7 +139,6 @@ public class FuelActivity extends ActionBarActivity {
             super(fm);
 
             this.Titles = mTitles;
-            System.out.println(mTitles[0]+" "+mTitles[1]);
             this.NumbOfTabs = mNumbOfTabsumb;
 
         }
@@ -151,10 +150,8 @@ public class FuelActivity extends ActionBarActivity {
             switch (position)
             {
                 case 0:FuelEntryFragment tab1 = new FuelEntryFragment();
-                    System.out.println("0");
                     return tab1;
                 case 1:FuelEntryListFragment tab2 = new FuelEntryListFragment();
-                    System.out.println("1");
                     return tab2;
             }
                 return null;

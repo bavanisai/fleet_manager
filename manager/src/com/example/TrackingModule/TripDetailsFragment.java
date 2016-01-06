@@ -90,12 +90,15 @@ public class TripDetailsFragment extends Fragment implements IAck {
         viewMap.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                if(TripMapFragment.disable.equals("data does not exist"))
-                    viewMap.setEnabled(false);
-                else {
-                    viewMap.setEnabled(true);
-                    ((TrackActivity) getActivity()).setCurrentItem(2, true);
+            public void onClick(View v)
+            {
+                if(TripMapFragment.disable!=null) {
+                    if (TripMapFragment.disable.equals("data does not exist"))
+                        viewMap.setEnabled(false);
+                    if(TripMapFragment.disable.equals("OK")) {
+                        viewMap.setEnabled(true);
+                        ((TrackActivity) getActivity()).setCurrentItem(2, true);
+                    }
                 }
 
             }

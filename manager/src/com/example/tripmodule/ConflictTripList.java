@@ -21,6 +21,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
@@ -31,7 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ConflictTripList extends ActionBarActivity implements
+public class ConflictTripList extends AppCompatActivity implements
         IConflictTrips {
 
     MatrixCursor ConflictTrips;

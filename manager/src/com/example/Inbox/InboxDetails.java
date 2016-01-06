@@ -8,6 +8,7 @@ import com.example.anand_roadwayss.R;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
-public class InboxDetails extends ActionBarActivity {
+public class InboxDetails extends AppCompatActivity {
 
     TextView inboxDetailsTvSubject, inboxDetailsTvDate, inboxDetailsTvName,
             inboxDetailsTvMessage, inboxDetailsTvVehicleNo,

@@ -11,9 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -71,7 +68,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         selDriver = "Select Driver";
         selVehicle = "Select Vehicle";
         bindData();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd ", Locale.getDefault());
         String formattedDate = df.format(c.getTime());
         ChooseDate.setText(formattedDate);
         Date1 = formattedDate;
@@ -80,10 +77,11 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         loadVehicleSpinnerData();
         ChooseDate.setOnClickListener(this);
         save.setOnClickListener(this);
+
         return view;
     }
 
-	/*
+    /*
      * Purpose - Binds XMl Id reference to java Method Name - bindData()
 	 * Parameters - No parameters Return Type - No Return Type
 	 */
@@ -155,7 +153,11 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                 Toast.makeText(getActivity(),
                         "Please Enter the Correct Fuel level",
                         Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
+                int t=c.get(Calendar.HOUR_OF_DAY);
+                int t1=c.get(Calendar.MINUTE);
+
                 if (f == 0 || f == 0.0) {
                     try {
                         send.execute("16", "SaveFuelDetails", VehicleStr,
@@ -454,6 +456,16 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         if(isVisibleToUser)
         {
             FuelActivity.pos=1;
+          if(FuelEntryListFragment.speedoVal!=null)
+            {
+
+                ChooseDate.setText(FuelEntryListFragment.date);
+                SpeedM.setText(FuelEntryListFragment.speedoVal);
+                FuelV.setText(FuelEntryListFragment.fuelVolume);
+                VehicleS.setSelection(0);
+                DriverS.setSelection(0);
+
+            }
         }
 
     }

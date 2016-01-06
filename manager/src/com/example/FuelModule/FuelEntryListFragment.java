@@ -35,8 +35,6 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
-import java.util.ArrayList;
-
 public class FuelEntryListFragment extends Fragment implements
         IFuelEntryFragment {
     String id;
@@ -44,7 +42,7 @@ public class FuelEntryListFragment extends Fragment implements
     final IFuelEntryFragment mFuelEntryFragment = this;
     ListView listPersonalAdvance;
     TextView ok, cancel, message;
-    String veh;
+    static String veh,date,driver,speedoVal,fuelVolume;
     String adress = new IpAddress().getIpAddress();
     long idMax;
     Cursor csr1;
@@ -69,7 +67,6 @@ public class FuelEntryListFragment extends Fragment implements
             db.open();
             csr1 = db.getMaxId();
             int s = csr1.getCount();
-            System.out.print(s);
             if (csr1 != null)
                 idMax = csr1.getLong(0);
             csr1.close();
@@ -135,10 +132,9 @@ public class FuelEntryListFragment extends Fragment implements
                             to, 0);
 
 
-                    listPersonalAdvance.addHeaderView(new View(getActivity()));
-                    listPersonalAdvance.addFooterView(new View(getActivity()));
+//                    listPersonalAdvance.addHeaderView(new View(getActivity()));
+//                    listPersonalAdvance.addFooterView(new View(getActivity()));
                     listPersonalAdvance.setAdapter(caPersonal);
-
                     db.close();
 
 
@@ -147,13 +143,10 @@ public class FuelEntryListFragment extends Fragment implements
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent,
                                                        View view, int position, long id) {
-                            if (id == idMax) {
-                                alertLongPressed(id);
-                            } else {
-                                Toast.makeText(getActivity(), "You can delete only latest fuel entry", Toast.LENGTH_SHORT).show();
+                            if (id == idMax)
+                            {
+                               //alertLongPressed(id);
                             }
-
-                            System.out.println("position= " + position + " id= " + id);
                             return false;
                         }
                     });
@@ -200,6 +193,11 @@ public class FuelEntryListFragment extends Fragment implements
         if (cnt > 0) {
             FuelDetails.moveToFirst();
             veh = FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMvehicle()));
+            date= FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMdate()));
+            driver=FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyMdriver()));
+            speedoVal=FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeySpeedometer()));
+            fuelVolume=FuelDetails.getString(FuelDetails.getColumnIndex(DBAdapter.getKeyFuel()));
+
         }
         db.close();
 
@@ -211,17 +209,18 @@ public class FuelEntryListFragment extends Fragment implements
         message = (TextView) dialogView.findViewById(R.id.textmsg);
         ok = (TextView) dialogView.findViewById(R.id.textOkBtn);
         cancel = (TextView) dialogView.findViewById(R.id.textCancelBtn);
-        message.setText("Delete fuel entry details of " + veh + " ?");
+        message.setText("Edit fuel entry details of " + veh + " ?");
         //for hiding title layout
         View v1 = inflater.inflate(R.layout.title_dialog_layout, null);
         alertDialog1.setCustomTitle(v1);
 
-        ok.setText("DELETE");
+        ok.setText("EDIT");
         cancel.setText("CANCEL");
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DeleteFuelDetails(id1);
+               // DeleteFuelDetails(id1);
+                ((FuelActivity) getActivity()).setCurrentItem(0, true);
                 alertDialog1.dismiss();
             }
         });

@@ -78,9 +78,7 @@ public class GcmServiceIntent extends IntentService {
                     SendToWebService send = new SendToWebService(this, 1);
                     try {
 
-                        String res = send.execute("12",
-                                "SaveGcmRegId", regId)
-                                .get();
+                        String res = send.execute("12", "SaveGcmRegId", regId).get();
                         OneJSONValue one = new OneJSONValue();
                         String jsonData = one.jsonParsing1(res);
 
@@ -96,10 +94,7 @@ public class GcmServiceIntent extends IntentService {
                         ExceptionMessage.exceptionLog(this, this.getClass().toString(), e.toString());
                     }
 
-                } else {
-
                 }
-
             }
         }
 
@@ -279,9 +274,7 @@ public class GcmServiceIntent extends IntentService {
             message=a.toString();
 			
             } catch (Exception e) {
-
                 String excep = e.toString();
-
             }
 
             DBAdapter db = new DBAdapter(getApplicationContext());
@@ -395,15 +388,8 @@ public class GcmServiceIntent extends IntentService {
             Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                     Destination, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            // String text = "Calls will be blocked while driving";
-
-            notification
-                    .setLatestEventInfo(context, tickerText, messag, contentIntent);
-
-//            notification.flags |= Notification.FLAG_ONGOING_EVENT;
+            notification.setLatestEventInfo(context, tickerText, messag, contentIntent);
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//            notification.flags |= Notification.FLAG_SHOW_LIGHTS;
             notification.defaults |= Notification.DEFAULT_SOUND;
             mNotificationManager.notify(notificationId, notification);
             notificationId++;

@@ -564,7 +564,7 @@ public class DBAdapter {
 
         return db.query(T_FUEL_DETAILS, new String[]{KEY_ROWID, KEY_MDATE,
                         KEY_MVEHICLE, KEY_MDRIVER, KEY_SPEEDOMETER, KEY_FUEL}, null,
-                null, null, null, KEY_MDATE + " DESC", "50");
+                null, null, null, KEY_ROWID+ " DESC", "50");
     }
 
     //38.Getting all Data From Table
@@ -916,12 +916,12 @@ public class DBAdapter {
 
     //70. Getting Fuel By _id
     public Cursor getOneFuelDetails(String id) {
-        return db.query(T_FUEL_DETAILS, new String[]{KEY_FUELROWID},
+        return db.query(T_FUEL_DETAILS, null,
                 "_id=?", new String[]{id}, null, null, null);
     }
 
     public Cursor getOneVehicleFuelDetails(String id) {
-        return db.query(T_FUEL_DETAILS, new String[]{KEY_MVEHICLE},
+        return db.query(T_FUEL_DETAILS, null,
                 "_id=?", new String[]{id}, null, null, null);
     }
 
@@ -1370,5 +1370,7 @@ public class DBAdapter {
         y.moveToFirst();
         return y;
     }
+
+
 
 }

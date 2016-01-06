@@ -64,14 +64,13 @@ import java.util.concurrent.ExecutionException;
  */
 public class Welcome extends AppCompatActivity implements OnClickListener {
 
-    String selectedModule;
+
     Toolbar toolbar;
     DBAdapter db;
     SharedPreferences sp;
     ImageView img;
     TextView txt;
-    String clientName;
-    public static MatrixCursor imeiList=null;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,40 +317,12 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 }
                 break;
             case R.id.welcomeIVNewEntries:
-                try {
-                    db.open();
-                    Cursor profileDataCursor = db.retrieveProfileData();
-                    if (profileDataCursor.getCount() == 1) {
-                        profileDataCursor.moveToFirst();
-                        clientName = profileDataCursor.getString(profileDataCursor
-                                .getColumnIndex(DBAdapter.getKeyClientname()));
-
-                        profileDataCursor.close();
-                    }
-                    db.close();
-
-                } catch (Exception e) {
-                    ExceptionMessage.exceptionLog(this, this
-                            .getClass().toString()
-                            + " "
-                            + "New Entries GetClientName", e.toString());
-                }
-            try {
-                getClientDevices();
-
-            }
-            catch (Exception e){
-                ExceptionMessage.exceptionLog(this, this
-                        .getClass().toString()
-                        + " "
-                        + "New Entries GetClientDevices", e.toString());
-            }
-
                 try{
                 SharedPreferences login5 = getSharedPreferences("updateApp",
                         MODE_PRIVATE);
                 String upStatus5=login5.getString("update","nil");
-                if(!upStatus5.equals("nil")) {
+                if(!upStatus5.equals("nil"))
+                {
                     Intent intentNewEntriesSync = new Intent(getApplicationContext(),
                             BackUpService.class);
                     intentNewEntriesSync.putExtra("act", "ManageResources");
@@ -392,8 +363,6 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                         BackUpService.class);
                 intentFuelSync.putExtra("act", "FuelModule");
                 startService(intentFuelSync);
-//                Intent fuelIntent = new Intent(Welcome.this, FuelActivity.class);
-//                startActivity(fuelIntent);
                 fuelAlertDialog();
                 break;
 
@@ -457,11 +426,9 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 
     private void trackAlertDialog(){
         final Dialog dialog = new Dialog(this);
-        //   dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dilog_track_layout);
-        //    dialog.setTitle("SELECT OPTIONS");
         LinearLayout track=(LinearLayout)dialog.findViewById(R.id.dialogTrackLinLayoutTrack);
         LinearLayout report=(LinearLayout)dialog.findViewById(R.id.dialogTrackLinLayoutReport);
         track.setOnClickListener(new OnClickListener() {
@@ -487,14 +454,9 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     //Fuel Alert Dialog
     private void fuelAlertDialog(){
         final Dialog dialog = new Dialog(this);
-        //   dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        Drawable d = new ColorDrawable(Color.BLACK);
-//        d.setAlpha(130);
-//        dialog.getWindow().setBackgroundDrawable(d);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_payment);
-        //    dialog.setTitle("SELECT OPTIONS");
         LinearLayout entry=(LinearLayout)dialog.findViewById(R.id.dialogPaymentEntry);
         LinearLayout report=(LinearLayout)dialog.findViewById(R.id.dialogPaymentReport);
         entry.setOnClickListener(new OnClickListener() {
@@ -515,57 +477,6 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
             }
         });
         dialog.show();
-    }
-
-    private void alertDialog() {
-        final CharSequence[] items = {"Trips", "Conflict Trips"};
-        selectedModule = (String) items[0];
-        // String
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("SELECT OPTIONS").setSingleChoiceItems(items, 0,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface,
-                                        int item) {
-                        // Toast.makeText(getApplicationContext(), items[item],
-                        // Toast.LENGTH_SHORT).show();
-                        selectedModule = items[item].toString();
-                    }
-                });
-        builder.setNeutralButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(getApplicationContext(),
-                        // "You clicked on Cancel", Toast.LENGTH_SHORT)
-                        // .show();
-                    }
-                });
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (selectedModule != null) {
-                    switch (selectedModule) {
-                        case "Trips":
-                            Intent currentTripIntent = new Intent(Welcome.this,
-                                    TripActivity.class);
-                            startActivity(currentTripIntent);
-
-                            break;
-
-                        case "Conflict Trips":
-
-                            Intent conflictTripIntent = new Intent(Welcome.this,
-                                    ConflictTripList.class);
-                            startActivity(conflictTripIntent);
-
-                            break;
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Please select the module", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-        builder.create().show();
     }
 
 
@@ -593,6 +504,7 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     }
 
     @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
@@ -678,72 +590,6 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 
     }
 
-    public void getClientDevices(){
-        try {
-            SendToWebService send = new SendToWebService(this, 1);
-            String res = null;
-            String statuschk = null;
-            int sKey = 1;
-
-            res = send.execute("50", "GetClientsDevices", clientName).get();
-
-            if (res != null) {
-                try {
-                JSONObject jsonResponse = new JSONObject(res);
-                // getting the data with tag d
-                String jsonData = null;
-                    jsonData = jsonResponse.getString("d");
-
-                // convert the string to Json array
-                JSONArray imeiArray = new JSONArray(jsonData);
-                JSONObject status1 = imeiArray.getJSONObject(0);
-                statuschk = status1.getString("status").trim();
-                // iterating the array
-                if (statuschk.equals("invalid authkey")) {
-                    ExceptionMessage.exceptionLog(this, this.getClass()
-                                    .toString() + " " + "[getClientDevices]",
-                            statuschk);
-
-                } else if (statuschk.equals("data does not exist")) {
-                    ExceptionMessage.exceptionLog(this, this.getClass()
-                                    .toString() + " " + "[getClientDevices]",
-                            statuschk);
-                } else if (statuschk.equals("ok")) {
-
-                    String[] columnNames = {"_id", "Imei", "Protocol","PhoneNumber"};
-                    imeiList = new MatrixCursor(columnNames);
-
-                    JSONArray clientArray=imeiArray.getJSONArray(1);
-
-                    for (int i = 0; i < clientArray.length(); i++) {
-                        JSONObject Performance = clientArray
-                                .getJSONObject(i);
-                        String imei = Performance.getString("imei");
-                        String protocol=Performance.getString("protocol");
-                        String phone=Performance.getString("phone");
-                        imeiList.addRow(new Object[]{sKey,imei,protocol,phone});
-                        sKey++;
-
-                    }
-                    imeiList.close();
-                }
-
-                } catch (JSONException e) {
-                    ExceptionMessage.exceptionLog(this, this
-                            .getClass().toString()
-                            + " "
-                            + "New Entries GetClientDevices", e.toString());
-                }
-            }
-        }
-
-        catch (Exception e){
-            ExceptionMessage.exceptionLog(this, this
-                    .getClass().toString()
-                    + " "
-                    + "New Entries GetClientDevices", e.toString());
-        }
-    }
 
     @Override
     public void onBackPressed() {

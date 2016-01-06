@@ -6,8 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class OneJSONValue {
-    String adress = new IpAddress().getIpAddress();
-
     public String jsonParsing1(String response) {
         String jsonData = null;
         String status = null;

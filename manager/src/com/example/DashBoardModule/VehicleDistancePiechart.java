@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -80,7 +81,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class VehicleDistancePiechart extends ActionBarActivity implements
+public class VehicleDistancePiechart extends AppCompatActivity implements
         OnClickListener, IVehicleDistancePieChart {
 
     String mdateType, mfrom_date, mto_date, currentTime, jdriver, jdistance;
@@ -556,8 +557,8 @@ public class VehicleDistancePiechart extends ActionBarActivity implements
                     ExceptionMessage.exceptionLog(this, this.getClass()
                             .toString(), statuschk);
                 } else if (statuschk.equals("data does not exist")) {
-                    ExceptionMessage.exceptionLog(this, this.getClass()
-                            .toString(), statuschk);
+//                    ExceptionMessage.exceptionLog(this, this.getClass()
+//                            .toString(), statuschk);
                 } else if (statuschk.equals("OK")) {
                     String[] columnNames = {"_id", "Name", "Distance"};
                     vehicleDistanceCursor = new MatrixCursor(columnNames);

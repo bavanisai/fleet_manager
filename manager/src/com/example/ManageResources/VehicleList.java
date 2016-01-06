@@ -25,16 +25,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.concurrent.ExecutionException;
+import com.example.anand_roadwayss.DBAdapter;
+import com.example.anand_roadwayss.ExceptionMessage;
+import com.example.anand_roadwayss.R;
+import com.example.anand_roadwayss.SendToWebService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.anand_roadwayss.DBAdapter;
-import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.IpAddress;
-import com.example.anand_roadwayss.R;
-import com.example.anand_roadwayss.SendToWebService;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author MKSoft01
@@ -45,8 +44,6 @@ public class VehicleList extends Fragment {
     ListView driverList;
     static String VehicleNumber1;
     String srvrStatus, srvrVehicleId, srvrIMEINumber;
-    String authKey = "mnk";
-    String adress = new IpAddress().getIpAddress();
     LinearLayout noDataLayout;
     TextView ok,message,cancel;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,11 +52,17 @@ public class VehicleList extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_entry_vehiclelist,
                 container, false);
         driverList = (ListView) view.findViewById(R.id.LVNewEntryVehicleList);
+        noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         try {
             db = new DBAdapter(getActivity());
             db.open();
-            noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
             Cursor vehicleCursor = db.getAllVehicleData(DBAdapter
                     .getVehicleDetails());
             int count=vehicleCursor.getCount();
@@ -131,8 +134,6 @@ public class VehicleList extends Fragment {
             ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                     .toString() + " " + "[onCreateView]", e.toString());
         }
-        return view;
-
     }
 
     @Override
@@ -144,15 +145,6 @@ public class VehicleList extends Fragment {
 
         }
     }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser)
-//        {
-//            VehicleNumber1 = null;
-//        }
-//    }
 
     public void alertLongPressed(final String deleteVeh) {
 
@@ -288,20 +280,20 @@ public class VehicleList extends Fragment {
 
     public String jsonParsing(String response) {
         String jsonData = null;
-        if (response != null)
+        if (response != null) {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
 
                 jsonData = jsonResponse.getString("d");
                 JSONObject d = new JSONObject(jsonData);
-				if (d.getString("status").trim() != null) {
+                if (d.getString("status").trim() != null) {
                     srvrStatus = d.getString("status").trim();
                 }
-				 if (d.getString("vehicleId").trim() != null) {
+                if (d.getString("vehicleId").trim() != null) {
                     srvrVehicleId = d.getString("vehicleId").trim();
                 }
-				
-				 if (d.getString("imeiNumber").trim() != null) {
+
+                if (d.getString("imeiNumber").trim() != null) {
                     srvrIMEINumber = d.getString("imeiNumber").trim();
                 }
                 return jsonData;
@@ -310,10 +302,9 @@ public class VehicleList extends Fragment {
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                         .toString() + " " + "[jsonParsing]", e.toString());
             }
-
+        }
         return srvrStatus;
-
-    }
+        }
 
     public void refreshActivity() {
 
@@ -321,6 +312,7 @@ public class VehicleList extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

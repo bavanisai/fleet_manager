@@ -445,24 +445,16 @@ public class DriverDistancePiechart extends ActionBarActivity implements
                 JSONArray distance=new JSONArray(jsondata);
                 JSONObject jsonResponse1 = distance.getJSONObject(0);
                 statuschk = jsonResponse1.getString("status").trim();
-//                JSONObject jsonResponse = new JSONObject(response);
-//                // getting the data with tag d
-//                String jsonData = jsonResponse.getString("d");
 
-                // convert the string to Json array
-               // JSONArray distance = new JSONArray(jsonData);
-//                JSONObject d = new JSONObject(jsonData);
-//                statuschk = d.getString("status").trim();
-                // iterating the array
                 if (statuschk.equals("invalid authKey")) {
                     ExceptionMessage.exceptionLog(this, this.getClass()
                                     .toString() + " " + "[driverDistanceParser]",
                             statuschk);
 
                 } else if (statuschk.equals("data does not exist")) {
-                    ExceptionMessage.exceptionLog(this, this.getClass()
-                                    .toString() + " " + "[driverDistanceParser]",
-                            statuschk);
+//                    ExceptionMessage.exceptionLog(this, this.getClass()
+//                                    .toString() + " " + "[driverDistanceParser]",
+//                            statuschk);
                 }  else if (statuschk.equals("OK")) {
                     String[] columnNames = {"_id", "Name", "Distance"};
                     driverDistanceCursor = new MatrixCursor(columnNames);

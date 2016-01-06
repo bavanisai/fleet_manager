@@ -1,5 +1,6 @@
 package com.example.tripmodule;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -77,11 +78,8 @@ public class LocationActivity extends ActionBarActivity {
     ViewPager pager;
     ViewPageAdapter adapter;
     SlidingTabLayout tabs;
-    SearchView sv;
-    MenuItem item;
     ImageView img,sea,sea1;
     TextView txtLocation;
-    EditText edtLocatin;
     PlacesTask placesTask;
     ParserTask parserTask;
     AutoCompleteTextView atvPlaces;
@@ -91,6 +89,7 @@ public class LocationActivity extends ActionBarActivity {
     static TextView loca;
     CharSequence Titles[] = {"LOCATION LIST", "ADD LOCATION","MAP"};
     int Numboftabs = 3;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +100,7 @@ public class LocationActivity extends ActionBarActivity {
 //        toolbar.setNavigationIcon(R.drawable.back_arrow);
 //        toolbar.setTitle("LOCATION");
  //       setSupportActionBar(toolbar);
+        pd=new ProgressDialog(this);
         txtLocation=(TextView)findViewById(R.id.txtLocation);
         atvPlaces=(AutoCompleteTextView)findViewById(R.id.atv_places);
         sea=(ImageView)findViewById(R.id.imgVSearch);
@@ -224,8 +224,6 @@ public class LocationActivity extends ActionBarActivity {
         tabs.setViewPager(pager);
 
     }
-
-
     public void setCurrentItem(int item, boolean smoothScroll) {
        pager.setCurrentItem(item, smoothScroll);
     }
@@ -319,7 +317,16 @@ public class LocationActivity extends ActionBarActivity {
     }
 
     // Fetches all places from GooglePlaces AutoComplete Web Service
-    private class PlacesTask extends AsyncTask<String, Void, String> {
+    private class PlacesTask extends AsyncTask<String, Void, String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            pd.setMessage("Please wait");
+//            pd.show();
+
+        }
 
         @Override
         protected String doInBackground(String... place) {
@@ -362,6 +369,7 @@ public class LocationActivity extends ActionBarActivity {
                         .toString(), e.toString());
             }
             return data;
+
         }
 
         @Override
@@ -373,6 +381,8 @@ public class LocationActivity extends ActionBarActivity {
 
             // Starting Parsing the JSON string returned by Web Service
             parserTask.execute(result);
+            if(pd!=null)
+                pd.dismiss();
         }
     }
 
@@ -428,6 +438,13 @@ public class LocationActivity extends ActionBarActivity {
         JSONObject jObject;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd.setMessage("Please wait");
+            pd.show();
+        }
+
+        @Override
         protected List<HashMap<String, String>> doInBackground(
                 String... jsonData) {
 
@@ -460,6 +477,8 @@ public class LocationActivity extends ActionBarActivity {
 
             // Setting the adapter
             atvPlaces.setAdapter(adapter);
+            if(pd!=null)
+                pd.dismiss();
         }
     }
 

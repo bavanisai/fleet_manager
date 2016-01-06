@@ -782,7 +782,10 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                         alert.setTitle("Vehicle not in Trip");
                         alert.show();
                     }
-                    else if ((!o.getString("status").equals("invalid authkey")) && (!o.getString("status").equals("data does not exist"))){
+                    else
+                    {
+                        disable="OK";
+                       boolean a= ((!o.getString("status").equals("invalid authkey")) && (!o.getString("status").equals("data does not exist")));
                         for (int i = 1; i < tripData.length(); i++) {
                             JSONObject c = tripData.getJSONObject(i);
 
