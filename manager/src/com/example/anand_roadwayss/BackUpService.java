@@ -889,6 +889,7 @@ public class BackUpService extends IntentService {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteArray = stream.toByteArray();
+
             return byteArray;
         } catch (Exception e)
         {

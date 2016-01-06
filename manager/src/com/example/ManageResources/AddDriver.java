@@ -375,6 +375,7 @@ public class AddDriver extends Fragment implements IManageResources {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byteArray = stream.toByteArray();
+
         } catch (Exception e) {
             Toast.makeText(getActivity(), "Error while Uploading Photo",
                     Toast.LENGTH_SHORT).show();
