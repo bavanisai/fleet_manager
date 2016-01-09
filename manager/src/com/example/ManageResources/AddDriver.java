@@ -484,11 +484,10 @@ public class AddDriver extends Fragment implements IManageResources {
                         .getColumnIndex(DBAdapter.getKeyLicNo())));
                 byte[] bitmapData = cursor.getBlob(cursor
                         .getColumnIndex(DBAdapter.getKeyPhoto()));
+                if (bitmapData != null) {
                 ByteArrayInputStream imageStream = new ByteArrayInputStream(
                         bitmapData);
                 Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-
-                if (theImage != null) {
                     iVempPhoto.setImageBitmap(theImage);
                 }
                 cursor.close();

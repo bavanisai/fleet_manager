@@ -57,6 +57,7 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
 
         view = inflater.inflate(R.layout.fragment_trip_list, container, false);
         isRunningActivity1 = true;
+        db=new DBAdapter(getActivity());
         bindData();
         tripListfragmentTvGetTripList.setOnClickListener(new View.OnClickListener() {
             @Override

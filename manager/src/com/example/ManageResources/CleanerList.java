@@ -183,8 +183,7 @@ public class CleanerList extends Fragment {
                 SendToWebService send = new SendToWebService(getActivity());
                 try {
                     db.open();
-                    String responseDelete = send.execute("3",
-                            "DeleteEmployee", EmpId).get();
+                    String responseDelete = send.execute("3", "DeleteEmployee", EmpId).get();
                     if (responseDelete.contains("refused") || responseDelete.contains("timed out")) {
                         ImageView image = new ImageView(getActivity());
                         image.setImageResource(R.drawable.lowconnection3);
@@ -204,6 +203,7 @@ public class CleanerList extends Fragment {
 
                         ImageView image = new ImageView(getActivity());
                         image.setImageResource(R.drawable.lowconnection3);
+
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(
                                 getActivity()).setPositiveButton("OK",

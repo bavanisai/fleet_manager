@@ -38,6 +38,9 @@ public class BackUpService extends IntentService {
     int count = 0;
     String activit = null;
     byte[] byteArray, receipt;
+    byte[] encodeByte;
+    Bitmap bitmap;
+    ByteArrayOutputStream stream;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -653,7 +656,8 @@ public class BackUpService extends IntentService {
                     String Receipt = c.getString("bill_image");
 //                    if (!Receipt.equals("")) {
 //                        receipt = StringToBitMap(Receipt);
-//                    } else {
+//                    }
+//                    else {
 //                        Resources res = getResources();
 //                        Drawable drawable = res.getDrawable(R.drawable.no_image);
 //                        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -884,12 +888,13 @@ public class BackUpService extends IntentService {
 
     public byte[] StringToBitMap(String encodedString) {
         try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byteArray = stream.toByteArray();
-
+            encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            stream = new ByteArrayOutputStream();
+            if(bitmap!=null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byteArray = stream.toByteArray();
+            }
             return byteArray;
         } catch (Exception e)
         {

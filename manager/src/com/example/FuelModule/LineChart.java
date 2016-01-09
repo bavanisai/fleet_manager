@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -41,7 +42,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class LineChart extends ActionBarActivity implements IFuelGraph {
+public class LineChart extends AppCompatActivity implements IFuelGraph {
 
     final IFuelGraph mFuelGraph = this;
     String fromDate, toDate, vehicleNo;
@@ -84,11 +85,11 @@ public class LineChart extends ActionBarActivity implements IFuelGraph {
         fromDate = intent.getStringExtra("fromDate");
         toDate = intent.getStringExtra("toDate");
         vehicleNo = intent.getStringExtra("vehicleNo");
-        FuelGraph(vehicleNo, fromDate, toDate);
+        FuelGraph(fromDate, toDate, vehicleNo);
 
     }
 
-    public void FuelGraph(String vehicleNum, String fromdate, String todate) {
+    public void FuelGraph( String fromdate, String todate, String vehicleNum) {
         SendToWebService send = new SendToWebService(this, mFuelGraph);
         try {
             send.execute("49", "GetFuelData", fromdate, todate, vehicleNum);

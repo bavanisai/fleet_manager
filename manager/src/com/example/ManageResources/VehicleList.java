@@ -208,7 +208,7 @@ public class VehicleList extends Fragment {
 
                         String DeletejsonParsed = jsonParsing(responseDelete);
 
-                        switch (DeletejsonParsed) {
+                        switch (srvrStatus) {
 
                             case "deleted":
                                 db.deleteVehicle(DBAdapter.getVehicleDetails(), deleteVeh);
@@ -293,9 +293,9 @@ public class VehicleList extends Fragment {
                     srvrVehicleId = d.getString("vehicleId").trim();
                 }
 
-                if (d.getString("imeiNumber").trim() != null) {
-                    srvrIMEINumber = d.getString("imeiNumber").trim();
-                }
+//                if (d.getString("imeiNumber").trim() != null) {
+//                    srvrIMEINumber = d.getString("imeiNumber").trim();
+//                }
                 return jsonData;
 
             } catch (JSONException e) {

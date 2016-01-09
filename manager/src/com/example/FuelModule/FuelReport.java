@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
@@ -67,7 +68,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class FuelReport extends ActionBarActivity implements IFuelReport {
+public class FuelReport extends AppCompatActivity implements IFuelReport {
     private TextView fromDatetxt;
     private TextView toDatetxt;
     TextView message,ok;

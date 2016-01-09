@@ -369,13 +369,13 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                 if (d.getString("vehicleNumber").trim() != null) {
                     srvrVehicleId = d.getString("vehicleNumber").trim();
                 }
-                if (d.getString("imeiNumber").trim() != null) {
-                    srvrIMEINumber = d.getString("IMEINumber").trim();
-                }
-
-                if (d.getString("mobileNumber").trim() != null) {
-                    srvrMobileNumber = d.getString("MobileNumber").trim();
-                }
+//                if (d.getString("imeiNumber").trim() != null) {
+//                    srvrIMEINumber = d.getString("IMEINumber").trim();
+//                }
+//
+//                if (d.getString("mobileNumber").trim() != null) {
+//                    srvrMobileNumber = d.getString("MobileNumber").trim();
+//                }
                 return jsonData;
 
             } catch (JSONException e) {

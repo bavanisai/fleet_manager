@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.content.Context;
@@ -38,7 +39,7 @@ import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.Welcome;
 
-public class MainActivity extends ActionBarActivity implements
+public class MainActivity extends AppCompatActivity implements
         ActionBar.OnNavigationListener {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

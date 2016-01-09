@@ -67,11 +67,11 @@ public class Login extends Activity {
             db.close();
 
 
+//for time being am commenting
 
-
-            Intent in = new Intent(this, UpdateAppService.class);
-            in.putExtra("client", clientName);
-            startService(in);
+//            Intent in = new Intent(this, UpdateAppService.class);
+//            in.putExtra("client", clientName);
+//            startService(in);
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(this, this
                     .getClass().toString()
