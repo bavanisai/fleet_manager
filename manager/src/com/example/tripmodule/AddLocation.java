@@ -140,8 +140,6 @@ public class AddLocation extends Fragment implements OnClickListener,
         lon = Long.getText().toString();
         lat = Latt.getText().toString();
         dname = DestName.getText().toString();
-
-
     }
 
     @Override
@@ -177,10 +175,9 @@ public class AddLocation extends Fragment implements OnClickListener,
                         LocType.setSelection(0);
                 }
 
-                if (Name != null && Distance != null && Amount1 != null) {
+                if (Name != null && Distance != null && Amount1 != null)
+                {
                     DestName.setText(Name);
-
-
                 } else if (Name == null) {
                     DestName.setText("");
 

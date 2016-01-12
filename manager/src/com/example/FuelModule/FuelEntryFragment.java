@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,19 +46,18 @@ import org.xmlpull.v1.sax2.Driver;
 public class FuelEntryFragment extends Fragment implements OnClickListener,
         IFuelEntryFragment
 {
-    Button save;
+    Button save,update;
     TextView ChooseDate;
     Calendar c = Calendar.getInstance();
-    String UzrDate, selDriver, selVehicle, Date1, VehicleStr, DriverStr,
-            SpeedStr, FuelStr, Date2;
+    String UzrDate, selDriver, selVehicle, Date1, VehicleStr, DriverStr, SpeedStr, FuelStr, Date2;
     Spinner VehicleS, DriverS;
     List<String> VehicleList, DriverList;
     EditText SpeedM, FuelV;
     DBAdapter db;
+    TextView ok, cancel, message;
     View view;
-
+    ArrayAdapter<String> vehicleDataAdapter,driverDataAdapter;
     final IFuelEntryFragment mFuelEntryFragment = this;
-    String adress = new IpAddress().getIpAddress();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,81 +115,82 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                 MyDatePickerDialog();
                 break;
             case R.id.fragmentFuelEntryBtnSave:
-                fuelDetails();
+               alertDialog();
+
                 break;
+
 
         }
 
     }
 
     // SAVE BUTTON FUNCTION
-    private void fuelDetails() {
+    private void fuelDetails()
+    {
         try {
-            Double f = 0.0;
-            getSetData();
-            db.open();
-            String empId = db.checkDrvierTableforDataExist(DriverStr);
-            db.close();
-            SendToWebService send = new SendToWebService(getActivity(),
-                    mFuelEntryFragment);
+                Double f = 0.0;
+                getSetData();
+                db.open();
+                String empId = db.checkDrvierTableforDataExist(DriverStr);
+                db.close();
+                SendToWebService send = new SendToWebService(getActivity(),
+                        mFuelEntryFragment);
 
-            if (!FuelStr.equals("")) {
-                f = Double.valueOf(FuelStr);
-            }
+                if (!FuelStr.equals("")) {
+                    f = Double.valueOf(FuelStr);
+                }
 
-            if (VehicleStr == selVehicle) {
-                Toast.makeText(getActivity(), "Please Select Vehicle",
-                        Toast.LENGTH_SHORT).show();
-            } else if (DriverStr == selDriver) {
-                Toast.makeText(getActivity(), "Please Select Driver",
-                        Toast.LENGTH_SHORT).show();
-            } else if (SpeedStr == "") {
-                Toast.makeText(getActivity(), "Please enter Speedometer Value",
-                        Toast.LENGTH_SHORT).show();
-            } else if (FuelStr.equals("")) {
-                Toast.makeText(getActivity(), "Please Enter the Fuel Volume",
-                        Toast.LENGTH_SHORT).show();
-            } else if (f < 0) {
-                Toast.makeText(getActivity(),
-                        "Please Enter the Correct Fuel level",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                int t=c.get(Calendar.HOUR_OF_DAY);
-                int t1=c.get(Calendar.MINUTE);
-
-                if (f == 0 || f == 0.0) {
-                    try {
-                        send.execute("16", "SaveFuelDetails", VehicleStr,
-                                empId, SpeedStr, "0.001", Date2);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Try after sometime...",
-                                Toast.LENGTH_SHORT).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                        .getClass().toString() + " " + "[fuelDetails]",
-                                e.toString());
-                    }
+                if (VehicleStr == selVehicle) {
+                    Toast.makeText(getActivity(), "Please Select Vehicle",
+                            Toast.LENGTH_SHORT).show();
+                } else if (DriverStr == selDriver) {
+                    Toast.makeText(getActivity(), "Please Select Driver",
+                            Toast.LENGTH_SHORT).show();
+                } else if (SpeedStr == "") {
+                    Toast.makeText(getActivity(), "Please enter Speedometer Value",
+                            Toast.LENGTH_SHORT).show();
+                } else if (FuelStr.equals("")) {
+                    Toast.makeText(getActivity(), "Please Enter the Fuel Volume",
+                            Toast.LENGTH_SHORT).show();
+                } else if (f < 0) {
+                    Toast.makeText(getActivity(),
+                            "Please Enter the Correct Fuel level",
+                            Toast.LENGTH_SHORT).show();
                 } else {
-                    try {
-                        send.execute("16", "SaveFuelDetails", VehicleStr,
-                                empId, SpeedStr, FuelStr, Date2);
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "Try after sometime...",
-                                Toast.LENGTH_SHORT).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                        .getClass().toString() + " " + "[fuelDetails]",
-                                e.toString());
+                    int t = c.get(Calendar.HOUR_OF_DAY);
+                    int t1 = c.get(Calendar.MINUTE);
+
+                    if (f == 0 || f == 0.0) {
+                        try {
+                            send.execute("16", "SaveFuelDetails", VehicleStr,
+                                    empId, SpeedStr, "0.001", Date2);
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), "Try after sometime...",
+                                    Toast.LENGTH_SHORT).show();
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                            .getClass().toString() + " " + "[fuelDetails]",
+                                    e.toString());
+                        }
+                    } else {
+                        try {
+                            send.execute("16", "SaveFuelDetails", VehicleStr,
+                                    empId, SpeedStr, FuelStr, Date2);
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), "Try after sometime...",
+                                    Toast.LENGTH_SHORT).show();
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                            .getClass().toString() + " " + "[fuelDetails]",
+                                    e.toString());
+                        }
                     }
                 }
 
+            } catch (Exception e) {
+                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                        .toString() + " " + "[fuelDetails]", e.toString());
             }
-
-        } catch (Exception e) {
-            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                    .toString() + " " + "[fuelDetails]", e.toString());
         }
 
-    }
 
     // END
 
@@ -288,7 +289,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
             // DriverList.add(1, "RAM");
             db.close();
             // Creating adapter for spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+            driverDataAdapter = new ArrayAdapter<String>(
                     getActivity(), android.R.layout.simple_spinner_item,
                     DriverList);
 
@@ -296,7 +297,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         //   dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             // attaching data adapter to spinner
-            DriverS.setAdapter(dataAdapter);
+            DriverS.setAdapter(driverDataAdapter);
 
             // Set the ClickListener for Spinner
             DriverS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -335,14 +336,14 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
             // VehicleList.add(1, "TN0001");
             db.close();
             // Creating adapter for spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+          vehicleDataAdapter = new ArrayAdapter<String>(
                     getActivity(), android.R.layout.simple_spinner_item,
                     VehicleList);
             // Drop down layout style - list view with radio button
             // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             // attaching data adapter to spinner
-            VehicleS.setAdapter(dataAdapter);
+            VehicleS.setAdapter(vehicleDataAdapter);
             // Set the ClickListener for Spinner
             VehicleS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapterView,
@@ -449,24 +450,81 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
         }
     }
 
+    public void alertDialog()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View dialogView = inflater.inflate(R.layout.dialog_two_btn, null);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog1 = builder.create();
+
+        message = (TextView) dialogView.findViewById(R.id.textmsg);
+        ok = (TextView) dialogView.findViewById(R.id.textOkBtn);
+        cancel = (TextView) dialogView.findViewById(R.id.textCancelBtn);
+        message.setText("Are you sure you want to save this details?\n" +
+                "\nNOTE : Can not be changed later");
+        //for hiding title layout
+        View v1 = inflater.inflate(R.layout.title_dialog_layout, null);
+        alertDialog1.setCustomTitle(v1);
+
+        ok.setText("OK");
+        cancel.setText("CANCEL");
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // DeleteFuelDetails(id1);
+                fuelDetails();
+                alertDialog1.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog1.dismiss();
+            }
+        });
+        Resources resources = alertDialog1.getContext().getResources();
+        int color = resources.getColor(R.color.white);
+        alertDialog1.show();
+
+        //changing default color of divider
+        int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
+        View titleDivider = alertDialog1.getWindow().getDecorView().findViewById(titleDividerId);
+        titleDivider.setBackgroundColor(color);
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser)
-        {
-            FuelActivity.pos=1;
-          if(FuelEntryListFragment.speedoVal!=null)
-            {
+        if(isVisibleToUser) {
+            FuelActivity.pos = 1;
 
-                ChooseDate.setText(FuelEntryListFragment.date);
-                SpeedM.setText(FuelEntryListFragment.speedoVal);
-                FuelV.setText(FuelEntryListFragment.fuelVolume);
-                VehicleS.setSelection(0);
-                DriverS.setSelection(0);
-
-            }
+//            if (FuelEntryListFragment.speedoVal != null
+//                 && FuelEntryListFragment.date !=null
+//                    && FuelEntryListFragment.fuelVolume != null)
+//            {
+//                if(ChooseDate != null && SpeedM != null && FuelV !=null) {
+//                    ChooseDate.setText(FuelEntryListFragment.date);
+//                    Date2 = ChooseDate.getText().toString();
+//                    SpeedM.setText(FuelEntryListFragment.speedoVal);
+//                    SpeedStr = SpeedM.getText().toString();
+//                    FuelV.setText(FuelEntryListFragment.fuelVolume);
+//                    FuelStr = FuelV.getText().toString();
+//                    int v = vehicleDataAdapter.getPosition(FuelEntryListFragment.veh);
+//                    VehicleS.setSelection(v);
+//                    VehicleStr = VehicleS.getSelectedItem().toString();
+//
+//                    int d = driverDataAdapter.getPosition(FuelEntryListFragment.driver);
+//                    DriverS.setSelection(d);
+//                    DriverStr = DriverS.getSelectedItem().toString();
+//                    update.setVisibility(View.VISIBLE);
+//                    save.setVisibility(View.GONE);
+//                    // fuelDetails();
+//                }
+//            }
         }
+
 
     }
 

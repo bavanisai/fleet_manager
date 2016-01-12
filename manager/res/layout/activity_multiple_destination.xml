@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -258,21 +257,6 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/activityMultipleDestinationBtnSave"
-                android:layout_width="wrap_content"
-                android:layout_height="40sp"
-                android:layout_marginBottom="3sp"
-                android:layout_marginLeft="5sp"
-                android:layout_marginRight="2sp"
-                android:layout_marginTop="2sp"
-                android:layout_weight="1"
-                android:text="DONE"
-                style="@style/customButtonStyle"
-
-                 />
-
-
-            <Button
                 android:id="@+id/activityMultipleDestinationBtnAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="40sp"
@@ -283,7 +267,22 @@
                 android:layout_weight="1"
                 android:text="ADD"
                 style="@style/customButtonStyle"
-              />
+                />
+
+
+            <Button
+                android:id="@+id/activityMultipleDestinationBack"
+                android:layout_width="wrap_content"
+                android:layout_height="40sp"
+                android:layout_marginBottom="3sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="2sp"
+                android:layout_marginTop="2sp"
+                android:layout_weight="1"
+                android:text="BACK"
+                style="@style/customButtonStyle"
+
+                 />
 
         </LinearLayout>
 

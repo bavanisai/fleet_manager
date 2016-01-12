@@ -43,7 +43,7 @@ public class FuelEntryListFragment extends Fragment implements
     ListView listPersonalAdvance;
     TextView ok, cancel, message;
     static String veh,date,driver,speedoVal,fuelVolume;
-    String adress = new IpAddress().getIpAddress();
+    static long edit_id;
     long idMax;
     Cursor csr1;
 
@@ -69,6 +69,7 @@ public class FuelEntryListFragment extends Fragment implements
             int s = csr1.getCount();
             if (csr1 != null)
                 idMax = csr1.getLong(0);
+            edit_id=idMax;
             csr1.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,12 +132,8 @@ public class FuelEntryListFragment extends Fragment implements
                             getActivity(), R.layout.fuelentrylistview, Personalaccounts, from,
                             to, 0);
 
-
-//                    listPersonalAdvance.addHeaderView(new View(getActivity()));
-//                    listPersonalAdvance.addFooterView(new View(getActivity()));
                     listPersonalAdvance.setAdapter(caPersonal);
                     db.close();
-
 
                     listPersonalAdvance.setLongClickable(true);
                     listPersonalAdvance.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -145,7 +142,7 @@ public class FuelEntryListFragment extends Fragment implements
                                                        View view, int position, long id) {
                             if (id == idMax)
                             {
-                               //alertLongPressed(id);
+                               alertLongPressed(id);
                             }
                             return false;
                         }

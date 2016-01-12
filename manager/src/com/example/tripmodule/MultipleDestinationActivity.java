@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.FuelModule.FuelActivity;
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.R;
@@ -34,7 +35,7 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
             multipleDestinationEdtProduct, multipleDestinationEdtRouteName, multipleDestinationEdtRent, multipleDestinationEdtPercentOrPayPerKM;
     TextView multipleDestinationTvVehNo, multipleDestinationTvLastDest;
     Spinner multipleDestinationSpinnerDestination, multipleDestinationSpinnerPaymentType;
-    Button multipleDestinationBtnSave, multipleDestinationBtnView, multipleDestinationBtnAdd;
+    Button multipleDestinationBtnBack,  multipleDestinationBtnAdd;
     String mTypeOfPayment, mProduct, mQuantity, mDistance, mRouteName, mRent, mPercentOrPayPerKM, mDestination, mPayType, mVehNo,
             mLastDestination,mTripOrder,mSubVoucher;
     DBAdapter db;
@@ -72,7 +73,7 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
         String[] pay={"Select Payment Mode","Commission","KM Travelled"};
         selDest = "Select Destination";
 
-        multipleDestinationBtnSave.setOnClickListener(this);
+        multipleDestinationBtnBack.setOnClickListener(this);
         multipleDestinationBtnAdd.setOnClickListener(this);
 
         SharedPreferences UserType = getSharedPreferences(
@@ -185,7 +186,7 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
             multipleDestinationEdtPercentOrPayPerKM = (EditText) findViewById(R.id.activityMultipleDestinationEdtPercentageOrPerKM);
             multipleDestinationSpinnerDestination = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerDestination);
             multipleDestinationSpinnerPaymentType = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerPaymentType);
-            multipleDestinationBtnSave = (Button) findViewById(R.id.activityMultipleDestinationBtnSave);
+            multipleDestinationBtnBack = (Button) findViewById(R.id.activityMultipleDestinationBack);
             multipleDestinationBtnAdd = (Button) findViewById(R.id.activityMultipleDestinationBtnAdd);
         }
         catch (Exception e){
@@ -227,61 +228,63 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.activityMultipleDestinationBtnSave:
+            case R.id.activityMultipleDestinationBack:
                 try {
-                        getData();
-                    if (mProduct.equals("") && mQuantity.equals("")  &&
-                            mDestination.equals("Select Destination")
-                            && mDistance.equals("")&& mRouteName .equals("")
-                            && mRent.equals("") && mPayType.equals("Select Payment Mode")
-                            && mPercentOrPayPerKM.equals(""))
+                    finish();
 
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please Select all Values", Toast.LENGTH_LONG).show();
-                    else if(mProduct.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add product name", Toast.LENGTH_LONG).show();}
-                    else if(mQuantity.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add quantity of product", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mDestination.equals("Select Destination"))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please select destination ", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mRouteName.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add route name", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mDistance.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add distance", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mRent.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add Rent", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mPayType.equals("Select Payment Mode"))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please select payment mode", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mPercentOrPayPerKM.equals(""))
-                    {
-                        Toast.makeText(MultipleDestinationActivity.this,
-                                "Please add Commission or KM travelled ", Toast.LENGTH_LONG).show();
-                    }
-                        else
-                        {
-                            addDataToArrayList();
-                            finish();
-                        }
+//                        getData();
+//                    if (mProduct.equals("") && mQuantity.equals("")  &&
+//                            mDestination.equals("Select Destination")
+//                            && mDistance.equals("")&& mRouteName .equals("")
+//                            && mRent.equals("") && mPayType.equals("Select Payment Mode")
+//                            && mPercentOrPayPerKM.equals(""))
+//
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please Select all Values", Toast.LENGTH_LONG).show();
+//                    else if(mProduct.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add product name", Toast.LENGTH_LONG).show();}
+//                    else if(mQuantity.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add quantity of product", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mDestination.equals("Select Destination"))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please select destination ", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mRouteName.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add route name", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mDistance.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add distance", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mRent.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add Rent", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mPayType.equals("Select Payment Mode"))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please select payment mode", Toast.LENGTH_LONG).show();
+//                    }
+//                    else if(mPercentOrPayPerKM.equals(""))
+//                    {
+//                        Toast.makeText(MultipleDestinationActivity.this,
+//                                "Please add Commission or KM travelled ", Toast.LENGTH_LONG).show();
+//                    }
+//                        else
+//                        {
+//                            addDataToArrayList();
+//                            finish();
+//                        }
                 }
                 catch (Exception e){
                             ExceptionMessage.exceptionLog(MultipleDestinationActivity.this, this.getClass()

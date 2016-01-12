@@ -256,7 +256,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
                 res = s2 + "\n";
                 info_Text = res;
             } else {
-                res = s1 + ", " + s2;
+                res = s1 + " " + s2;
                 info_Text = res;
             }
         }

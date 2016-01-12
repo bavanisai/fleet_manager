@@ -11,14 +11,6 @@ dependencies {
 }
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'my_apk'
-            keyPassword '$neha123'
-            storeFile file('C:/Users/sneha/Desktop/apk/fleet_apps.jks')
-            storePassword '$neha123'
-        }
-    }
     compileSdkVersion 21
     buildToolsVersion '22.0.1'
     compileOptions {

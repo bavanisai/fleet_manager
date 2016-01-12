@@ -141,7 +141,7 @@ public class MultipleDestinationActivity1 extends Activity implements View.OnCli
             multipleDestinationEdtPercentOrPayPerKM = (EditText) findViewById(R.id.activityMultipleDestinationEdtPercentageOrPerKM);
             multipleDestinationSpinnerDestination = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerDestination);
             multipleDestinationSpinnerPaymentType = (Spinner) findViewById(R.id.activityMultipleDestinationSpinnerPaymentType);
-            multipleDestinationBtnSave = (Button) findViewById(R.id.activityMultipleDestinationBtnSave);
+            multipleDestinationBtnSave = (Button) findViewById(R.id.activityMultipleDestinationBack);
             //    multipleDestinationBtnView = (Button) findViewById(R.id.activityMultipleDestinationBtnView);
             multipleDestinationBtnAdd = (Button) findViewById(R.id.activityMultipleDestinationBtnAdd);
         }
@@ -217,7 +217,7 @@ catch (Exception e){
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.activityMultipleDestinationBtnSave:
+            case R.id.activityMultipleDestinationBack:
                 finish();
                 break;
 //            case R.id.activityMultipleDestinationBtnView:
@@ -320,8 +320,7 @@ catch (Exception e){
                     mTripManageFragment);
 
             try {
-                send.execute("48", "UpdateSubTripDetails",
-                        updateData);
+                send.execute("48", "UpdateSubTripDetails", updateData);
 
             } catch (Exception e) {
                 ExceptionMessage.exceptionLog(MultipleDestinationActivity1.this, this

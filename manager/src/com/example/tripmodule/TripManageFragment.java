@@ -56,6 +56,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
     List<String> DriverList = new ArrayList<>();
     List<String> VehicleList = new ArrayList<>();
     ProgressDialog pd;
+    String a = null;
     String selSource, selDriver, selVehicle, selCeaner,
             DriverId, CleanerId;
     //	CharSequence at = "@";
@@ -203,7 +204,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
     @SuppressLint("SimpleDateFormat")
     private void TripData() {
         try {
-            String a = null;
+
             getSetData();
             DateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd hhmmss");
             dateFormatter.setLenient(false);
@@ -637,6 +638,7 @@ public class TripManageFragment extends Fragment implements OnClickListener,
             String[] arr = rowValue.split(",");
             obj = new JSONObject();
             try {
+
                 obj.put("vehicleNumber", arr[0]);
                 obj.put("product", arr[1]);
                 obj.put("quantity", arr[2]);

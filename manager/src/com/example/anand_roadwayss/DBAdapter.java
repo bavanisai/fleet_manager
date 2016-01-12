@@ -1371,6 +1371,11 @@ public class DBAdapter {
         return y;
     }
 
+    //updating perticuler row
+    public void editRowData(String table,ContentValues cv, long id)
+    {
 
+       db.update(table,cv, "_id=" + id, null);
+    }
 
 }

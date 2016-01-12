@@ -74,6 +74,7 @@ public class RegistrationActivity extends ActionBarActivity {
             proDialog.setMessage("Please wait...");
             proDialog.setIndeterminate(false);
             proDialog.setProgressNumberFormat(null);
+            proDialog.setCancelable(false);
             proDialog.setProgress(0);
 
             bindData();
