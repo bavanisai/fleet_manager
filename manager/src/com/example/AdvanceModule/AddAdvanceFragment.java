@@ -587,7 +587,8 @@ public class AddAdvanceFragment extends Fragment implements OnClickListener,
                             "PLEASE ENTER THE AMOUNT", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    alertDialog();
+                    //alertDialog();
+                    saveDataToServer();
                 }
             }
 
@@ -606,7 +607,8 @@ public class AddAdvanceFragment extends Fragment implements OnClickListener,
                             "PLEASE ENTER THE AMOUNT", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    alertDialog();
+                    //alertDialog();
+                    saveDataToServer();
                 }
             }
 
@@ -626,7 +628,8 @@ public class AddAdvanceFragment extends Fragment implements OnClickListener,
                             "PLEASE ENTER THE AMOUNT", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    alertDialog();
+                   // alertDialog();
+                    saveDataToServer();
                 }
             }
 

@@ -142,7 +142,7 @@ public class FuelEntryListFragment extends Fragment implements
                                                        View view, int position, long id) {
                             if (id == idMax)
                             {
-                               alertLongPressed(id);
+                               //alertLongPressed(id);
                             }
                             return false;
                         }

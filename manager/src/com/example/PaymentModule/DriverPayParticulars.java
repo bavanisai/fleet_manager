@@ -199,7 +199,7 @@ public class DriverPayParticulars extends Fragment implements IDriverCleanerPaym
                             }
                             else
                             {
-                                receiptAlertDialog();
+                                DriverPayment();
                                 dialog.dismiss();
                             }
                         }

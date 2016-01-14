@@ -182,7 +182,7 @@ public class CleanerPayParticulars extends Fragment implements IDriverCleanerPay
                             }
                                 else
                             {
-                                receiptAlertDialog();
+                                CleanerPayment();
                                 dialog.dismiss();
                             }
 
