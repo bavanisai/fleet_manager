@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -82,7 +83,7 @@ import java.util.Locale;
 import java.util.Random;
 
 
-public class DriverDistancePiechart extends ActionBarActivity implements
+public class DriverDistancePiechart extends AppCompatActivity implements
         OnClickListener, IDriverDistancePieChart {
 
     String mdateType, mfrom_date, mto_date, currentTime;
@@ -105,6 +106,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
     Font head_main = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
     Font font1 = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
     int page;
+    Date fm,to;
     CustomAlertDialog ald;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -795,6 +797,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
             String today = fDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
+            fm=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -820,6 +823,24 @@ public class DriverDistancePiechart extends ActionBarActivity implements
         }
         return msg;
     }
+    public void twoMonthdate()
+    {
+        //restricting calender 2 month
+        long diff=to.getTime()-fm.getTime();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days=hours/24;
+//        System.out.println("fm="+fm);
+//        System.out.println("to="+to);
+//        System.out.println("days="+days);
+        if(days>60)
+        {
+            ald.alertDialog(DriverDistancePiechart.this,"Only two months data report can be generated.");
+            driverDistancePieChartBtnToDate.setText("TO DATE");
+        }
+    }
+
 // To date validation
     public String  toDateValidation()
     {
@@ -828,6 +849,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
             String today = tDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
+            to=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -839,7 +861,7 @@ public class DriverDistancePiechart extends ActionBarActivity implements
             Date nextday = format.parse(tomDate);
 
             Date preFromDate = format.parse(fDate);
-
+            twoMonthdate();
             if(dateToday.after(nextday)||dateToday.equals(nextday))
             {
                 ald.alertDialog(DriverDistancePiechart.this,"To Date cannot be greater than Today's Date !");

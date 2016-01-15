@@ -89,7 +89,8 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
     ListView vehnum;
     int page;
     CustomAlertDialog ald;
-    Date dateToday, nextday;
+    Date fm,to;
+    Date dateToday, nextday, month2date,Month2date1;
 
 
     @Override
@@ -215,6 +216,7 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
             {
 
                 Calendar newDate = Calendar.getInstance();
+
                 newDate.set(year, monthOfYear, dayOfMonth);
                 fromDatetxt.setText(dateFormatter.format(newDate.getTime()));
                 fromDate = fromDatetxt.getText().toString();
@@ -230,14 +232,13 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
             {
 
                 Calendar newDate = Calendar.getInstance();
+              // fromDatePickerDialog.getDatePicker().setMinDate(newDate.getTimeInMillis());
                 newDate.set(year, monthOfYear, dayOfMonth);
                 toDatetxt.setText(dateFormatter.format(newDate.getTime()));
                 toDate = toDatetxt.getText().toString();
                 tdate = newDate;
                 toDateValidation();
-                System.out.println(toDate);
             }
-
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
     }
@@ -553,6 +554,7 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
             String today = toDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             dateToday = format.parse(today);
+            to=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -575,6 +577,7 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
                 ald.alertDialog(FuelReport.this,"To Date cannot be less than From Date !");
                 toDatetxt.setText("click here");
             }
+            twoMonthdate();
         }
 
         catch (Exception e){
@@ -584,6 +587,23 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
             e.printStackTrace();
         }
     }
+    public void twoMonthdate()
+    {
+        //restricting calender 2 month
+        long diff=to.getTime()-fm.getTime();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days=hours/24;
+//        System.out.println("fm="+fm);
+//        System.out.println("to="+to);
+//        System.out.println("days="+days);
+        if(days>60)
+        {
+            ald.alertDialog(FuelReport.this,"Only two months data report can be generated.");
+            toDatetxt.setText("click here");
+        }
+    }
     // From-Date validation | to-date should not be greater than today's date
     public void fromDateValidation()
     {
@@ -591,6 +611,7 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
             String today = fromDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             dateToday = format.parse(today);
+            fm=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();

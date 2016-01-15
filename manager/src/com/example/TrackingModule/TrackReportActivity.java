@@ -84,7 +84,7 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
     ListView vehnum ;
     int page;
     CustomAlertDialog ald;
-    Date dateToday, nextday;
+    Date dateToday, nextday,fm,to;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -535,6 +535,7 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
             String today = toDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             dateToday = format.parse(today);
+            to=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -557,6 +558,7 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
                 ald.alertDialog(TrackReportActivity.this,"To Date cannot be less than From Date !");
                 toDatetxt.setText("click here");
             }
+            twoMonthdate();
         }
 
         catch (Exception e)
@@ -567,6 +569,25 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
             e.printStackTrace();
         }
     }
+
+    public void twoMonthdate()
+    {
+        //restricting calender 2 month
+        long diff=to.getTime()-fm.getTime();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days=hours/24;
+//        System.out.println("fm="+fm);
+//        System.out.println("to="+to);
+//        System.out.println("days="+days);
+        if(days>60)
+        {
+            ald.alertDialog(TrackReportActivity.this,"Only two months data report can be generated.");
+            toDatetxt.setText("click here");
+        }
+    }
+
     // From-Date validation | to-date should not be greater than today's date
     public void fromDateValidation()
     {
@@ -574,6 +595,7 @@ public class TrackReportActivity extends ActionBarActivity implements View.OnCli
             String today = fromDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             dateToday = format.parse(today);
+            fm=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();

@@ -119,6 +119,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
         //Getting Button IDs
         track = (Button) view.findViewById(R.id.live);
 
+
         //Getting Image view id
         loc = (Button) view.findViewById(R.id.placeId);
     //    loc.setImageResource(R.drawable.place1);
@@ -164,7 +165,8 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                         t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                         t.show();
                         ((TrackActivity) getActivity()).setCurrentItem(0, true);
-                    } else {
+                    }
+                    else {
 
                         SendToWebService send = new SendToWebService(getActivity(), mTrackLive);
                         if (send.isConnectingToInternet()) {
@@ -769,6 +771,10 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                     if(o.getString("status").equals("data does not exist"))
                     {
                         disable="data does not exist";
+                        if(disable.equals("data does not exist"))
+                        {
+                            track.setEnabled(false);
+                        }
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setMessage("Live Tracking is provided only if vehicle is in Trip!")
                                 .setCancelable(false)

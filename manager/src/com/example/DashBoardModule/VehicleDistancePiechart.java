@@ -103,6 +103,7 @@ public class VehicleDistancePiechart extends AppCompatActivity implements
     Font font1 = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
     int page;
     CustomAlertDialog ald;
+    Date fm,to;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -900,6 +901,7 @@ public class VehicleDistancePiechart extends AppCompatActivity implements
             String today = fDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
+            fm=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -937,6 +939,7 @@ public class VehicleDistancePiechart extends AppCompatActivity implements
             String today = tDate;
             DateFormat format = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
             Date dateToday = format.parse(today);
+            to=dateToday;
 
             Calendar calendar = Calendar.getInstance();
             Date tomo = calendar.getTime();
@@ -948,7 +951,7 @@ public class VehicleDistancePiechart extends AppCompatActivity implements
             Date nextday = format.parse(tomDate);
 
             Date preFromDate = format.parse(fDate);
-
+            twoMonthdate();
             if(dateToday.after(nextday)||dateToday.equals(nextday))
             {
                 ald.alertDialog(VehicleDistancePiechart.this,"To Date cannot be greater than Today's Date !");
@@ -990,4 +993,21 @@ public class VehicleDistancePiechart extends AppCompatActivity implements
         return msg;
     }
 
+    public void twoMonthdate()
+    {
+        //restricting calender 2 month
+        long diff=to.getTime()-fm.getTime();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days=hours/24;
+//        System.out.println("fm="+fm);
+//        System.out.println("to="+to);
+//        System.out.println("days="+days);
+        if(days>60)
+        {
+            ald.alertDialog(VehicleDistancePiechart.this,"Only two months data report can be generated.");
+            vehicleDistancePieChartBtnToDate.setText("TO DATE");
+        }
+    }
 }
