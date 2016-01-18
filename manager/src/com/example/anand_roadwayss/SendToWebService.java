@@ -94,6 +94,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     public SendToWebService(Context context, IRegistration mRegistration) {
         _context = context;
         dialog = new ProgressDialog(_context);
+        dialog.setMessage("Registering...");
         this.mRegistration = mRegistration;
     }
 
