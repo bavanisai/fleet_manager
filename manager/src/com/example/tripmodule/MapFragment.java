@@ -213,6 +213,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
     OnMapLongClickListener my2_OnMapLongClickListener = new OnMapLongClickListener() {
 
         public void onMapLongClick(final LatLng point) {
+           Log.d("MSG", "On map long click");
+            if(mMap!=null){
+                mMap.clear();
+                MarkerOptions marOpt = new MarkerOptions();
+                marOpt.position(point);
+                mMap.addMarker(marOpt);
+            }
 
             String Address;
 
@@ -220,6 +227,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
             if (Address == null) {
                 Address = "Location";
             }
+
         }
     };
 

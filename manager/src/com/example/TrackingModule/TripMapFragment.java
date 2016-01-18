@@ -104,6 +104,8 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
     String SourceName = null, DestinationName = null, VehLV = "", CurrentTime = "";
     View view;
     Bundle save;
+    AlertDialog.Builder builder;
+    JSONObject o;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -159,6 +161,26 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
             @Override
             public void onClick(View v)
             {
+                try {
+                    if(o.getString("status").equals("data does not exist"))
+                    {
+                        disable="data does not exist";
+                        builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("No recent data!")
+                                .setCancelable(false)
+                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                            AlertDialog alert = builder.create();
+                            alert.setTitle("Vehicle not in Trip");
+                            alert.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 try {
                     if (vehNo == null) {
                         Toast t = Toast.makeText(getActivity(), "Please Select Vehicle First...", Toast.LENGTH_LONG);
@@ -228,6 +250,9 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
             @Override
             public void onClick(View v) {
                 try {
+                    map.moveCamera(CameraUpdateFactory.newLatLng(current));
+                    map.animateCamera(CameraUpdateFactory.zoomTo(10));
+
                     if(currentPlace!=null) {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -282,6 +307,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
             if (map == null) {
                 map = fragment.getMap();
+                map.getUiSettings().setZoomControlsEnabled(true);
 
                 map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -767,26 +793,10 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
                     JSONObject jsonResponse = new JSONObject(response);
                     String jsonData = jsonResponse.getString("d");
                     JSONArray tripData = new JSONArray(jsonData);
-                    JSONObject o = tripData.getJSONObject(0);
+                    o = tripData.getJSONObject(0);
                     if(o.getString("status").equals("data does not exist"))
                     {
-                        disable="data does not exist";
-                        if(disable.equals("data does not exist"))
-                        {
-                            track.setEnabled(false);
-                        }
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Live Tracking is provided only if vehicle is in Trip!")
-                                .setCancelable(false)
-                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.setTitle("Vehicle not in Trip");
-                        alert.show();
+
                     }
                     else
                     {

@@ -1876,7 +1876,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     //Method:42 in switch case
     public void GetLiveTracking( String vehNum )
     {
-
         interfaceToBeExecuted = 39;
         try{
             data.put("authKey", authKey);
