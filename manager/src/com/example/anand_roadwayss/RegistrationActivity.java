@@ -1,10 +1,12 @@
 package com.example.anand_roadwayss;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -26,8 +28,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.Interface.IRegistration;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +45,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationActivity extends AppCompatActivity{
+public class RegistrationActivity extends AppCompatActivity implements IRegistration{
     Button regBtnRegister;
     EditText regEtName, regEtEmail, regEtPhno, regEtPin;
     ImageButton regTvPinNumberShow;
@@ -68,14 +73,14 @@ public class RegistrationActivity extends AppCompatActivity{
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_registration);
-
+            final IRegistration mRegistration = this;
             db = new DBAdapter(getApplicationContext());
             proDialog = new ProgressDialog(RegistrationActivity.this);
             proDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             proDialog.setMessage("Please wait...");
             proDialog.setIndeterminate(false);
             proDialog.setProgressNumberFormat(null);
-           // proDialog.setCancelable(false);
+            proDialog.setCancelable(false);
             proDialog.setProgress(0);
 
             bindData();
@@ -348,499 +353,295 @@ public class RegistrationActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
                     try {
-//                    if (!regEtName.getText().toString().equals("")
-//                            && !regEtEmail.getText().toString().equals("")
-//                            && !regEtPhno.getText().toString().equals("")
-//                            && !regEtPin.getText().toString().equals("")
-//                            && !ProductKey.equals(""))
-//                    {
-//                        proDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//                        proDialog.setMessage("Please wait...");
-//                        proDialog.setIndeterminate(false);
-//                        proDialog.setProgressNumberFormat(null);
-//                        proDialog.setProgress(0);
-//                        proDialog.show();
-//
-//                    }
-
-
 //                        //Email Validation
-                    String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-                    Matcher m = Pattern.compile(EMAIL_PATTERN).matcher(regEtEmail.getText().toString());
-                    if (!m.matches())
-                        regEtEmail.setError("Invalid Email-Id");
+                        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+                        Matcher m = Pattern.compile(EMAIL_PATTERN).matcher(regEtEmail.getText().toString());
+                        if (!m.matches())
+                            regEtEmail.setError("Invalid Email-Id");
 
-                    strEmpType = empType.getSelectedItem().toString();
-                    String Name = regEtName.getText().toString();
-                    String Email = regEtEmail.getText().toString();
-                    String Phone = regEtPhno.getText().toString();
-                    String Pin = regEtPin.getText().toString();
-                    ProductKey = p1.getText().toString() + "-" + p2.getText().toString() + "-" + p3.getText().toString() + "-" + p4.getText().toString() + "-" + p5.getText().toString() + "-" + p6.getText().toString();
+                        strEmpType = empType.getSelectedItem().toString();
+                        String Name = regEtName.getText().toString();
+                        String Email = regEtEmail.getText().toString();
+                        String Phone = regEtPhno.getText().toString();
+                        String Pin = regEtPin.getText().toString();
+                        ProductKey = p1.getText().toString() + "-" + p2.getText().toString() + "-" + p3.getText().toString() + "-" + p4.getText().toString() + "-" + p5.getText().toString() + "-" + p6.getText().toString();
 
-                    TelephonyManager mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                    String IMEI = mngr.getDeviceId();
+                        TelephonyManager mngr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                        String IMEI = mngr.getDeviceId();
 
-                    if (Pin.length() == 4) {
+                        if (Pin.length() == 4) {
 
-                        if (Name.equals("") || Email.equals("")
-                                || Phone.equals("") || Pin.equals("")
-                                || ProductKey.equals("")) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Fields cannot be empty",
-                                    Toast.LENGTH_SHORT).show();
-                        } else if (strEmpType.equals("SELECT USER TYPE")) {
-                            Toast.makeText(getApplicationContext(),
-                                    "Please Select User Type",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else if (strEmpType.equals("DEMO")) {
+                            if (Name.equals("") || Email.equals("")
+                                    || Phone.equals("") || Pin.equals("")
+                                    || ProductKey.equals("")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Fields cannot be empty",
+                                        Toast.LENGTH_SHORT).show();
+                            } else if (strEmpType.equals("SELECT USER TYPE")) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Please Select User Type",
+                                        Toast.LENGTH_SHORT).show();
+                            } else if (strEmpType.equals("DEMO")) {
 
-                            SharedPreferences TypeName = getSharedPreferences(
-                                    "RegisterName", Context.MODE_PRIVATE);
-                            Editor edit = TypeName.edit();
-                            edit.putString("Name", strEmpType);
-                            edit.commit();
+                                SharedPreferences TypeName = getSharedPreferences(
+                                        "RegisterName", Context.MODE_PRIVATE);
+                                Editor edit = TypeName.edit();
+                                edit.putString("Name", strEmpType);
+                                edit.commit();
 
-                            send1 = new SendToWebService(
-                                    RegistrationActivity.this,
-                                    1);
-                            try {
-                                response = send1.execute("9", "RegisterAnApplication",
-                                        "regmnk", "MNK Software",
-                                        "DEMO", "mnk@gmail.com", "9898987876", "1111",
-                                        "000000000000001", "asdf-ghjk-qwer-tyui-oplk-sgd4").get();
+                                send1 = new SendToWebService(
+                                        RegistrationActivity.this,
+                                        1);
+                                try {
+                                    response = send1.execute("9", "RegisterAnApplication",
+                                            "regmnk", "MNK Software",
+                                            "DEMO", "mnk@gmail.com", "9898987876", "1111",
+                                            "000000000000001", "asdf-ghjk-qwer-tyui-oplk-sgd4").get();
 
-                                if (response != null)
-                                    try {
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        String jsonData = jsonResponse.getString("d");
-                                        JSONObject d = new JSONObject(jsonData);
-                                        if (!(d.isNull("status")) && !(d.isNull("appAuthKey"))
-                                                && !(d.isNull("ipAddress"))
-                                                && !(d.isNull("portNumber"))) {
+                                    if (response != null)
+                                        try {
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            String jsonData = jsonResponse.getString("d");
+                                            JSONObject d = new JSONObject(jsonData);
+                                            if (!(d.isNull("status")) && !(d.isNull("appAuthKey"))
+                                                    && !(d.isNull("ipAddress"))
+                                                    && !(d.isNull("portNumber"))) {
 
 //                if(d.getString("status")!=null){
-                                            db.open();
-                                            db.onTerminate();
-                                            db.close();
+                                                db.open();
+                                                db.onTerminate();
+                                                db.close();
 
-                                            String srvrStatus = d.getString("status").trim();
-                                            String appAuthKey = d.getString("appAuthKey").trim();
-                                            String ipAddress = d.getString("ipAddress").trim();
-                                            String portNumber = d.getString("portNumber").trim();
-                                            String clientName = d.getString("clientName").trim();
-                                            String appUrl = "http://" + ipAddress + ":" + portNumber
-                                                    + "/";
+                                                String srvrStatus = d.getString("status").trim();
+                                                String appAuthKey = d.getString("appAuthKey").trim();
+                                                String ipAddress = d.getString("ipAddress").trim();
+                                                String portNumber = d.getString("portNumber").trim();
+                                                String clientName = d.getString("clientName").trim();
+                                                String appUrl = "http://" + ipAddress + ":" + portNumber
+                                                        + "/";
 
-                                            // Preference For Auth Key
-                                            SharedPreferences AppUrl = getSharedPreferences("AppUrl",
-                                                    Context.MODE_PRIVATE);
-                                            Editor editor = AppUrl.edit();
-                                            editor.putString("appUrl", appUrl);
-                                            editor.putString("AuthKey", appAuthKey);
-                                            editor.commit();
+                                                // Preference For Auth Key
+                                                SharedPreferences AppUrl = getSharedPreferences("AppUrl",
+                                                        Context.MODE_PRIVATE);
+                                                Editor editor = AppUrl.edit();
+                                                editor.putString("appUrl", appUrl);
+                                                editor.putString("AuthKey", appAuthKey);
+                                                editor.commit();
 
-                                            db.open();
-                                            ContentValues cv = new ContentValues();
-                                            cv.put(DBAdapter.getKeyName(), Name);
-                                            cv.put(DBAdapter.getRegistrationMail(), Email);
-                                            cv.put(DBAdapter.getKeyPhNo(), Phone);
-                                            cv.put(DBAdapter.getRegistrationPin(), Pin);
-                                            cv.put(DBAdapter.getRegistrationIs(), 0);
-                                            cv.put(DBAdapter.getKeyProductKey(), ProductKey);
-                                            cv.put(DBAdapter.getKeyUserType(), strEmpType);
-                                            cv.put(DBAdapter.getKeyClientname(), clientName);
-                                            long id = db.insertContact(DBAdapter.getTableRegistration(), cv);
-                                            db.close();
+                                                db.open();
+                                                ContentValues cv = new ContentValues();
+                                                cv.put(DBAdapter.getKeyName(), Name);
+                                                cv.put(DBAdapter.getRegistrationMail(), Email);
+                                                cv.put(DBAdapter.getKeyPhNo(), Phone);
+                                                cv.put(DBAdapter.getRegistrationPin(), Pin);
+                                                cv.put(DBAdapter.getRegistrationIs(), 0);
+                                                cv.put(DBAdapter.getKeyProductKey(), ProductKey);
+                                                cv.put(DBAdapter.getKeyUserType(), strEmpType);
+                                                cv.put(DBAdapter.getKeyClientname(), clientName);
+                                                long id = db.insertContact(DBAdapter.getTableRegistration(), cv);
+                                                db.close();
 
-                                            new Thread() {
-                                                public void run() {
-                                                    try {
-                                                        // final IInstallation installed = this;
-                                                        send1 = new SendToWebService(RegistrationActivity.this, 1);
+                                                new Thread() {
+                                                    public void run() {
                                                         try {
-                                                            String res = send1.execute("24", "SyncCheckAfterInstall").get();
-                                                            if (res != null)
-                                                                try {
-                                                                    processList.clear();
-                                                                    count = 0;
-                                                                    JSONObject jsonResponse1 = new JSONObject(res);
+                                                            // final IInstallation installed = this;
+                                                            send1 = new SendToWebService(RegistrationActivity.this, 1);
+                                                            try {
+                                                                String res = send1.execute("24", "SyncCheckAfterInstall").get();
+                                                                if (res != null)
+                                                                    try {
+                                                                        processList.clear();
+                                                                        count = 0;
+                                                                        JSONObject jsonResponse1 = new JSONObject(res);
 
-                                                                    String jsonData1 = jsonResponse1.getString("d");
+                                                                        String jsonData1 = jsonResponse1.getString("d");
 
-                                                                    if (jsonData1.contains("\"process_id\"")) {
-                                                                        JSONObject d1 = new JSONObject(jsonData1);
+                                                                        if (jsonData1.contains("\"process_id\"")) {
+                                                                            JSONObject d1 = new JSONObject(jsonData1);
 
-                                                                        JSONArray listOfValues = d1.getJSONArray("listOfValues");
-                                                                        for (int j = 0; j < listOfValues.length(); j++) {
-                                                                            String value = listOfValues.getString(j).trim();
-                                                                            processList.add(value);
+                                                                            JSONArray listOfValues = d1.getJSONArray("listOfValues");
+                                                                            for (int j = 0; j < listOfValues.length(); j++) {
+                                                                                String value = listOfValues.getString(j).trim();
+                                                                                processList.add(value);
+                                                                            }
+
+                                                                            if (processList.size() > 0) {
+                                                                                SyncStart(count);
+                                                                                proDialog.setProgress(count);
+                                                                            }
+                                                                        } else if (jsonData1.contains("\"data does not exist\"")) {
+                                                                            SharedPreferences login = getSharedPreferences("testapp",
+                                                                                    MODE_PRIVATE);
+                                                                            Editor edit1 = login.edit();
+                                                                            edit1.putString("register", "true");
+                                                                            edit1.commit();
+
+                                                                            SharedPreferences login1 = getSharedPreferences("updateApp",
+                                                                                    MODE_PRIVATE);
+                                                                            Editor edit2 = login1.edit();
+                                                                            edit2.putString("update", "true");
+                                                                            edit2.commit();
+
+                                                                            Intent intent_sign = new Intent(getApplicationContext(), SignRegisterActivity.class);
+                                                                            startActivity(intent_sign);
+                                                                            finish();
+
+                                                                        } else {
+                                                                            ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString() + " " + "[jsonParser]", response);
                                                                         }
 
-                                                                        if (processList.size() > 0) {
-                                                                            SyncStart(count);
-                                                                            proDialog.setProgress(count);
+                                                                    } catch (Exception e) {
+                                                                        if (e.toString().contains(
+                                                                                "org.apache.http.conn.HttpHostConnectException: Connection to "
+                                                                                        + adress + " refused")) {
+                                                                            Toast.makeText(
+                                                                                    getApplicationContext(),
+                                                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                                                                    Toast.LENGTH_LONG).show();
+                                                                        } else if (e.toString().contains(
+                                                                                "java.net.SocketTimeoutException")) {
+                                                                            Toast.makeText(
+                                                                                    getApplicationContext(),
+                                                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                                                                    Toast.LENGTH_LONG).show();
+                                                                        } else if (e.toString().contains(
+                                                                                "No Internet")) {
+                                                                            Toast.makeText(
+                                                                                    getApplicationContext(),
+                                                                                    " PLEASE CONNECT TO INTERNET... ",
+                                                                                    Toast.LENGTH_LONG).show();
+                                                                        } else {
+                                                                            Toast.makeText(getApplicationContext(),
+                                                                                    " UNABLE TO REGISTER..PLEASE TRY AGAIN",
+                                                                                    Toast.LENGTH_LONG).show();
                                                                         }
-                                                                    } else if (jsonData1.contains("\"data does not exist\"")) {
-                                                                        SharedPreferences login = getSharedPreferences("testapp",
-                                                                                MODE_PRIVATE);
-                                                                        Editor edit1 = login.edit();
-                                                                        edit1.putString("register", "true");
-                                                                        edit1.commit();
-
-                                                                        SharedPreferences login1 = getSharedPreferences("updateApp",
-                                                                                MODE_PRIVATE);
-                                                                        Editor edit2 = login1.edit();
-                                                                        edit2.putString("update", "true");
-                                                                        edit2.commit();
-
-                                                                        Intent intent_sign = new Intent(getApplicationContext(), SignRegisterActivity.class);
-                                                                        startActivity(intent_sign);
-                                                                        finish();
-
-                                                                    } else {
-                                                                        ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString() + " " + "[jsonParser]", response);
+                                                                        ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
+                                                                                + " " + "[jsonParser]", e.toString());
                                                                     }
 
-                                                                } catch (Exception e) {
-                                                                    if (e.toString().contains(
-                                                                            "org.apache.http.conn.HttpHostConnectException: Connection to "
-                                                                                    + adress + " refused")) {
-                                                                        Toast.makeText(
-                                                                                getApplicationContext(),
-                                                                                " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    } else if (e.toString().contains(
-                                                                            "java.net.SocketTimeoutException")) {
-                                                                        Toast.makeText(
-                                                                                getApplicationContext(),
-                                                                                " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    } else if (e.toString().contains(
-                                                                            "No Internet")) {
-                                                                        Toast.makeText(
-                                                                                getApplicationContext(),
-                                                                                " PLEASE CONNECT TO INTERNET... ",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    } else {
-                                                                        Toast.makeText(getApplicationContext(),
-                                                                                " UNABLE TO REGISTER..PLEASE TRY AGAIN",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                    ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
-                                                                            + " " + "[jsonParser]", e.toString());
-                                                                }
 
+                                                            } catch (Exception e) {
+                                                                ExceptionMessage.exceptionLog(getApplicationContext(), this
+                                                                                .getClass().toString() + " " + "[onHandleIntent]",
+                                                                        e.toString());
+                                                            }
 
                                                         } catch (Exception e) {
-                                                            ExceptionMessage.exceptionLog(getApplicationContext(), this
-                                                                            .getClass().toString() + " " + "[onHandleIntent]",
-                                                                    e.toString());
+                                                            Toast.makeText(getApplicationContext(),
+                                                                    "dialog pblm", Toast.LENGTH_SHORT)
+                                                                    .show();
+                                                        } finally {
+                                                            proDialog.dismiss();
                                                         }
-
-                                                    } catch (Exception e) {
-                                                        Toast.makeText(getApplicationContext(),
-                                                                "dialog pblm", Toast.LENGTH_SHORT)
-                                                                .show();
-                                                    } finally {
-                                                        proDialog.dismiss();
                                                     }
-                                                }
-                                            }.start();
+                                                }.start();
 
 
-                                        } else {
-                                            OneJSONValue one = new OneJSONValue();
-                                            String status = one.jsonParsing1(response);
-                                            switch (status) {
-                                                case "invalid server authKey":
-                                                    Toast.makeText(getApplicationContext(),
-                                                            "Please Contact Server ", Toast.LENGTH_SHORT)
-                                                            .show();
-                                                    break;
-                                                case "does not exist":
-                                                    Toast.makeText(getApplicationContext(),
-                                                            "Please Contact Server", Toast.LENGTH_SHORT)
-                                                            .show();
-                                                    break;
-                                                default:
-                                                    Toast.makeText(getApplicationContext(), status,
-                                                            Toast.LENGTH_SHORT).show();
-                                                    break;
-                                            }
-                                        }
-                                    } catch (Exception e) {
-
-                                        if (e.toString().contains(
-                                                "org.apache.http.conn.HttpHostConnectException: Connection to "
-                                                        + adress + " refused")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else if (e.toString().contains(
-                                                "java.net.SocketTimeoutException")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else if (e.toString().contains(
-                                                "TimeoutException")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(),
-                                                    " UNABLE TO REGISTER..PLEASE TRY AGAIN",
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                        ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
-                                                + " " + "[jsonParsing]" + " " + response, e.toString());
-                                    }
-
-                            } catch (Exception e) {
-                                Toast.makeText(RegistrationActivity.this,
-                                        "Try after sometime...",
-                                        Toast.LENGTH_SHORT).show();
-                                ExceptionMessage
-                                        .exceptionLog(
-                                                getApplicationContext(),
-                                                this.getClass().toString()
-                                                        + " "
-                                                        + "[regBtnRegister.setOnClickListener]",
-                                                e.toString());
-                            }
-
-
-                        } else {
-                            proDialog.show();
-                            // Shared Preference For Type of User
-                            SharedPreferences TypeName = getSharedPreferences(
-                                    "RegisterName", Context.MODE_PRIVATE);
-                            Editor edit = TypeName.edit();
-                            edit.putString("Name", strEmpType);
-                            edit.commit();
-                            // End
-
-                            String registrationAuthKey = new Constants()
-                                    .getRegistrationAuthKey();
-                            send1 = new SendToWebService(
-                                    RegistrationActivity.this,
-                                    1);
-
-                            try {
-                                response = send1.execute("9", "RegisterAnApplication",
-                                        registrationAuthKey, Name,
-                                        strEmpType, Email, Phone, IMEI, Pin,
-                                        ProductKey).get();
-
-                                if (response != null)
-                                    try {
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        String jsonData = jsonResponse.getString("d");
-                                        JSONObject d = new JSONObject(jsonData);
-                                        if (!(d.isNull("status")) && !(d.isNull("appAuthKey"))
-                                                && !(d.isNull("ipAddress"))
-                                                && !(d.isNull("portNumber"))) {
-
-//                if(d.getString("status")!=null){
-                                            db.open();
-                                            db.onTerminate();
-                                            db.close();
-
-                                            String srvrStatus = d.getString("status").trim();
-                                            String appAuthKey = d.getString("appAuthKey").trim();
-                                            String ipAddress = d.getString("ipAddress").trim();
-                                            String portNumber = d.getString("portNumber").trim();
-                                            String clientName = d.getString("clientName").trim();
-                                            String appUrl = "http://" + ipAddress + ":" + portNumber
-                                                    + "/";
-
-                                            // Preference For Auth Key
-                                            SharedPreferences AppUrl = getSharedPreferences("AppUrl",
-                                                    Context.MODE_PRIVATE);
-                                            Editor editor = AppUrl.edit();
-                                            editor.putString("appUrl", appUrl);
-                                            editor.putString("AuthKey", appAuthKey);
-                                            editor.commit();
-
-                                            db.open();
-                                            ContentValues cv = new ContentValues();
-                                            cv.put(DBAdapter.getKeyName(), Name);
-                                            cv.put(DBAdapter.getRegistrationMail(), Email);
-                                            cv.put(DBAdapter.getKeyPhNo(), Phone);
-                                            cv.put(DBAdapter.getRegistrationPin(), Pin);
-                                            cv.put(DBAdapter.getRegistrationIs(), 0);
-                                            cv.put(DBAdapter.getKeyProductKey(), ProductKey);
-                                            cv.put(DBAdapter.getKeyUserType(), strEmpType);
-                                            cv.put(DBAdapter.getKeyClientname(), clientName);
-                                            long id = db.insertContact(DBAdapter.getTableRegistration(), cv);
-                                            db.close();
-
-                                            new Thread() {
-                                                public void run() {
-                                                    try {
-                                                        // final IInstallation installed = this;
-                                                        send1 = new SendToWebService(RegistrationActivity.this, 1);
-                                                        try {
-                                                            String res = send1.execute("24", "SyncCheckAfterInstall").get();
-                                                            if (res != null)
-                                                                try {
-                                                                    processList.clear();
-                                                                    count = 0;
-                                                                    JSONObject jsonResponse1 = new JSONObject(res);
-
-                                                                    String jsonData1 = jsonResponse1.getString("d");
-
-                                                                    if (jsonData1.contains("\"process_id\"")) {
-                                                                        JSONObject d1 = new JSONObject(jsonData1);
-
-                                                                        JSONArray listOfValues = d1.getJSONArray("listOfValues");
-                                                                        for (int j = 0; j < listOfValues.length(); j++) {
-                                                                            String value = listOfValues.getString(j).trim();
-                                                                            processList.add(value);
-                                                                        }
-
-                                                                        if (processList.size() > 0) {
-                                                                            SyncStart(count);
-                                                                            proDialog.setProgress(count);
-                                                                        }
-                                                                    } else if (jsonData1.contains("\"data does not exist\"")) {
-                                                                        SharedPreferences login = getSharedPreferences("testapp",
-                                                                                MODE_PRIVATE);
-                                                                        Editor edit1 = login.edit();
-                                                                        edit1.putString("register", "true");
-                                                                        edit1.commit();
-
-                                                                        SharedPreferences login1 = getSharedPreferences("updateApp",
-                                                                                MODE_PRIVATE);
-                                                                        Editor edit2 = login1.edit();
-                                                                        edit2.putString("update", "true");
-                                                                        edit2.commit();
-
-                                                                        Intent intent_sign = new Intent(RegistrationActivity.this, SignRegisterActivity.class);
-                                                                        startActivity(intent_sign);
-                                                                        finish();
-
-                                                                    } else {
-                                                                        ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString() + " " + "[jsonParser]", response);
-                                                                    }
-
-                                                                } catch (Exception e) {
-                                                                    if (e.toString().contains(
-                                                                            "org.apache.http.conn.HttpHostConnectException: Connection to "
-                                                                                    + adress + " refused")) {
-                                                                        Toast.makeText(
-                                                                                getApplicationContext(),
-                                                                                " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    } else if (e.toString().contains(
-                                                                            "java.net.SocketTimeoutException")) {
-                                                                        Toast.makeText(
-                                                                                getApplicationContext(),
-                                                                                " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    } else {
-                                                                        Toast.makeText(getApplicationContext(),
-                                                                                " UNABLE TO REGISTER..PLEASE TRY AGAIN",
-                                                                                Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                    ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
-                                                                            + " " + "[jsonParser]", e.toString());
-                                                                }
-
-
-                                                        } catch (Exception e) {
-                                                            ExceptionMessage.exceptionLog(getApplicationContext(), this
-                                                                            .getClass().toString() + " " + "[onHandleIntent]",
-                                                                    e.toString());
-                                                        }
-
-                                                    } catch (Exception e) {
+                                            } else {
+                                                OneJSONValue one = new OneJSONValue();
+                                                String status = one.jsonParsing1(response);
+                                                switch (status) {
+                                                    case "invalid server authKey":
                                                         Toast.makeText(getApplicationContext(),
-                                                                "dialog pblm", Toast.LENGTH_SHORT)
+                                                                "Please Contact Server ", Toast.LENGTH_SHORT)
                                                                 .show();
-                                                    } finally {
-                                                        proDialog.dismiss();
-                                                    }
+                                                        break;
+                                                    case "does not exist":
+                                                        Toast.makeText(getApplicationContext(),
+                                                                "Please Contact Server", Toast.LENGTH_SHORT)
+                                                                .show();
+                                                        break;
+                                                    default:
+                                                        Toast.makeText(getApplicationContext(), status,
+                                                                Toast.LENGTH_SHORT).show();
+                                                        break;
                                                 }
-                                            }.start();
-
-
-                                        } else {
-                                            OneJSONValue one = new OneJSONValue();
-                                            String status = one.jsonParsing1(response);
-                                            switch (status) {
-                                                case "invalid server authKey":
-                                                    Toast.makeText(getApplicationContext(),
-                                                            "Please Contact Server ", Toast.LENGTH_SHORT)
-                                                            .show();
-                                                    break;
-                                                case "does not exist":
-                                                    Toast.makeText(getApplicationContext(),
-                                                            "Please Contact Server", Toast.LENGTH_SHORT)
-                                                            .show();
-                                                    break;
-                                                default:
-                                                    Toast.makeText(getApplicationContext(), status,
-                                                            Toast.LENGTH_SHORT).show();
-                                                    break;
                                             }
-                                        }
-                                    } catch (Exception e) {
+                                        } catch (Exception e) {
 
-                                        if (e.toString().contains(
-                                                "org.apache.http.conn.HttpHostConnectException: Connection to "
-                                                        + adress + " refused")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else if (e.toString().contains(
-                                                "java.net.SocketTimeoutException")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else if (e.toString().contains(
-                                                "TimeoutException")) {
-                                            Toast.makeText(
-                                                    getApplicationContext(),
-                                                    " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
-                                                    Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(),
-                                                    " UNABLE TO REGISTER..PLEASE TRY AGAIN",
-                                                    Toast.LENGTH_LONG).show();
+                                            if (e.toString().contains(
+                                                    "org.apache.http.conn.HttpHostConnectException: Connection to "
+                                                            + adress + " refused")) {
+                                                Toast.makeText(
+                                                        getApplicationContext(),
+                                                        " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else if (e.toString().contains(
+                                                    "java.net.SocketTimeoutException")) {
+                                                Toast.makeText(
+                                                        getApplicationContext(),
+                                                        " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else if (e.toString().contains(
+                                                    "TimeoutException")) {
+                                                Toast.makeText(
+                                                        getApplicationContext(),
+                                                        " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(),
+                                                        " UNABLE TO REGISTER..PLEASE TRY AGAIN",
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                            ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
+                                                    + " " + "[jsonParsing]" + " " + response, e.toString());
                                         }
-                                        ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
-                                                + " " + "[jsonParsing]" + " " + response, e.toString());
-                                    }
 
-                            } catch (Exception e) {
-                                Toast.makeText(RegistrationActivity.this,
-                                        "Try after sometime...",
-                                        Toast.LENGTH_SHORT).show();
-                                ExceptionMessage
-                                        .exceptionLog(
-                                                getApplicationContext(),
-                                                this.getClass().toString()
-                                                        + " "
-                                                        + "[regBtnRegister.setOnClickListener]",
-                                                e.toString());
+                                } catch (Exception e) {
+                                    Toast.makeText(RegistrationActivity.this,
+                                            "Try after sometime...",
+                                            Toast.LENGTH_SHORT).show();
+                                    ExceptionMessage
+                                            .exceptionLog(
+                                                    getApplicationContext(),
+                                                    this.getClass().toString()
+                                                            + " "
+                                                            + "[regBtnRegister.setOnClickListener]",
+                                                    e.toString());
+                                }
+
+
+                            } else {
+
+                                // Shared Preference For Type of User
+                                SharedPreferences TypeName = getSharedPreferences(
+                                        "RegisterName", Context.MODE_PRIVATE);
+                                Editor edit = TypeName.edit();
+                                edit.putString("Name", strEmpType);
+                                edit.commit();
+                                // End
+
+                                String registrationAuthKey = new Constants()
+                                        .getRegistrationAuthKey();
+                                send1 = new SendToWebService(RegistrationActivity.this, mRegistration);
+
+                                try {
+                                    regBtnRegister.setEnabled(false);
+                                    send1.execute("9", "RegisterAnApplication",
+                                            registrationAuthKey, Name,
+                                            strEmpType, Email, Phone, IMEI, Pin,
+                                            ProductKey);
+                                } catch (Exception e) {
+                                    Toast.makeText(RegistrationActivity.this,
+                                            "Try after sometime...",
+                                            Toast.LENGTH_SHORT).show();
+                                    ExceptionMessage
+                                            .exceptionLog(
+                                                    getApplicationContext(),
+                                                    this.getClass().toString()
+                                                            + " "
+                                                            + "[regBtnRegister.setOnClickListener]",
+                                                    e.toString());
+                                }
                             }
-
                         }
-
-                    } else {
-                        regEtPin.setText("");
-                        Toast.makeText(getApplicationContext(),
-                                "Enter 4 digit Pin",
-                                Toast.LENGTH_LONG).show();
-                    }
-                              }
-        catch (Exception e) {
+                        else {
+                            regEtPin.setText("");
+                            Toast.makeText(getApplicationContext(),
+                                    "Enter 4 digit Pin",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
                         Toast.makeText(getApplicationContext(),
                                 "Fields cannot be empty ",
                                 Toast.LENGTH_LONG).show();
@@ -853,12 +654,13 @@ public class RegistrationActivity extends AppCompatActivity{
                                         e.toString());
                     }
                 }
+
             });
         } catch (Exception e) {
-            ExceptionMessage
-                    .exceptionLog(this, this.getClass().toString() + " "
-                                    + "[regBtnRegister.setOnClickListener]",
-                            e.toString());
+
+            ExceptionMessage.exceptionLog(this, this.getClass().toString() + " "
+                            + "[regBtnRegister.setOnClickListener]",
+                    e.toString());
         }
     }
 
@@ -942,7 +744,9 @@ public class RegistrationActivity extends AppCompatActivity{
                             SyncStart(++count);
                         }
 
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
+                        proDialog.dismiss();
                         if (e.toString().contains(
                                 "org.apache.http.conn.HttpHostConnectException: Connection to "
                                         + adress + " refused")) {
@@ -1184,7 +988,6 @@ public class RegistrationActivity extends AppCompatActivity{
         try {
 
             JSONObject jsonResponse = new JSONObject(response);
-
             String jsonData = jsonResponse.getString("d");
             JSONArray table1 = new JSONArray(jsonData);
             DBAdapter db = new DBAdapter(RegistrationActivity.this);
@@ -1356,5 +1159,280 @@ public class RegistrationActivity extends AppCompatActivity{
             return null;
         }
     }
+
+    @Override
+    public void onRegistrationComplete(String response)
+    {
+        if (response.equals("No Internet")) {
+            ConnectionDetector cd = new ConnectionDetector(
+                    RegistrationActivity.this);
+            cd.ConnectingToInternet();
+        } else if (response.equals("There was an error processing")) {
+            Toast.makeText(getApplicationContext(),
+                    "Try After Sometime ", Toast.LENGTH_SHORT)
+                    .show();
+
+
+        } else if (response.contains("refused")) {
+            ImageView image = new ImageView(this);
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+
+        } else if (response.contains("java.net.SocketTimeoutException")) {
+
+            ImageView image = new ImageView(this);
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+
+        } else if (response.contains("The remote server returned an error")) {
+
+            ImageView image = new ImageView(this);
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+
+        } else {
+
+            jsonParsing(response);
+        }
+    }
+
+    void jsonParsing(String response) {
+        String jsonData = null;
+        if (response != null)
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                jsonData = jsonResponse.getString("d");
+                JSONObject d = new JSONObject(jsonData);
+                if (!(d.isNull("status")) && !(d.isNull("appAuthKey"))
+                        && !(d.isNull("ipAddress"))
+                        && !(d.isNull("portNumber"))) {
+                    db.open();
+                    db.onTerminate();
+                    db.close();
+
+                    String srvrStatus = d.getString("status").trim();
+                    String appAuthKey = d.getString("appAuthKey").trim();
+                    String ipAddress = d.getString("ipAddress").trim();
+                    String portNumber = d.getString("portNumber").trim();
+                    String clientName = d.getString("clientName").trim();
+                    String appUrl = "http://" + ipAddress + ":" + portNumber
+                            + "/";
+
+                    // Preference For Auth Key
+                    SharedPreferences AppUrl = getSharedPreferences("AppUrl",
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = AppUrl.edit();
+                    editor.putString("appUrl", appUrl);
+                    editor.putString("AuthKey", appAuthKey);
+                    editor.commit();
+                    // End
+
+                    String Name = regEtName.getText().toString();
+                    String Email = regEtEmail.getText().toString();
+                    String Phone = regEtPhno.getText().toString();
+                    String Pin = regEtPin.getText().toString();
+                    // String ProductKey = regProductKey.getText().toString();
+                    strEmpType = empType.getSelectedItem().toString();
+                    db.open();
+                    ContentValues cv = new ContentValues();
+                    cv.put(DBAdapter.getKeyName(), Name);
+                    cv.put(DBAdapter.getRegistrationMail(), Email);
+                    cv.put(DBAdapter.getKeyPhNo(), Phone);
+                    cv.put(DBAdapter.getRegistrationPin(), Pin);
+                    cv.put(DBAdapter.getRegistrationIs(), 0);
+                    cv.put(DBAdapter.getKeyProductKey(), ProductKey);
+                    cv.put(DBAdapter.getKeyUserType(), strEmpType);
+                    cv.put(DBAdapter.getKeyClientname(), clientName);
+                    long id = db.insertContact(DBAdapter.getTableRegistration(), cv);
+                    db.close();
+                    proDialog.show();
+                    regBtnRegister.setEnabled(true);
+                    syncAfterInstall();
+                } else {
+                    OneJSONValue one = new OneJSONValue();
+                    String status = one.jsonParsing1(response);
+                    // Toast.makeText(getApplicationContext(), status,
+                    // Toast.LENGTH_SHORT).show();
+                    switch (status) {
+                        case "Invalid ServerAuthKey":
+                            Toast.makeText(getApplicationContext(),
+                                    "Please Contact Server ", Toast.LENGTH_SHORT)
+                                    .show();
+                            break;
+                        case "Does not Exist":
+                            Toast.makeText(getApplicationContext(),
+                                    "Please Contact Server", Toast.LENGTH_SHORT)
+                                    .show();
+                            break;
+                        default:
+                            Toast.makeText(getApplicationContext(), status,
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            } catch (Exception e) {
+
+                if (e.toString().contains(
+                        "org.apache.http.conn.HttpHostConnectException: Connection to "
+                                + adress + " refused")) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                            Toast.LENGTH_LONG).show();
+                } else if (e.toString().contains(
+                        "java.net.SocketTimeoutException")) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                            Toast.LENGTH_LONG).show();
+                } else if (e.toString().contains(
+                        "TimeoutException")) {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            " UNABLE TO REGISTER..PLEASE TRY AGAIN",
+                            Toast.LENGTH_LONG).show();
+                }
+                ExceptionMessage.exceptionLog(this, this.getClass().toString()
+                        + " " + "[jsonParsing]" + " " + response, e.toString());
+            }
+    }
+
+        public void syncAfterInstall()
+    {
+        new Thread() {
+            public void run() {
+
+                try {
+                    // final IInstallation installed = this;
+                    send1 = new SendToWebService(RegistrationActivity.this, 1);
+                    try {
+
+                        //  proDialog.show();
+                        String res = send1.execute("24", "SyncCheckAfterInstall").get();
+                        if (res != null)
+                            try {
+                                processList.clear();
+                                count = 0;
+                                JSONObject jsonResponse1 = new JSONObject(res);
+
+                                String jsonData1 = jsonResponse1.getString("d");
+
+                                if (jsonData1.contains("\"process_id\"")) {
+                                    JSONObject d1 = new JSONObject(jsonData1);
+
+                                    JSONArray listOfValues = d1.getJSONArray("listOfValues");
+                                    for (int j = 0; j < listOfValues.length(); j++) {
+                                        String value = listOfValues.getString(j).trim();
+                                        processList.add(value);
+                                    }
+
+                                    if (processList.size() > 0) {
+                                        SyncStart(count);
+                                        proDialog.setProgress(count);
+                                    }
+                                } else if (jsonData1.contains("\"data does not exist\"")) {
+                                    SharedPreferences login = getSharedPreferences("testapp",
+                                            MODE_PRIVATE);
+                                    Editor edit1 = login.edit();
+                                    edit1.putString("register", "true");
+                                    edit1.commit();
+
+                                    SharedPreferences login1 = getSharedPreferences("updateApp",
+                                            MODE_PRIVATE);
+                                    Editor edit2 = login1.edit();
+                                    edit2.putString("update", "true");
+                                    edit2.commit();
+
+                                    Intent intent_sign = new Intent(RegistrationActivity.this, SignRegisterActivity.class);
+                                    startActivity(intent_sign);
+                                    finish();
+
+                                } else {
+                                    ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString() + " " + "[jsonParser]", response);
+                                }
+
+                            } catch (Exception e) {
+                                proDialog.dismiss();
+                                if (e.toString().contains(
+                                        "org.apache.http.conn.HttpHostConnectException: Connection to "
+                                                + adress + " refused")) {
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                            Toast.LENGTH_LONG).show();
+                                } else if (e.toString().contains(
+                                        "java.net.SocketTimeoutException")) {
+                                    Toast.makeText(
+                                            getApplicationContext(),
+                                            " YOUR INTERNET CONNECTION IS SLOW UNABLE TO CONTACT SERVER ",
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            " UNABLE TO REGISTER..PLEASE TRY AGAIN",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                                ExceptionMessage.exceptionLog(RegistrationActivity.this, this.getClass().toString()
+                                        + " " + "[jsonParser]", e.toString());
+                            }
+
+
+                    } catch (Exception e) {
+                        proDialog.dismiss();
+                        ExceptionMessage.exceptionLog(getApplicationContext(), this
+                                        .getClass().toString() + " " + "[onHandleIntent]",
+                                e.toString());
+                    }
+
+                } catch (Exception e) {
+                    proDialog.dismiss();
+//                                                        Toast.makeText(getApplicationContext(),
+//                                                                "dialog pblm", Toast.LENGTH_SHORT)
+//                                                                .show();
+                } finally {
+                    proDialog.dismiss();
+                }
+            }
+    }.start();
+
+
+    //}
+
+
+    }
+
 
 }

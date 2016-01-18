@@ -1,5 +1,6 @@
 package com.example.Interface;
 
-public interface IRegistration {
+public interface IRegistration
+{
     void onRegistrationComplete(String response);
 }

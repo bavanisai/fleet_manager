@@ -545,6 +545,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
             String prefixUrl = settings.getString("appUrl", "")
                     + "fleet_service_api.asmx/"; // Local
+
             // Server
             authKey = settings.getString("AuthKey", null);
             if (params[1] == "RegisterAnApplication" || params[1] == "ApplicationUpdateCheck" || params[1]=="GetClientsDevices") {
@@ -1330,7 +1331,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                                       String userRole, String emailId, String phoneNumber,String IMEI, String pin,
                                     String productKey) {
 
-       // interfaceToBeExecuted = 9;
+        interfaceToBeExecuted = 9;
         try {
             data.put("regAuthKey", regAuthKey);
             data.put("userName", userName);
