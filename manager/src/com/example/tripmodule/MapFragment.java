@@ -144,6 +144,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
         if (fragment == null) {
             fragment = SupportMapFragment.newInstance();
             fm.beginTransaction().replace(R.id.map1, fragment).commit();
+            mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -162,8 +163,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
     public void onResume() {
         super.onResume();
         if (mMap == null) {
+
             mMap = fragment.getMap();
             mMap.setOnMarkerDragListener(this);
+            mMap.setMyLocationEnabled(true);
             mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
@@ -385,7 +388,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
                     Log.d("latitude", "" + lat);
                     Log.d("longitude", "" + lng);
                     latlng = Double.toString(lng) + ":" + Double.toString(lat);
-                } else {
+                }
+                else {
                     latlng = "No";
                 }
             } catch (JSONException e) {
@@ -403,31 +407,40 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
         @Override
         protected void onPostExecute(String result) {
             // Toast.makeText(getActivity(), result, 0).show();
-            if (!result.equals("No")) {
-                StringTokenizer a1 = new StringTokenizer(result, ":");
-                if (a1.hasMoreTokens()) {
-                    lng = Double.valueOf(a1.nextToken());
-                    lat = Double.valueOf(a1.nextToken());
-                    LocationHere = new LatLng(lat, lng);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                            LocationHere, 15));
-                    currPlace = getLocation(LocationHere);
-                    System.out.println("Current palce" + currPlace);
-                    System.out.println("latitude=" + dragLat);
-                    System.out.println("longitude=" + dragLng);
-                    //  mMap.setMyLocationEnabled(true);
-                    marker = mMap.addMarker(new MarkerOptions().position(LocationHere).title("Place Name")
-                            .snippet(currPlace).draggable(true));
-                    System.out.println(marker.isVisible());
-                    marker.setVisible(true);
+            try {
+                if (!result.equals("No")) {
+                    StringTokenizer a1 = new StringTokenizer(result, ":");
+                    if (a1.hasMoreTokens()) {
+                        lng = Double.valueOf(a1.nextToken());
+                        lat = Double.valueOf(a1.nextToken());
+                        LocationHere = new LatLng(lat, lng);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                LocationHere, 15));
+                        currPlace = getLocation(LocationHere);
+                        System.out.println("Current palce" + currPlace);
+                        System.out.println("latitude=" + dragLat);
+                        System.out.println("longitude=" + dragLng);
+                        //  mMap.setMyLocationEnabled(true);
+                        marker = mMap.addMarker(new MarkerOptions().position(LocationHere).title("Place Name")
+                                .snippet(currPlace).draggable(true));
+                        System.out.println(marker.isVisible());
+                        marker.setVisible(true);
+                    }
                 }
-            } else {
+                else {
+                    Toast.makeText(getActivity(), "Please Enter Valid Location",
+                            Toast.LENGTH_LONG).show();
+                    atvPlaces.setText("");
+                }
+                super.onPostExecute(result);
+
+            }catch (Exception e)
+            {
                 Toast.makeText(getActivity(), "Please Enter Valid Location",
                         Toast.LENGTH_LONG).show();
-                atvPlaces.setText("");
+                //atvPlaces.setText("");
+                e.printStackTrace();
             }
-            super.onPostExecute(result);
-
         }
     }
 

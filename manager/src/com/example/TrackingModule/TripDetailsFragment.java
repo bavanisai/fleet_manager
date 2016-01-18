@@ -110,8 +110,10 @@ public class TripDetailsFragment extends Fragment implements IAck {
             public void onClick(View v) {
 
                 String map = ErrorBtn.getText().toString();
-                if (map.equals("See Current Location"))
+                if (map.equals("See Current Location")) {
+                    Toast.makeText(getActivity(),"map loading..",Toast.LENGTH_LONG).show();
                     ((TrackActivity) getActivity()).setCurrentItem(2, true);
+                }
                 else if (map.equals("OK"))
                     ((TrackActivity) getActivity()).setCurrentItem(0, true);
 

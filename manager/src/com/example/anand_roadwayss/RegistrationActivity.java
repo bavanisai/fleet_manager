@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,7 +40,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationActivity extends ActionBarActivity {
+public class RegistrationActivity extends AppCompatActivity{
     Button regBtnRegister;
     EditText regEtName, regEtEmail, regEtPhno, regEtPin;
     ImageButton regTvPinNumberShow;
@@ -74,7 +75,7 @@ public class RegistrationActivity extends ActionBarActivity {
             proDialog.setMessage("Please wait...");
             proDialog.setIndeterminate(false);
             proDialog.setProgressNumberFormat(null);
-            proDialog.setCancelable(false);
+           // proDialog.setCancelable(false);
             proDialog.setProgress(0);
 
             bindData();
