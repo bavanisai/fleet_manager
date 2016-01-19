@@ -77,11 +77,12 @@ public class RegistrationActivity extends AppCompatActivity implements IRegistra
             db = new DBAdapter(getApplicationContext());
             proDialog = new ProgressDialog(RegistrationActivity.this);
             proDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            proDialog.setMessage("Please wait...");
+            proDialog.setMessage("Syncing Data...");
             proDialog.setIndeterminate(false);
             proDialog.setProgressNumberFormat(null);
             proDialog.setCancelable(false);
             proDialog.setProgress(0);
+
 
             bindData();
             UserType.add("SELECT USER TYPE");

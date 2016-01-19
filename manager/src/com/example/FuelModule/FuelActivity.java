@@ -23,6 +23,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -32,7 +33,7 @@ import android.webkit.WebView;
 
 import java.util.List;
 
-public class FuelActivity extends ActionBarActivity {
+public class FuelActivity extends AppCompatActivity {
 
 
     int check = 0;

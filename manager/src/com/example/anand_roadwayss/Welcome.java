@@ -190,30 +190,30 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
         String a = db.getphone();
         int i = db.isRegistered(a);
         db.close();
-        try {
-            if (!SendToWebService.isDemoApp && i == 0) {
-                if (isConnectingToInternet()) {
-
-                    Intent RegIntent = new Intent(
-                            "com.google.android.c2dm.intent.REGISTER");
-                    RegIntent.putExtra("app", PendingIntent.getBroadcast(
-                            getBaseContext(), 0, RegIntent, 0));
-                    RegIntent.putExtra("sender", "628380084865");
-                    startService(RegIntent);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Please Connect To Internet", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-            }
-        }
-
-        catch (Exception e){
-            ExceptionMessage.exceptionLog(this, this
-                            .getClass().toString() + " " + "[onCreate()]",
-                    e.toString());
-            e.printStackTrace();
-        }
+//        try {
+//            if (!SendToWebService.isDemoApp && i == 0) {
+//                if (isConnectingToInternet()) {
+//
+//                    Intent RegIntent = new Intent(
+//                            "com.google.android.c2dm.intent.REGISTER");
+//                    RegIntent.putExtra("app", PendingIntent.getBroadcast(
+//                            getBaseContext(), 0, RegIntent, 0));
+//                    RegIntent.putExtra("sender", "628380084865");
+//                    startService(RegIntent);
+//                } else {
+//                    Toast.makeText(getApplicationContext(),
+//                            "Please Connect To Internet", Toast.LENGTH_LONG).show();
+//                    finish();
+//                }
+//            }
+//        }
+//
+//        catch (Exception e){
+//            ExceptionMessage.exceptionLog(this, this
+//                            .getClass().toString() + " " + "[onCreate()]",
+//                    e.toString());
+//            e.printStackTrace();
+//        }
         // END
 
         findViewById(R.id.welcomeIVReminders).setOnClickListener(this);
