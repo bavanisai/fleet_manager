@@ -1,8 +1,10 @@
 package com.example.tripmodule;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -81,6 +83,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
     public static Context con;
     String info_Text, info_detail_text;
     ProgressDialog pd;
+    static String loc;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -166,7 +169,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
 
             mMap = fragment.getMap();
             mMap.setOnMarkerDragListener(this);
-            mMap.setMyLocationEnabled(true);
             mMap.setOnMapLongClickListener(my2_OnMapLongClickListener);
             mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                 @Override
@@ -414,7 +416,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
 
         @Override
         protected void onPostExecute(String result) {
-            // Toast.makeText(getActivity(), result, 0).show();
+            super.onPostExecute(result);
+            // Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
             try {
                 if (!result.equals("No")) {
                     StringTokenizer a1 = new StringTokenizer(result, ":");
@@ -435,18 +438,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
                         marker.setVisible(true);
                     }
                 }
-                else {
-                    Toast.makeText(getActivity(), "Please Enter Valid Location",
-                            Toast.LENGTH_LONG).show();
-                    atvPlaces.setText("");
+                else
+                {
+                    loc="no";
+                    atvPlaces.setError("Invalid place name.click here ");
                 }
-                super.onPostExecute(result);
 
             }catch (Exception e)
             {
-                Toast.makeText(getActivity(), "Please Enter Valid Location",
-                        Toast.LENGTH_LONG).show();
-                //atvPlaces.setText("");
                 e.printStackTrace();
             }
         }
@@ -643,4 +642,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerDragListe
             LocationActivity.loca.setVisibility(View.GONE);
         }
     }
+
+
 }

@@ -115,14 +115,34 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                 MyDatePickerDialog();
                 break;
             case R.id.fragmentFuelEntryBtnSave:
-               alertDialog();
-
+                Double f = 0.0;
+                getSetData();
+                if (!FuelStr.equals("")) {
+                    f = Double.valueOf(FuelStr);
+                }
+                if (VehicleStr == selVehicle) {
+                    Toast.makeText(getActivity(), "Please Select Vehicle",
+                            Toast.LENGTH_SHORT).show();
+                } else if (DriverStr == selDriver) {
+                    Toast.makeText(getActivity(), "Please Select Driver",
+                            Toast.LENGTH_SHORT).show();
+                } else if (SpeedStr.equals("")) {
+                    Toast.makeText(getActivity(), "Please enter Speedometer Value",
+                            Toast.LENGTH_SHORT).show();
+                } else if (FuelStr.equals("")) {
+                    Toast.makeText(getActivity(), "Please Enter the Fuel Volume",
+                            Toast.LENGTH_SHORT).show();
+                } else if (f < 0) {
+                    Toast.makeText(getActivity(),
+                            "Please Enter the Correct Fuel level",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    alertDialog();
+                }
                 break;
-
-
+            }
         }
 
-    }
 
     // SAVE BUTTON FUNCTION
     private void fuelDetails()
@@ -136,27 +156,6 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                 SendToWebService send = new SendToWebService(getActivity(),
                         mFuelEntryFragment);
 
-                if (!FuelStr.equals("")) {
-                    f = Double.valueOf(FuelStr);
-                }
-
-                if (VehicleStr == selVehicle) {
-                    Toast.makeText(getActivity(), "Please Select Vehicle",
-                            Toast.LENGTH_SHORT).show();
-                } else if (DriverStr == selDriver) {
-                    Toast.makeText(getActivity(), "Please Select Driver",
-                            Toast.LENGTH_SHORT).show();
-                } else if (SpeedStr == "") {
-                    Toast.makeText(getActivity(), "Please enter Speedometer Value",
-                            Toast.LENGTH_SHORT).show();
-                } else if (FuelStr.equals("")) {
-                    Toast.makeText(getActivity(), "Please Enter the Fuel Volume",
-                            Toast.LENGTH_SHORT).show();
-                } else if (f < 0) {
-                    Toast.makeText(getActivity(),
-                            "Please Enter the Correct Fuel level",
-                            Toast.LENGTH_SHORT).show();
-                } else {
                     int t = c.get(Calendar.HOUR_OF_DAY);
                     int t1 = c.get(Calendar.MINUTE);
 
@@ -183,16 +182,13 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                                     e.toString());
                         }
                     }
-                }
-
-            } catch (Exception e) {
+                } catch (Exception e) {
                 ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                         .toString() + " " + "[fuelDetails]", e.toString());
             }
         }
-
-
     // END
+
 
     private void saveFuelDetails(String parsedValue) {
         String status = null, Rid = null;
