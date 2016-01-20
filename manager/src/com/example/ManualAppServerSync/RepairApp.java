@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
@@ -46,7 +47,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class RepairApp extends ActionBarActivity implements
+public class RepairApp extends AppCompatActivity implements
         IRegistration, IInstallation, Synchronization {
 
     Button repairApp;

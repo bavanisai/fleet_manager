@@ -43,7 +43,7 @@ public class VehicleList extends Fragment {
     DBAdapter db;
     ListView driverList;
     static String VehicleNumber1;
-    String srvrStatus, srvrVehicleId, srvrIMEINumber;
+    String srvrStatus, srvrVehicleId;
     LinearLayout noDataLayout;
     TextView ok,message,cancel;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +53,7 @@ public class VehicleList extends Fragment {
                 container, false);
         driverList = (ListView) view.findViewById(R.id.LVNewEntryVehicleList);
         noDataLayout = (LinearLayout)view.findViewById(R.id.inboxLinearL);
+        vehicleListSync();
         return view;
     }
 
@@ -60,6 +61,10 @@ public class VehicleList extends Fragment {
     public void onResume() {
         super.onResume();
 
+    }
+
+    public void vehicleListSync()
+    {
         try {
             db = new DBAdapter(getActivity());
             db.open();
@@ -320,6 +325,6 @@ public class VehicleList extends Fragment {
         if(isVisibleToUser)
         {
             MainActivity.pos=1;
-        }
+                    }
     }
 }
