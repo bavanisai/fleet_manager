@@ -96,7 +96,7 @@ public class TripDetailsFragment extends Fragment implements IAck {
 //                    if (TripMapFragment.disable.equals("data does not exist"))
 //                        viewMap.setEnabled(false);
 //                    if(TripMapFragment.disable.equals("OK")) {
-                        viewMap.setEnabled(true);
+                     //   viewMap.setEnabled(false);
                         ((TrackActivity) getActivity()).setCurrentItem(2, true);
                  //   }
          //       }

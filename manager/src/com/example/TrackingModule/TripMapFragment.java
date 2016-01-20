@@ -162,21 +162,22 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
             public void onClick(View v)
             {
                 try {
-                    if(o.getString("status").equals("data does not exist"))
-                    {
-                        disable="data does not exist";
-                        builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("No recent data!")
-                                .setCancelable(false)
-                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
+                    if(o!=null) {
+                        if (o.getString("status").equals("data does not exist")) {
+                            disable = "data does not exist";
+                            builder = new AlertDialog.Builder(getActivity());
+                            builder.setMessage("No recent data!")
+                                    .setCancelable(false)
+                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
                             AlertDialog alert = builder.create();
                             alert.setTitle("Vehicle not in Trip");
                             alert.show();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -911,40 +912,44 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
             PolylineOptions lineOptions = null;
             MarkerOptions markerOptions = new MarkerOptions();
             //           markerOptions.title(getLocation(markerPoints.get(0)));
+            try {
+                // Traversing through all the routes
+                for (int i = 0; i < result.size(); i++) {
+                    points = new ArrayList<LatLng>();
+                    lineOptions = new PolylineOptions();
 
-            // Traversing through all the routes
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList<LatLng>();
-                lineOptions = new PolylineOptions();
+                    // Fetching i-th route
+                    List<HashMap<String, String>> path = result.get(i);
 
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
+                    // Fetching all the points in i-th route
+                    for (int j = 0; j < path.size(); j++) {
+                        HashMap<String, String> point = path.get(j);
 
-                // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lng = Double.parseDouble(point.get("lng"));
+                        LatLng position = new LatLng(lat, lng);
+                        points.add(position);
+                    }
 
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-                    points.add(position);
+                    // Adding all the points in the route to LineOptions
+                    lineOptions.addAll(points);
+                    lineOptions.color(Color.rgb(0, 172, 243));
+                    lineOptions.width(4);
                 }
 
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.color(Color.rgb(0,172,243));
-                lineOptions.width(4);
-            }
+                if (result.size() < 1) {
+                    Toast.makeText(getActivity(), "No Points, Click on the Road Route", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            if (result.size() < 1) {
-                Toast.makeText(getActivity(), "No Points, Click on the Road Route", Toast.LENGTH_SHORT).show();
-                return;
+                // Drawing polyline in the Google Map for the i-th route
+                map.addPolyline(lineOptions);
+                // To stop loading spinner after drawing Road Route between Source & Destination
+                //       stopSpinner();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
             }
-
-            // Drawing polyline in the Google Map for the i-th route
-            map.addPolyline(lineOptions);
-            // To stop loading spinner after drawing Road Route between Source & Destination
-            //       stopSpinner();
         }
     }
 

@@ -86,8 +86,9 @@ public class AddLocation extends Fragment implements OnClickListener,
                 @Override
                 public void onClick(View view) {
                     //click on add location n move to map
-
-                    ((LocationActivity) getActivity()).setCurrentItem(2, true);
+                    if(DestName.getText().toString().equals("")) {
+                        ((LocationActivity) getActivity()).setCurrentItem(2, true);
+                    }
 
                 }
             });
