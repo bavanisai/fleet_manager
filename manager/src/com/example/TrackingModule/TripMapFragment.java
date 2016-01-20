@@ -574,8 +574,8 @@ public class TripMapFragment extends Fragment implements ILiveTrack{
 
 
                 //JSONObject recTime = sourceArray.getJSONObject(5);
-                if (!(cLat.isNull("receivedDateTime"))) {
-                    CurrentTime=cLat.getString("receivedDateTime").trim();
+                if (!(cLat.isNull("deviceDateTime"))) {
+                    CurrentTime=cLat.getString("deviceDateTime").trim();
                 }
             }
 
