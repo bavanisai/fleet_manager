@@ -35,7 +35,8 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
 
-public class FuelEntryListFragment extends Fragment implements
+public class
+        FuelEntryListFragment extends Fragment implements
         IFuelEntryFragment {
     String id;
     LinearLayout noDataLayout;

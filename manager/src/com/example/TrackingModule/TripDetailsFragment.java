@@ -45,20 +45,17 @@ import android.widget.Toast;
 
 public class TripDetailsFragment extends Fragment implements IAck {
 
-    String addressline, SourceName, DestinationName, CurrentDateTime, driverId, Status,driverName,
+    String  SourceName, DestinationName, driverId, Status,driverName,
             Speed="", RunningTime, KMTravelled,tripstatus1;
     static String VehLV;
     static boolean bValid = false;
     private static String Fuel = "0";
-    double SourceLatitude, SourceLongitude, DestinationLatitude,
-            DestinationLongitude, dCurrentLat, dCurrentLng;
-    TextView vehNumbersListView, textView2vehNO, tVehicle, tDriver, tContact,
-            ErrorMessage, tSource, tDestination, tCurrent, tFuel, tStatus, tSpeed, tRunningTime,
+    TextView  tVehicle, tDriver, tContact,
+            ErrorMessage, tSource, tDestination, tFuel, tStatus, tSpeed, tRunningTime,
             tKmTravel;
     Button viewMap, ErrorBtn;
     ImageView iDriver;
     private final IAck mAck = this;
-    String adress = new IpAddress().getIpAddress();
     LinearLayout SpeedLay,distanceLay;
     MatrixCursor cursorDestination;
     EditText et1;

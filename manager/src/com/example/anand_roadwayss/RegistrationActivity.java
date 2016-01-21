@@ -617,7 +617,7 @@ public class RegistrationActivity extends AppCompatActivity implements IRegistra
                                 send1 = new SendToWebService(RegistrationActivity.this, mRegistration);
 
                                 try {
-                                    regBtnRegister.setEnabled(false);
+
                                     send1.execute("9", "RegisterAnApplication",
                                             registrationAuthKey, Name,
                                             strEmpType, Email, Phone, IMEI, Pin,
