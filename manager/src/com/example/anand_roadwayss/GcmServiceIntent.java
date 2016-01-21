@@ -33,7 +33,6 @@ public class GcmServiceIntent extends IntentService {
 
     public GcmServiceIntent() {
         super("GcmIntentService");
-
     }
 
     @Override

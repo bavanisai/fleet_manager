@@ -1194,7 +1194,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
             data.put("amount", amount);
             data.put("receipt",voucherImg);
             data.put("status", statusFlag);
-
         } catch (JSONException e) {
             String exceptionMsg = ExcHandlingStackTraceToString
                     .StackTraceToString(e);
