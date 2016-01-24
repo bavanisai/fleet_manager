@@ -79,7 +79,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
     ProgressDialog pd;
     Button track, loc;
     ArrayList<LatLng> markerPoints;
-    //   ProgressBar spinner;
     String currentPlace;
     static int count = 0;
     MarkerOptions in;
