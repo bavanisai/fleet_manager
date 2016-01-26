@@ -59,7 +59,7 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     int sKey = 1;
     Button manVBtnSave;
     String VehNo, sImei, sVehPhNo, vehMileage, typeOfVehicle,
-            srvrStatus, srvrVehicleId, srvrIMEINumber, srvrMobileNumber, sProtocol;
+            srvrStatus, srvrVehicleId,sProtocol;
     ContentValues cv = new ContentValues();
     IManageResourcesVehicle mInterfaceManageResourcesVehicle = this;
     String VehicleNumber = null;
