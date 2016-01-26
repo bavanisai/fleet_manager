@@ -59,6 +59,7 @@ import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
+import com.example.anand_roadwayss.Signature;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -409,13 +410,9 @@ public class AddAdvanceFragment extends Fragment implements OnClickListener,
                     if (id != -1) {
                         Toast.makeText(getActivity().getApplicationContext(),
                                 "ADVANCE SAVED", Toast.LENGTH_LONG).show();
-
-                    } else {
-
                     }
 
                     db.close();
-
                     refreshActivity();
                     ((AdvanceMain) getActivity()).setCurrentItem(2, true);
                     break;

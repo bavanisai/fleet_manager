@@ -43,7 +43,7 @@ public class CleanerList extends Fragment {
     DBAdapter db;
     ListView driverList;
     static String DriverName;
-    String srvrStatus, srvrVehicleId, srvrIMEINumber;
+    String srvrStatus;
     String authKey = "mnk";
     String adress = new IpAddress().getIpAddress();
     LinearLayout noDataLayout;
@@ -84,9 +84,6 @@ public class CleanerList extends Fragment {
                                 .findViewById(R.id.vehNumbersListViewTrackVehicle);
 
                         DriverName = vehNumbers.getText().toString();
-
-                        // AddVehicle.selectedVehicle(VehicleNumber);
-
                         ((CleanerEntryActivity) getActivity()).setCurrentItem(1,
                                 true);
                     }
@@ -158,7 +155,6 @@ public class CleanerList extends Fragment {
     }
 
     public void alertLongPressed(final String EmpId) {
-        // isInternetPresent = cd.isConnectingToInternet();
         db = new DBAdapter(getActivity());
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

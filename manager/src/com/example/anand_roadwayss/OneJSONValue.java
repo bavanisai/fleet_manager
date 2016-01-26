@@ -17,8 +17,10 @@ public class OneJSONValue {
                 status = d.getString("status");
                 return status;
 
-            } catch (JSONException e) {
-
+            } catch (JSONException e)
+            {
+//                ExceptionMessage.exceptionLog(this, this.getClass()
+//                        .toString() + " " + "[onStart()]", e.toString());
             }
         return status;
     }

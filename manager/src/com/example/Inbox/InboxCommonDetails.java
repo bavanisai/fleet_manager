@@ -30,9 +30,6 @@ public class InboxCommonDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox_common_details);
-//        final ActionBar actionBar = getSupportActionBar();
-//        actionBar.setIcon(R.drawable.inboxopen);
-//        getActionBar().setDisplayShowTitleEnabled(false);
         db = new DBAdapter(this);
         Id = String.valueOf(getIntent().getExtras().getLong("inboxId"));
         bindData();
@@ -120,11 +117,4 @@ public class InboxCommonDetails extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    private void deleteInboxItem(String id) {
-//        db.open();
-//        db.deleteTripLocaly(DBAdapter.getInboxDetails(), id);
-//        db.close();
-//        finish();
-//    }
 }

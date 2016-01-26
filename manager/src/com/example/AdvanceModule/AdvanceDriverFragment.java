@@ -173,15 +173,6 @@ public class AdvanceDriverFragment extends Fragment implements
         return view;
     }
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
-
 	/*
 	 * Purpose - Deletes a row on long press of row. Method Name -
 	 * alertLongPressed Parameters - Row id Return Type - No Return Type

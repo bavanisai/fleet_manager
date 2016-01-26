@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ForgotPassword extends ActionBarActivity {
+public class ForgotPassword extends AppCompatActivity {
     Button btnLogin;
     DBAdapter db;
     public static final String ACTION_SMS_SENT = "com.example.anand_roadwayss.android.apis.os.SMS_SENT_ACTION";
@@ -96,7 +97,8 @@ public class ForgotPassword extends ActionBarActivity {
                     db.open();
                     String storedPhone = db.retrieve(phone);
 
-                    if (!phone.equals("") && phone.length() == 10 && phone.startsWith("9") || phone.startsWith("8") || phone.startsWith("7")) {
+                    if (!phone.equals("") && phone.length() == 10 && phone.startsWith("9") || phone.startsWith("8")
+                            || phone.startsWith("7")) {
 
                         if (phone.equals(storedPhone)) {
                             String storedPin = db.retrievePin(phone);

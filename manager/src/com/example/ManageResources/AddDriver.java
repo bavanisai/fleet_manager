@@ -75,9 +75,6 @@ public class AddDriver extends Fragment implements IManageResources {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // send = new SendToWebService(getActivity(),
-        // mInterfaceManageResources);
-
         view = inflater.inflate(R.layout.fragment_new_entry_addemp, container,
                 false);
         setTextValue(view);
@@ -104,9 +101,7 @@ public class AddDriver extends Fragment implements IManageResources {
 
             @Override
             public void onClick(View v) {
-                // ((VehicleEntryActivity) getActivity()).refresh(0);
                 try {
-
                     getTextValue();
                     if (drvName.equals("")) {
                         Toast.makeText(getActivity(),
@@ -289,8 +284,6 @@ public class AddDriver extends Fragment implements IManageResources {
             if (inputStream != null) {
                 photo = BitmapFactory.decodeStream(inputStream);
                 iVempPhoto.setImageBitmap(photo);
-//		                ImageView imageView = (ImageView) findViewById(R.id.img_contact);
-//		                imageView.setImageBitmap(photo);
             }
 
             assert inputStream != null;
@@ -359,12 +352,6 @@ public class AddDriver extends Fragment implements IManageResources {
 
         cursor.close();
         eTNewEntryEmpName.setText(contactName);
-//		TextView t1 = (TextView)getActivity().findViewById(R.id.textView1);
-//		t1.setText(contactName);
-
-
-        //Log.d(TAG, "Contact Name: " + contactName);
-
     }
 
     //End

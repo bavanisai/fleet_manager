@@ -284,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements
         switch (pos) {
 
             case 1:
-                //Welcome.imeiList=null;
                 finish();
                 break;
 

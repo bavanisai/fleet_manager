@@ -291,10 +291,12 @@ public class
                         res = response;
                         // ExceptionMessage.exceptionLog(getActivity(),
                         // this.getClass().toString(), response);
+
                         ((TrackActivity) getActivity()).setCurrentItem(1, true);
 
                     }
                 } catch (JSONException e) {
+
 
                     if (e.toString().contains("refused")) {
                         ImageView image = new ImageView(getActivity());

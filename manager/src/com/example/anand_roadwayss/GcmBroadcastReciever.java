@@ -9,11 +9,11 @@ import android.util.Log;
 
 public class GcmBroadcastReciever extends WakefulBroadcastReceiver
 {
-//    public Activity _context;
-//    public GcmBroadcastReciever(Activity _context)
-//    {
-//        this._context=_context;
-//    }
+    public Activity _context;
+    public GcmBroadcastReciever(Activity _context)
+    {
+        this._context=_context;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,8 +48,8 @@ public class GcmBroadcastReciever extends WakefulBroadcastReceiver
 
         catch (Exception e)
         {
-//            ExceptionMessage.exceptionLog(_context, this.getClass().toString() + " " + "[onReceive()]",
-//                    e.toString());
+            ExceptionMessage.exceptionLog(_context, this.getClass().toString() + " " + "[onReceive()]",
+                    e.toString());
             e.printStackTrace();
         }
     }

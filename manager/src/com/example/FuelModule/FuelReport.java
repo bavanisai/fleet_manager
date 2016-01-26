@@ -90,7 +90,7 @@ public class FuelReport extends AppCompatActivity implements IFuelReport {
     int page;
     CustomAlertDialog ald;
     Date fm,to;
-    Date dateToday, nextday, month2date,Month2date1;
+    Date dateToday, nextday;
 
 
     @Override
