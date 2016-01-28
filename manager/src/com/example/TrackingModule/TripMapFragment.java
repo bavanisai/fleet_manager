@@ -391,7 +391,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     String s = marker.getId();
                     if (s.equals(currId)) {
                         t1.setText(Html.fromHtml("<font color='#009acd'><b>Current Location </b></font>"));
-                        String currPlace = getLocation(currentVal);
+                        String currPlace = getLocation(current);
                         t2.setText(currPlace);
                         marker.setTitle(currPlace);
                     } else if (s.equals(srcId)) {
