@@ -79,10 +79,11 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
     ProgressDialog pd;
     Button track, loc;
     ArrayList<LatLng> markerPoints;
-    String currentPlace;
+    String currentPlace = "";
     static int count = 0;
     MarkerOptions in;
     ArrayList<LatLng> valuesList;
+    LatLng currentVal;
     LatLng origin, dest;
     LatLng current;
     String tripStatus;
@@ -92,6 +93,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
     static String disable;
     RelativeLayout ml;
     Boolean val = true;
+    PolylineOptions polylineOptions;
 
 
     //Older init
@@ -110,6 +112,10 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
+
+        polylineOptions = new PolylineOptions();
+        polylineOptions.color(Color.RED);
+        polylineOptions.width(3);
 
         save = savedInstanceState;
 
@@ -134,8 +140,8 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
             @Override
             public void onClick(View v) {
                 try {
-                    if(origin == null && dest==null){
-                        Toast t = Toast.makeText(getActivity(), "Vehicle not in trip", Toast.LENGTH_LONG);
+                    if (vehNo == null) {
+                        Toast t = Toast.makeText(getActivity(), "Please Select Vehicle First", Toast.LENGTH_SHORT);
                         t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                         t.show();
                         ((TrackActivity) getActivity()).setCurrentItem(0, true);
@@ -162,8 +168,8 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     e.printStackTrace();
                 }
                 try {
-                    if (vehNo == null) {
-                        Toast t = Toast.makeText(getActivity(), "Please Select Vehicle First", Toast.LENGTH_LONG);
+                    if (origin == null && dest == null) {
+                        Toast t = Toast.makeText(getActivity(), "Vehicle not in trip", Toast.LENGTH_SHORT);
                         t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                         t.show();
                         ((TrackActivity) getActivity()).setCurrentItem(0, true);
@@ -174,20 +180,25 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                             track.setEnabled(false);
                             MarkerOptions srcMrk = new MarkerOptions();
                             MarkerOptions destnMrk = new MarkerOptions();
-                            srcMrk.position(origin);
-                            destnMrk.position(dest);
+                            if(origin!=null && dest!=null) {
+                                srcMrk.position(origin);
+                                destnMrk.position(dest);
+                            }
                             srcMrk.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                             // srcMrk.icon(BitmapDescriptorFactory.fromResource(R.drawable.startflag));
                             destnMrk.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                             //  destnMrk.icon(BitmapDescriptorFactory.fromResource(R.drawable.endflag3));
-                            Marker s = map.addMarker(srcMrk);
-                            srcId = s.getId();
-                            Marker d = map.addMarker(destnMrk);
-                            destId = d.getId();
+
+                            if(srcMrk!=null && destnMrk!=null) {
+                                Marker s = map.addMarker(srcMrk);
+                                srcId = s.getId();
+                                Marker d = map.addMarker(destnMrk);
+                                destId = d.getId();
+                            }
 
 
                             // Getting URL to the Google Directions API
-                            String url = getDirectionsUrl(origin, dest);
+                            String url = getDirectionsUrl(origin, current);
 
                             DownloadTask downloadTask = new DownloadTask();
 
@@ -220,19 +231,18 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
             @Override
             public void onClick(View v) {
                 try {
-                    if (currentPlace == null) {
+                    if (vehNo == null) {
                         Toast t = Toast.makeText(getActivity(), "Please select vehicle first", Toast.LENGTH_LONG);
                         t.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_HORIZONTAL, 0, 0);
                         t.show();
                         ((TrackActivity) getActivity()).setCurrentItem(0, true);
-                    }
-                    else if (currentPlace != null) {
+                    } else if (currentPlace != null) {
 
                         map.moveCamera(CameraUpdateFactory.newLatLng(current));
                         map.animateCamera(CameraUpdateFactory.zoomTo(10));
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Location : </b></font>" + "<small>" + currentPlace + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
+                        builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
 
                                 .setCancelable(false)
                                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -242,7 +252,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                                     }
                                 });
                         AlertDialog alert = builder.create();
-                        alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));                                // alert.
+                        alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
                         alert.show();
                     }
                 } catch (Exception e) {
@@ -330,7 +340,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                 currMark = new MarkerOptions();
                 currMark.position(current);
 
-                // currMark.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
                 currMark.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 Marker m = map.addMarker(currMark);
                 currId = m.getId();
@@ -352,18 +361,12 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                 t2.setText(currentPlace);
                 t2.setTextSize(12);
                 m.setTitle(currentPlace);
-                //m.showInfoWindow();
                 d.show();
 
                 //---------------------------------------------------
                 animatedCircles(current);
                 map.moveCamera(CameraUpdateFactory.newLatLng(current));
                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
-                //          spinner = (ProgressBar) getActivity().findViewById(R.id.progressBar);
-//            spinner.destroyDrawingCache();
-//            spinner.setVisibility(View.GONE);
-
-                //       m.showInfoWindow();
             }
 
 
@@ -388,7 +391,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     String s = marker.getId();
                     if (s.equals(currId)) {
                         t1.setText(Html.fromHtml("<font color='#009acd'><b>Current Location </b></font>"));
-                        String currPlace = getLocation(current);
+                        String currPlace = getLocation(currentVal);
                         t2.setText(currPlace);
                         marker.setTitle(currPlace);
                     } else if (s.equals(srcId)) {
@@ -747,6 +750,27 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
             } else {
                 try {
                     valuesList = new ArrayList<LatLng>();
+//                    valuesList.add(new LatLng(12.953388, 77.533638));
+//                    valuesList.add(new LatLng(12.907880, 77.462226));
+//                    valuesList.add(new LatLng(12.867719, 77.432014));
+//                    valuesList.add(new LatLng(12.814161, 77.407295));
+//                    valuesList.add(new LatLng(12.806126, 77.396309));
+//                    valuesList.add(new LatLng(12.782021, 77.363350));
+//                    valuesList.add(new LatLng(12.739161, 77.302925));
+//                    valuesList.add(new LatLng(12.698973, 77.250740));
+//                    valuesList.add(new LatLng(12.664139, 77.201301));
+//                    valuesList.add(new LatLng(12.642700, 77.151863));
+//                    valuesList.add(new LatLng(12.621259, 77.102424));
+//                    valuesList.add(new LatLng(12.602497, 77.041999));
+//                    valuesList.add(new LatLng(12.573010, 77.000801));
+//                    valuesList.add(new LatLng(12.554245, 76.954109));
+//                    valuesList.add(new LatLng(12.516709, 76.868965));
+//                    valuesList.add(new LatLng(12.476487, 76.753608));
+//                    valuesList.add(new LatLng(12.446986, 76.701423));
+//                    valuesList.add(new LatLng(12.387975, 76.660225));
+//                    valuesList.add(new LatLng(12.310167, 76.558601));
+//                    valuesList.add(new LatLng(12.240388, 76.473457));
+
                     JSONObject jsonResponse = new JSONObject(response);
                     String jsonData = jsonResponse.getString("d");
                     JSONArray tripData = new JSONArray(jsonData);
@@ -916,22 +940,26 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     }
                     map.clear();
 
+                    currentVal = valuesList.get(count);
+                    map.moveCamera(CameraUpdateFactory.newLatLng(currentVal));
+                    in = new MarkerOptions();
+                    in.position(currentVal);
+
+//                    // for adding polyline to map
+//                    for(int i=0; i<valuesList.size(); i++) {
+//                        polylineOptions.add(currentVal);
+//                        map.addPolyline(polylineOptions);
+//                    }
+
                     // Getting URL to the Google Directions API
-                    String url = getDirectionsUrl(origin, dest);
+                    String url = getDirectionsUrl(origin, currentVal);
 
                     DownloadTask downloadTask = new DownloadTask();
 
                     // Start downloading json data from Google Directions API
                     downloadTask.execute(url);
 
-//                    if(map==null)
-//                    {
-//                        map = fragment.getMap();
-//                    }
-                    LatLng currentVal = valuesList.get(count);
-                    map.moveCamera(CameraUpdateFactory.newLatLng(currentVal));
-                    in = new MarkerOptions();
-                    in.position(currentVal);
+
 //                    animatedCircles(currentVal);
                     // in.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
                     in.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
@@ -951,10 +979,16 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     srcId = t1.getId();
                     destId = t2.getId();
 
-                    map.addMarker(in);
-                    animatedCircles(currentVal);
-                    currentPlace = getLocation(currentVal);
-                    count++;
+                    try {
+                        map.addMarker(in);
+                        animatedCircles(currentVal);
+                        currentPlace = getLocation(currentVal);
+                        count++;
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 } else {
                     Log.d("ErrMsg", "No values available in list");
                 }
