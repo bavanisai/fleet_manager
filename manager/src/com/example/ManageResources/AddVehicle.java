@@ -566,8 +566,6 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
                             Toast.makeText(getActivity(), "Data Saved Successfull",
                                     Toast.LENGTH_LONG).show();
                             refreshActivity();
-
-
                             break;
 
                         case "inserted":

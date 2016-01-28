@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.database.MatrixCursor;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -43,6 +44,7 @@ import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
+import com.example.anand_roadwayss.Welcome;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +74,7 @@ public class CleanerList extends Fragment implements View.OnClickListener,IDrive
             sCleanerSalary, sAmount, pa, fDate, tDate;
     MatrixCursor cursorCleanerTrip;
     Button paidList;
+    TextView ok, message;
     CustomAlertDialog ald;
 
     @Override
@@ -408,8 +411,34 @@ public class CleanerList extends Fragment implements View.OnClickListener,IDrive
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                             .toString(), statuschk);
                 } else if (statuschk.equals("employee does not exist")) {
-                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                            .toString(), statuschk);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater = LayoutInflater.from(getActivity());
+                    View dialogView = inflater.inflate(R.layout.date_custom_dialog, null);
+                    builder.setView(dialogView);
+                    final AlertDialog alertDialog1 = builder.create();
+                    message = (TextView) dialogView.findViewById(R.id.textmsg);
+                    ok = (TextView) dialogView.findViewById(R.id.textBtn);
+                    message.setText("The driver name has deleted by another manager !");
+                    View v1= inflater.inflate(R.layout.title_dialog_layout, null);
+                    alertDialog1.setCustomTitle(v1);
+
+                    ok.setText("REFRESH");
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent ii = new Intent(getActivity(), Welcome.class);
+                            ii.putExtra("comeback", "true");
+                            ii.putExtra("class",PaymentDriver.class);
+                            startActivity(ii);
+                            alertDialog1.dismiss();
+                        }
+                    });
+                    Resources resources =alertDialog1.getContext().getResources();
+                    int color = resources.getColor(R.color.white);
+                    alertDialog1.show();
+                    int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
+                    View titleDivider = alertDialog1.getWindow().getDecorView().findViewById(titleDividerId);
+                    titleDivider.setBackgroundColor(color);
                 }
 
 

@@ -246,108 +246,108 @@ public class TripDetailsFragment extends Fragment implements IAck {
         }
 
     }
-
-    public boolean jsonParsing1(String response) {
-        boolean isValidData = false;
-        if (response != null) {
-            try {
-                ErrorBtn = (Button) getActivity().findViewById(
-                        R.id.ErrorTrackbtn);
-                LinearLayout Error = new LinearLayout(getActivity());
-                Error = (LinearLayout) getActivity().findViewById(
-                        R.id.ErrorTripManageLayout);
-                LinearLayout details = new LinearLayout(getActivity());
-                details = (LinearLayout) getActivity().findViewById(
-                        R.id.TrackDetailsLayout);
-                Error.setVisibility(View.VISIBLE);
-                details.setVisibility(View.GONE);
-                JSONObject jsonResponse = new JSONObject(response);
-                // getting the data with tag d
-                String jsonData = jsonResponse.getString("d");
-                // String jsonData="";
-                // convert the string to Json array
-                JSONArray trackVehicle = new JSONArray(jsonData);
-                JSONObject c = trackVehicle.getJSONObject(0);
-
-                // Manu changes
-                Status = c.getString("vehicleStatus");
-                Speed = c.getString("CurrentSpeed");
-
-                // Checking For Current Latitude And Longitude
-
-                if (c.getString("status").equals("OnTrip")) {
-                    Error.setVisibility(View.GONE);
-                    details.setVisibility(View.VISIBLE);
-                    isValidData = true;
-                    bValid = true;
-                    // Vehicle Node
-                    JSONObject VehicleJson = c.getJSONObject("Vehicle");
-                    if (!(VehicleJson.isNull("SourceName"))) {
-                        SourceName = VehicleJson.getString("SourceName");
-                    }
-                    if (!(VehicleJson.isNull("DestinationName"))) {
-                        DestinationName = VehicleJson
-                                .getString("DestinationName");
-                    }
-                    Fuel = c.getString("CurrentFuel").trim();
-                    //New Feature added On Feb
-                    RunningTime = c.getString("runningTime");
-                    KMTravelled = c.getString("distnaceInKM");
-
-                    //End
-                    // Driver Child node
-                    JSONObject driver = VehicleJson.getJSONObject("Driver");
-                    if (!(driver.isNull("empId"))) {
-                        driverId = driver.getString("empId");
-                    }
-
-                } else if (c.getString("status").equals("OffTrip"))
-                {
-
-                    ErrorMessage = (TextView) getActivity().findViewById(
-                            R.id.ErrorMessageinTrack);
-                    tStatus = (TextView) getActivity().findViewById(
-                            R.id.ErrorStatusinTrack);
-                    tSpeed = (TextView) getActivity().findViewById(
-                            R.id.ErrorSpeedinTrack);
-                    tStatus.setText("Status : " + Status);
-                    tStatus.setVisibility(View.VISIBLE);
-                    if (Status.equals("Running") && !Speed.equals("")) {
-                        double spd = Double.parseDouble(Speed);
-                        DecimalFormat numberFormat = new DecimalFormat("##.00");
-
-                        tSpeed.setText("SPEED(Km/h) : " + numberFormat.format(spd));
-                        tSpeed.setVisibility(View.VISIBLE);
-                    }
-                    ErrorMessage.setText("TRIP IS NOT YET ADDED");
-                    ErrorBtn.setText("See Current Location");
-                    JSONObject CurrLatLong = c.getJSONObject("CurrentLatLong");
-                    if (!(CurrLatLong.getString("Latitude").equals(""))) {
-                        bValid = true;
-                    } else {
-                         ErrorMessage.setText("Try After Some Times");
-                        ErrorBtn.setText("OK");
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "Try After Some Times",
-                            Toast.LENGTH_LONG).show();
-                    ErrorMessage = (TextView) getActivity().findViewById(
-                            R.id.ErrorMessageinTrack);
-                    ErrorMessage.setText("TRY AFTER SOME TIME");
-
-                }
-
-            } catch (JSONException e) {
-
-                Toast.makeText(getActivity(), "Try After Some Times",
-                        Toast.LENGTH_LONG).show();
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                        .toString(), e.toString());
-            }
-        }
-        return isValidData;
-
-    }
+//
+//    public boolean jsonParsing1(String response) {
+//        boolean isValidData = false;
+//        if (response != null) {
+//            try {
+//                ErrorBtn = (Button) getActivity().findViewById(
+//                        R.id.ErrorTrackbtn);
+//                LinearLayout Error = new LinearLayout(getActivity());
+//                Error = (LinearLayout) getActivity().findViewById(
+//                        R.id.ErrorTripManageLayout);
+//                LinearLayout details = new LinearLayout(getActivity());
+//                details = (LinearLayout) getActivity().findViewById(
+//                        R.id.TrackDetailsLayout);
+//                Error.setVisibility(View.VISIBLE);
+//                details.setVisibility(View.GONE);
+//                JSONObject jsonResponse = new JSONObject(response);
+//                // getting the data with tag d
+//                String jsonData = jsonResponse.getString("d");
+//                // String jsonData="";
+//                // convert the string to Json array
+//                JSONArray trackVehicle = new JSONArray(jsonData);
+//                JSONObject c = trackVehicle.getJSONObject(0);
+//
+//                // Manu changes
+//                Status = c.getString("vehicleStatus");
+//                Speed = c.getString("CurrentSpeed");
+//
+//                // Checking For Current Latitude And Longitude
+//
+//                if (c.getString("status").equals("OnTrip")) {
+//                    Error.setVisibility(View.GONE);
+//                    details.setVisibility(View.VISIBLE);
+//                    isValidData = true;
+//                    bValid = true;
+//                    // Vehicle Node
+//                    JSONObject VehicleJson = c.getJSONObject("Vehicle");
+//                    if (!(VehicleJson.isNull("SourceName"))) {
+//                        SourceName = VehicleJson.getString("SourceName");
+//                    }
+//                    if (!(VehicleJson.isNull("DestinationName"))) {
+//                        DestinationName = VehicleJson
+//                                .getString("DestinationName");
+//                    }
+//                    Fuel = c.getString("CurrentFuel").trim();
+//                    //New Feature added On Feb
+//                    RunningTime = c.getString("runningTime");
+//                    KMTravelled = c.getString("distnaceInKM");
+//
+//                    //End
+//                    // Driver Child node
+//                    JSONObject driver = VehicleJson.getJSONObject("Driver");
+//                    if (!(driver.isNull("empId"))) {
+//                        driverId = driver.getString("empId");
+//                    }
+//
+//                } else if (c.getString("status").equals("OffTrip"))
+//                {
+//
+//                    ErrorMessage = (TextView) getActivity().findViewById(
+//                            R.id.ErrorMessageinTrack);
+//                    tStatus = (TextView) getActivity().findViewById(
+//                            R.id.ErrorStatusinTrack);
+//                    tSpeed = (TextView) getActivity().findViewById(
+//                            R.id.ErrorSpeedinTrack);
+//                    tStatus.setText("Status : " + Status);
+//                    tStatus.setVisibility(View.VISIBLE);
+//                    if (Status.equals("Running") && !Speed.equals("")) {
+//                        double spd = Double.parseDouble(Speed);
+//                        DecimalFormat numberFormat = new DecimalFormat("##.00");
+//
+//                        tSpeed.setText("SPEED(Km/h) : " + numberFormat.format(spd));
+//                        tSpeed.setVisibility(View.VISIBLE);
+//                    }
+//                    ErrorMessage.setText("TRIP IS NOT YET ADDED");
+//                    ErrorBtn.setText("See Current Location");
+//                    JSONObject CurrLatLong = c.getJSONObject("CurrentLatLong");
+//                    if (!(CurrLatLong.getString("Latitude").equals(""))) {
+//                        bValid = true;
+//                    } else {
+//                         ErrorMessage.setText("Try After Some Times");
+//                        ErrorBtn.setText("OK");
+//                    }
+//                } else {
+//                    Toast.makeText(getActivity(), "Try After Some Times",
+//                            Toast.LENGTH_LONG).show();
+//                    ErrorMessage = (TextView) getActivity().findViewById(
+//                            R.id.ErrorMessageinTrack);
+//                    ErrorMessage.setText("TRY AFTER SOME TIME");
+//
+//                }
+//
+//            } catch (JSONException e) {
+//
+//                Toast.makeText(getActivity(), "Try After Some Times",
+//                        Toast.LENGTH_LONG).show();
+//                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+//                        .toString(), e.toString());
+//            }
+//        }
+//        return isValidData;
+//
+//    }
 
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -506,7 +506,6 @@ public class TripDetailsFragment extends Fragment implements IAck {
 
 //--------------------------------------------
                     if(tripstatus1.equals("on trip")){
-
                         Error.setVisibility(View.GONE);
                         details.setVisibility(View.VISIBLE);
                         isValidData = true;
@@ -517,38 +516,34 @@ public class TripDetailsFragment extends Fragment implements IAck {
 
                     else if (tripstatus1.equals("off trip"))
                     {
-
                         ErrorMessage = (TextView) getActivity().findViewById(
                                 R.id.ErrorMessageinTrack);
                         tStatus = (TextView) getActivity().findViewById(
                                 R.id.ErrorStatusinTrack);
                         tSpeed = (TextView) getActivity().findViewById(
                                 R.id.ErrorSpeedinTrack);
+                        tSpeed.setVisibility(View.GONE);
 
                         tStatus.setText("Status : " + Status);
                         tStatus.setVisibility(View.VISIBLE);
 
-                        if (Status.equals("running") && !Speed.equals("")) {
+                        if (Status.equals("running")) {
                             double spd = Double.parseDouble(Speed);
                             DecimalFormat numberFormat = new DecimalFormat("##.00");
-
                             String sp=String.valueOf(numberFormat.format(spd));
-
-                            tSpeed.setText("SPEED(Km/h) : " + sp);
-                            tSpeed.setVisibility(View.VISIBLE);
+                            if(!sp.equals("0.0")) {
+                                tSpeed.setText("SPEED(Km/h) : " + sp);
+                                tSpeed.setVisibility(View.VISIBLE);
+                            }
                         }
 
                         ErrorMessage.setText("TRIP IS NOT YET ADDED");
                         ErrorBtn.setText("See Current Location");
 
                         if(bValid==false){
-
                             ErrorBtn.setText("OK");
                         }
-
                     }
-
-
                     else {
 //                        Toast.makeText(getActivity(), "Try After Some Times",
 //                                Toast.LENGTH_LONG).show();
@@ -636,12 +631,12 @@ try {
 }
 
 catch(Exception e)
-{ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+{
+    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                 .toString() + " "
-                + "[TrackingVehicleTrip]", e.toString());}
-
-
-}
+                + "[TrackingVehicleTrip]", e.toString());
+        }
+    }
 
     @Override
     public void onFuelInLiters(String response) {

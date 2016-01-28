@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -26,13 +27,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Interface.IFuelEntryFragment;
+import com.example.anand_roadwayss.BackUpService;
 import com.example.anand_roadwayss.ConnectionDetector;
+import com.example.anand_roadwayss.CustomAlertDialog;
 import com.example.anand_roadwayss.DBAdapter;
 import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 import com.example.anand_roadwayss.SendToWebService;
+import com.example.anand_roadwayss.Welcome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +50,7 @@ import org.xmlpull.v1.sax2.Driver;
 public class FuelEntryFragment extends Fragment implements OnClickListener,
         IFuelEntryFragment
 {
-    Button save,update;
+    Button save;
     TextView ChooseDate;
     Calendar c = Calendar.getInstance();
     String UzrDate, selDriver, selVehicle, Date1, VehicleStr, DriverStr, SpeedStr, FuelStr, Date2;
@@ -58,6 +62,8 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
     View view;
     ArrayAdapter<String> vehicleDataAdapter,driverDataAdapter;
     final IFuelEntryFragment mFuelEntryFragment = this;
+    int pos;
+    CustomAlertDialog ald;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +71,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
 
         view = inflater.inflate(R.layout.fragment_fuel_entry, container, false);
         db = new DBAdapter(getActivity());
+        ald=new CustomAlertDialog();
         selDriver = "Select Driver";
         selVehicle = "Select Vehicle";
         bindData();
@@ -198,7 +205,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
             String jsonData = jsonResponse.getString("d");
             JSONObject d = new JSONObject(jsonData);
             status = d.getString("status");
-            Rid = d.getString("id");
+           // Rid = d.getString("id");
 
             if (!FuelStr.equals("")) {
                 f = Double.valueOf(FuelStr);
@@ -226,8 +233,6 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                     if (id != -1) {
                         Toast.makeText(getActivity(), "Saved Successfuly",
                                 Toast.LENGTH_SHORT).show();
-                    } else {
-
                     }
                     refreshActivity();
                     break;
@@ -243,8 +248,34 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
                     break;
 
                 case "employee id or vehicle number does not exist":
-                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                            .toString() + " " + "[saveFuelDetails]", status);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater = LayoutInflater.from(getActivity());
+                    View dialogView = inflater.inflate(R.layout.date_custom_dialog, null);
+                    builder.setView(dialogView);
+                    final AlertDialog alertDialog1 = builder.create();
+                    message = (TextView) dialogView.findViewById(R.id.textmsg);
+                    ok = (TextView) dialogView.findViewById(R.id.textBtn);
+                    message.setText("The driver name or vehicle number has deleted by another manager.");
+                    View v1= inflater.inflate(R.layout.title_dialog_layout, null);
+                    alertDialog1.setCustomTitle(v1);
+
+                    ok.setText("REFRESH");
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent ii = new Intent(getActivity(), Welcome.class);
+                            ii.putExtra("comeback", "true");
+                            ii.putExtra("class",FuelActivity.class);
+                            startActivity(ii);
+                            alertDialog1.dismiss();
+                        }
+                    });
+                    Resources resources =alertDialog1.getContext().getResources();
+                    int color = resources.getColor(R.color.white);
+                    alertDialog1.show();
+                    int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
+                    View titleDivider = alertDialog1.getWindow().getDecorView().findViewById(titleDividerId);
+                    titleDivider.setBackgroundColor(color);
                     break;
 
                 case "unknown error":
@@ -279,28 +310,24 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
     private void loadDriverSpinnerData() {
         try {
             db.open();
-            DriverList = db.getAllLabels(DBAdapter.getEmployeeDetails(),
-                    "Driver");
+            DriverList = db.getAllLabels(DBAdapter.getEmployeeDetails(), "Driver");
             DriverList.add(0, selDriver);
             // DriverList.add(1, "RAM");
             db.close();
             // Creating adapter for spinner
-            driverDataAdapter = new ArrayAdapter<String>(
-                    getActivity(), android.R.layout.simple_spinner_item,
+            driverDataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,
                     DriverList);
-
-            // Drop down layout style - list view with radio button
-        //   dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
             // attaching data adapter to spinner
             DriverS.setAdapter(driverDataAdapter);
+            DriverS.setSelection(pos);
 
             // Set the ClickListener for Spinner
             DriverS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 public void onItemSelected(AdapterView<?> adapterView,
-                                           View view, int i, long l) {
-                    // GET EMPLOYEE ID
+                                           View view, int i, long l)
+                {
+                    pos=i;
                 }
 
                 // If no option selected
@@ -340,10 +367,14 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
 
             // attaching data adapter to spinner
             VehicleS.setAdapter(vehicleDataAdapter);
+            vehicleDataAdapter.notifyDataSetChanged();
+
             // Set the ClickListener for Spinner
             VehicleS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> adapterView,
-                                           View view, int i, long l) {
+                                           View view, int i, long l)
+                {
+
                 }
 
                 // If no option selected
@@ -523,5 +554,7 @@ public class FuelEntryFragment extends Fragment implements OnClickListener,
 
 
     }
+
+
 
 }

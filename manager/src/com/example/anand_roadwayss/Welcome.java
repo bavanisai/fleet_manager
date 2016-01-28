@@ -77,6 +77,19 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
 
+        try{
+            String check = getIntent().getStringExtra("comeback");
+            Object cls=getIntent().getSerializableExtra("class");
+            if(check!=null && check.equals("true") && cls!=null)
+            {
+              reSync((Class)cls);
+            }
+        } catch (Exception e){
+            ExceptionMessage.exceptionLog(this, this.getClass()
+                    .toString() + " " + "[saveFuelDetails]",e.toString());
+        }
+
+
         sp = getSharedPreferences("testapp", Context.MODE_PRIVATE);
         String regComplete = sp.getString("checkReg", "false");
         if(regComplete.equals("true")) {
@@ -359,8 +372,7 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 trackAlertDialog();
                 break;
             case R.id.welcomeIvFuel:
-                Intent intentFuelSync = new Intent(getApplicationContext(),
-                        BackUpService.class);
+                Intent intentFuelSync = new Intent(getApplicationContext(), BackUpService.class);
                 intentFuelSync.putExtra("act", "FuelModule");
                 startService(intentFuelSync);
                 fuelAlertDialog();
@@ -598,5 +610,13 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
         Intent i=new Intent(Welcome.this,Login.class);
         startActivity(i);
 
+    }
+
+    public void reSync(Class c)
+    {
+        Intent intentFuelSync = new Intent(getApplicationContext(), BackUpService.class);
+        startService(intentFuelSync);
+        Intent i1 = new Intent(Welcome.this, c);
+        startActivity(i1);
     }
 }

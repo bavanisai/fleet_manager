@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +30,7 @@ import com.example.anand_roadwayss.Welcome;
 
 import java.util.ArrayList;
 
-public class PaymentDriver extends ActionBarActivity
+public class PaymentDriver extends AppCompatActivity
 {
     ViewPager mViewPager;
     int check = 0;

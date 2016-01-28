@@ -58,9 +58,8 @@ public class VehicleList extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
+    public void onPause() {
+        super.onPause();
     }
 
     public void vehicleListSync()
@@ -278,9 +277,6 @@ public class VehicleList extends Fragment {
         int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
         View titleDivider = alertDialog1.getWindow().getDecorView().findViewById(titleDividerId);
         titleDivider.setBackgroundColor(color);
-
-
-
     }
 
     public String jsonParsing(String response) {
@@ -312,7 +308,6 @@ public class VehicleList extends Fragment {
         }
 
     public void refreshActivity() {
-
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         getActivity().finish();
