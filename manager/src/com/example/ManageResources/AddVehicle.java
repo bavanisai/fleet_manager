@@ -59,7 +59,7 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     int sKey = 1;
     Button manVBtnSave;
     String VehNo, sImei, sVehPhNo, vehMileage, typeOfVehicle,
-            srvrStatus, srvrVehicleId, srvrIMEINumber, srvrMobileNumber, sProtocol;
+            srvrStatus, srvrVehicleId,sProtocol;
     ContentValues cv = new ContentValues();
     IManageResourcesVehicle mInterfaceManageResourcesVehicle = this;
     String VehicleNumber = null;
@@ -329,13 +329,6 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //spinner to load imei numbers
-    }
-
-
-    @Override
     public void setMenuVisibility(final boolean visible) {
         super.setMenuVisibility(visible);
         if (visible) {
@@ -519,148 +512,156 @@ public class AddVehicle extends Fragment implements IManageResourcesVehicle,View
     }
 
     @Override
-    public void onTaskCompleteVehicle(String result) {
-        if (result.equals("No Internet")) {
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            cd.ConnectingToInternet();
-        } else if (result.contains("refused") || result.contains("timed out")) {
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+    public void onTaskCompleteVehicle(String result)
+    {
+        try {
+            if (result.equals("No Internet")) {
+                ConnectionDetector cd = new ConnectionDetector(getActivity());
+                cd.ConnectingToInternet();
+            } else if (result.contains("refused") || result.contains("timed out")) {
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
-        } else if (result.contains("java.net.SocketTimeoutException")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
+            } else if (result.contains("java.net.SocketTimeoutException")) {
 
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
 
-        } else {
-            jsonParsing(result);
-            db = new DBAdapter(getActivity());
-            try {
-                db.open();
+            } else {
+                jsonParsing(result);
+                db = new DBAdapter(getActivity());
+                try {
+                    db.open();
 
-                switch (srvrStatus) {
+                    switch (srvrStatus) {
 
-                    case "recovered":
-                        db.insertContact(DBAdapter.getVehicleDetails(), cv);
+                        case "recovered":
+                            db.insertContact(DBAdapter.getVehicleDetails(), cv);
 //                        new SendToWebService(getActivity(),
 //                                mInterfaceManageResourcesVehicle).execute("8",
 //                                "ManageVehicle", VehNo, typeOfVehicle, vehMileage,
 //                                sImei, sVehPhNo, sProtocol, "1");
-                        updateCursor();
-                        Toast.makeText(getActivity(), "Data Saved Successfull",
-                                Toast.LENGTH_LONG).show();
-                        refreshActivity();
-
-
-                        break;
-
-                    case "inserted":
-                        long id = db.insertContact(DBAdapter.getVehicleDetails(),
-                                cv);
-                        if (id != -1) {
-
-                            // imeiDataAdapter.remove(sImei);
                             updateCursor();
                             Toast.makeText(getActivity(), "Data Saved Successfull",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        refreshActivity();
-                        break;
+                            refreshActivity();
 
-                    case "imeinumber already exist":
-                        Toast.makeText(
-                                getActivity(),
-                                "Vehicle Number : " + srvrVehicleId
-                                        + "  is mapped with this IMEI Number",
-                                Toast.LENGTH_LONG).show();
-                        break;
 
-                    case "vehicle already exist":
-                        Toast.makeText(
-                                getActivity(),
-                                "Vehicle Number already existsr",
-                                Toast.LENGTH_LONG).show();
-                        break;
+                            break;
 
-                    case "phonenumber already exist":
-                        Toast.makeText(
-                                getActivity(),
-                                "Vehicle Number : " + srvrVehicleId
-                                        + "  is mapped with this IMEI Number",
-                                Toast.LENGTH_LONG).show();
-                        break;
+                        case "inserted":
+                            long id = db.insertContact(DBAdapter.getVehicleDetails(),
+                                    cv);
+                            if (id != -1) {
 
-                    case "updated":
-                        long rowsaffected = db.updateVehicleContact(
-                                DBAdapter.getVehicleDetails(), cv, VehNo);
-                        if (rowsaffected != -1) {
-                            //  imeiDataAdapter.remove(sImei);
-                            updateCursor();
-                            Toast.makeText(getActivity(), "Data Updated",
+                                // imeiDataAdapter.remove(sImei);
+                                updateCursor();
+                                Toast.makeText(getActivity(), "Data Saved Successfull",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            refreshActivity();
+                            break;
+
+                        case "imeinumber already exist":
+                            Toast.makeText(
+                                    getActivity(),
+                                    "Vehicle Number : " + srvrVehicleId
+                                            + "  is mapped with this IMEI Number",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        refreshActivity();
-                        break;
+                            break;
 
-                    case "invalid authkey":
-                        Toast.makeText(getActivity(), "Failed.. Try Again",
-                                Toast.LENGTH_LONG).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteVehicle]", srvrStatus);
+                        case "vehicle already exist":
+                            Toast.makeText(
+                                    getActivity(),
+                                    "Vehicle Number already existsr",
+                                    Toast.LENGTH_LONG).show();
+                            break;
 
-                        break;
+                        case "phonenumber already exist":
+                            Toast.makeText(
+                                    getActivity(),
+                                    "Vehicle Number : " + srvrVehicleId
+                                            + "  is mapped with this IMEI Number",
+                                    Toast.LENGTH_LONG).show();
+                            break;
 
-                    case "unknown error":
-                        Toast.makeText(getActivity(), "Failed.. Try Again",
-                                Toast.LENGTH_LONG).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteVehicle]", srvrStatus);
-                        break;
+                        case "updated":
+                            long rowsaffected = db.updateVehicleContact(
+                                    DBAdapter.getVehicleDetails(), cv, VehNo);
+                            if (rowsaffected != -1) {
+                                //  imeiDataAdapter.remove(sImei);
+                                updateCursor();
+                                Toast.makeText(getActivity(), "Data Updated",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            refreshActivity();
+                            break;
 
-                    default:
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteVehicle]", srvrStatus);
-                        break;
+                        case "invalid authkey":
+                            Toast.makeText(getActivity(), "Failed.. Try Again",
+                                    Toast.LENGTH_LONG).show();
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                    .getClass().toString()
+                                    + " "
+                                    + "[onTaskCompleteVehicle]", srvrStatus);
 
+                            break;
+
+                        case "unknown error":
+                            Toast.makeText(getActivity(), "Failed.. Try Again",
+                                    Toast.LENGTH_LONG).show();
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                    .getClass().toString()
+                                    + " "
+                                    + "[onTaskCompleteVehicle]", srvrStatus);
+                            break;
+
+                        default:
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                    .getClass().toString()
+                                    + " "
+                                    + "[onTaskCompleteVehicle]", srvrStatus);
+                            break;
+
+                    }
+
+                } catch (SQLiteException e) {
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[onTaskCompleteVehicle1]",
+                            e.toString());
+                } catch (Exception e) {
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                    .toString() + " " + "[onTaskCompleteVehicle2]",
+                            e.toString());
                 }
-
-            } catch (SQLiteException e) {
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                                .toString() + " " + "[onTaskCompleteVehicle]",
-                        e.toString());
-            } catch (Exception e) {
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                                .toString() + " " + "[onTaskCompleteVehicle]",
-                        e.toString());
+                db.close();
             }
-            db.close();
+        }catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                            .toString() + " " + "[onTaskCompleteVehicle3]",
+                    e.toString());
         }
 
     }

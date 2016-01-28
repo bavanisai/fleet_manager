@@ -121,12 +121,16 @@ public class CleanerList extends Fragment implements ILeaveEntryCleaner {
                         ExceptionMessage.exceptionLog(getActivity(), this
                                 .getClass().toString()
                                 + " "
-                                + "[btnSendClnr.setOnClickListener]", e.toString());
+                                + "[btnSendClnr.setOnClickListener1]", e.toString());
                     }
                     db.close();
                 } catch (Exception e)
                 {
                     Toast.makeText(getActivity(), "Please select the Cleaner", Toast.LENGTH_LONG).show();
+                    ExceptionMessage.exceptionLog(getActivity(), this
+                            .getClass().toString()
+                            + " "
+                            + "[btnSendClnr.setOnClickListener2]", e.toString());
                 }
             }
         });
@@ -229,58 +233,62 @@ public class CleanerList extends Fragment implements ILeaveEntryCleaner {
     };
 
     @Override
-    public void onTaskCompleteCleanerLeave(String result) {
-        if (result.equals("No Internet")) {
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            cd.ConnectingToInternet();
+    public void onTaskCompleteCleanerLeave(String result)
+    {
+        try {
+            if (result.equals("No Internet")) {
+                ConnectionDetector cd = new ConnectionDetector(getActivity());
+                cd.ConnectingToInternet();
+            }
+            if (result.contains("refused") || result.contains("timed out")) {
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
+
+            } else if (result.contains("java.net.SocketTimeoutException")) {
+
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
+
+            } else {
+
+                String response = jsonParsing1(result);
+                if (response.equals("updated")) {
+                    Toast.makeText(getActivity(),
+                            "Cleaner leave updated to server", Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Toast.makeText(getActivity(), "Try after sometime.....",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(getActivity(), this
+                    .getClass().toString()
+                    + " " + "[onTaskCompleteCleanerLeave()]",e.toString());
         }
-        if (result.contains("refused") || result.contains("timed out")) {
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
-
-        } else if (result.contains("java.net.SocketTimeoutException")) {
-
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
-
-        } else {
-		
-			String response = jsonParsing1(result);
-			if(response.equals("updated")){
-				Toast.makeText(getActivity(),
-                        "Cleaner leave updated to server", Toast.LENGTH_LONG)
-                        .show();
-
-			}
-			          
-            else{
-                Toast.makeText(getActivity(), "Try after sometime.....",
-                        Toast.LENGTH_LONG).show();
-				}
-        }
-
     }
 	
 	 public String jsonParsing1(String response) {

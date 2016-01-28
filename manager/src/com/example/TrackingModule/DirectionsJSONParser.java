@@ -68,10 +68,14 @@ public class DirectionsJSONParser {
         {
             ExceptionMessage.exceptionLog(_context,this
                     .getClass().toString() + " "
-                    + "[getLocation()]", e.toString());
+                    + "[getLocation1()]", e.toString());
             e.printStackTrace();
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(_context,this
+                    .getClass().toString() + " "
+                    + "[getLocation2()]", e.toString());
         }
         return routes;
     }

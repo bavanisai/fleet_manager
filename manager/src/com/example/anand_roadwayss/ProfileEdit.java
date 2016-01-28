@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.method.HideReturnsTransformationMethod;
@@ -28,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ProfileEdit extends ActionBarActivity implements OnClickListener,
+public class ProfileEdit extends AppCompatActivity implements OnClickListener,
         IRegistration {
 
     Button profileBtnUpdate;

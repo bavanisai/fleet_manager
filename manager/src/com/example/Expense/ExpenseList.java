@@ -103,11 +103,7 @@ public class ExpenseList extends Fragment implements IDeleteExpense,IExpenseList
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item,
                 label1);
-        //  dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fragmentExpenseListSpinnerVehicle.setAdapter(dataAdapter);
-
-//        fragmentExpenseListTvFromDate.setOnClickListener(this);
-//        fragmentExpenseListTvToDate.setOnClickListener(this);
         fragmentExpenseListSpinnerVehicle.setOnTouchListener(this);
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         //findViewsById();
@@ -116,26 +112,6 @@ public class ExpenseList extends Fragment implements IDeleteExpense,IExpenseList
         return view;
     }
 
-
-//    @Override
-//    public void onClick(View v) {
-//
-//        switch (v.getId()) {
-//            case R.id.fragmentExpenseListTvFromDate:
-//                mDateType = "from";
-//                fragmentExpenseListTvToDate.setText("TO DATE");
-//                MyDatePickerDialog();
-//                break;
-//            case R.id.fragmentExpenseListTvToDate:
-//                if (fragmentExpenseListTvFromDate.getText().toString().equals("FROM DATE")) {
-//                    ald.alertDialog(getActivity(), "Select the From Date");
-//                } else {
-//                    mDateType = "to";
-//                    MyDatePickerDialog();
-//                }
-//                break;
-//        }
-//    }
 
     private void bindData() {
         fragmentExpenseListTvFromDate = (TextView) view.findViewById(R.id.fragmentExpenseListTvFromDate);

@@ -3,6 +3,7 @@ package com.example.anand_roadwayss;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -11,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-public class AboutUs extends ActionBarActivity {
+public class AboutUs extends AppCompatActivity {
     TextView hLink;
     Toolbar toolbar;
 

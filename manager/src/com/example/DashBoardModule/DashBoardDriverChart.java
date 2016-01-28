@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -77,7 +78,7 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class
-        DashBoardDriverChart extends ActionBarActivity implements
+        DashBoardDriverChart extends AppCompatActivity implements
         IDashBoardDriverChart, OnClickListener {
 
     MatrixCursor DriverMileage;
@@ -91,7 +92,7 @@ public class
     final IDashBoardDriverChart mDashBoardDriverChart = this;
     DBAdapter db;
     ImageView driverMileageBarGraphRefresh;
-    String adress = new IpAddress().getIpAddress();
+
     Toolbar toolbar;
     String jdriver, jmileage;
     Font head_main = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);

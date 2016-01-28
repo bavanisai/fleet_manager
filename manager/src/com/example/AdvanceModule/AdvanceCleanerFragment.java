@@ -50,11 +50,9 @@ public class AdvanceCleanerFragment extends Fragment implements
     View view;
     ListView listCleanerAdvance;
     DBAdapter db;
-    TextView cleaner, voucherNumber, date, driver, vehNumber, amount;
     String Id;
     LinearLayout noDataLayout;
     final IDeleteAdvance mDeleteAdvance = this;
-    String adress = new IpAddress().getIpAddress();
     TextView ok,cancel,message;
     String veh;
 
@@ -182,47 +180,7 @@ public class AdvanceCleanerFragment extends Fragment implements
 	 * Purpose - Loads data from local database to Listview Event Name -
 	 * onStart() Parameters - No parameter Return Type - No Return Type
 	 */
-
-    @Override
-    public void onStart() {
-        super.onStart();
-//        try {
-//            db.open();
-//            Cursor Cleaneraccounts = db
-//                    .getAllContactsCleanerAdvance("CLEANER ADVANCE");
-//            String from[] = {DBAdapter.getKeyDate(),
-//                    DBAdapter.getKeyVoucherNo(), DBAdapter.getKeyName(),
-//                    DBAdapter.getKeyAmount()};
-//            int to[] = {R.id.textViewaccount2, R.id.textView2account2,
-//                    R.id.textView3account2, R.id.textView4account2};
-//
-//            SimpleCursorAdapter caCleaner = new SimpleCursorAdapter(
-//                    getActivity(), R.layout.account1, Cleaneraccounts, from,
-//                    to, 0);
-//
-//            listCleanerAdvance.setAdapter(caCleaner);
-//            db.close();
-//            this.listCleanerAdvance.setLongClickable(true);
-//            this.listCleanerAdvance
-//                    .setOnItemLongClickListener(new OnItemLongClickListener() {
-//                        @Override
-//                        public boolean onItemLongClick(AdapterView<?> parent,
-//                                                       View view, int position, long id) {
-//                            alertLongPressed(id);
-//                            return false;
-//                        }
-//                    });
-//        } catch (SQLiteException e) {
-//            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-//                    .toString() + " " + "[onStart]", e.toString());
-//        } catch (Exception e) {
-//            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-//                    .toString() + " " + "[onStart]", e.toString());
-//        }
-
-    }
-
-	/*
+    /*
 	 * Purpose - Deletes a row on long press of row. Method Name -
 	 * alertLongPressed Parameters - Row id Return Type - No Return Type
 	 */
@@ -319,33 +277,40 @@ public class AdvanceCleanerFragment extends Fragment implements
         refreshActivity();
     }
 
-    public void deleteAdvance(final long id) {
-        String Voucher = null;
-        SendToWebService send = new SendToWebService(getActivity(),
-                mDeleteAdvance);
-        Id = String.valueOf(id);
-        DBAdapter db = new DBAdapter(getActivity());
-        db.open();
-        Cursor advanceDetails = db.getVoucherAdvance(Id);
-        if (advanceDetails.moveToFirst()) {
-            Voucher = advanceDetails.getString(advanceDetails
-                    .getColumnIndex(DBAdapter.getKeyVoucherNo()));
-        }
-        if (Voucher != null) {
+    public void deleteAdvance(final long id)
+    {
+        try {
+            String Voucher = null;
+            SendToWebService send = new SendToWebService(getActivity(),
+                    mDeleteAdvance);
+            Id = String.valueOf(id);
+            DBAdapter db = new DBAdapter(getActivity());
+            db.open();
+            Cursor advanceDetails = db.getVoucherAdvance(Id);
+            if (advanceDetails.moveToFirst()) {
+                Voucher = advanceDetails.getString(advanceDetails
+                        .getColumnIndex(DBAdapter.getKeyVoucherNo()));
+            }
+            if (Voucher != null) {
 
-            try {
-                send.execute("27", "DeleteAdvance", Voucher);
+                try {
+                    send.execute("27", "DeleteAdvance", Voucher);
 
-            } catch (Exception e) {
-                Toast.makeText(getActivity().getBaseContext(),
-                        "Try after sometime...", Toast.LENGTH_SHORT).show();
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                        .toString() + " " + "[deleteAdvance]", e.toString());
+                } catch (Exception e) {
+                    Toast.makeText(getActivity().getBaseContext(),
+                            "Try after sometime...", Toast.LENGTH_SHORT).show();
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                            .toString() + " " + "[deleteAdvance1]", e.toString());
+                }
+
             }
 
+            db.close();
+        }catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[deleteAdvance2]", e.toString());
         }
-
-        db.close();
 
     }
 

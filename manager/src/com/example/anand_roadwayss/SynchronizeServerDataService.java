@@ -78,8 +78,7 @@ public class SynchronizeServerDataService extends IntentService {
                 String IMEI = mngr.getDeviceId();
                 SendToWebService send = new SendToWebService(
                         this, 1);
-                String response = send.execute("9", "RegisterAnApplication",
-                        registrationAuthKey, name,
+                String response = send.execute("9", "RegisterAnApplication", registrationAuthKey, name,
                         strEmpType, email, phone, pin,
                         IMEI, productKey).get();
 
@@ -89,10 +88,8 @@ public class SynchronizeServerDataService extends IntentService {
                 } else if (response.contains("java.net.SocketTimeoutException")) {
                 } else if (response.contains("The remote server returned an error")) {
                 } else {
-
                     jsonParsing(response);
                 }
-
             } catch (Exception e)
             {
                 ExceptionMessage.exceptionLog(this, this

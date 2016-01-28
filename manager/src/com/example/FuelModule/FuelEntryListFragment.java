@@ -74,6 +74,10 @@ public class
             csr1.close();
         } catch (Exception e) {
             e.printStackTrace();
+            ExceptionMessage.exceptionLog(getActivity(), this
+                    .getClass().toString()
+                    + " "
+                    + "[onCreateView]", e.toString());
         }
 
 

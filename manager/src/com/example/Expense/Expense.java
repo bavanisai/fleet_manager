@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 
-public class Expense extends ActionBarActivity {
+public class Expense extends AppCompatActivity {
 
     int check=0;
     //ViewPager mViewPager;

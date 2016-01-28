@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.DragEvent;
 import android.view.Menu;
@@ -29,7 +30,7 @@ import com.example.anand_roadwayss.IpAddress;
 import com.example.anand_roadwayss.ProfileEdit;
 import com.example.anand_roadwayss.R;
 
-public class DashBoard extends ActionBarActivity {
+public class DashBoard extends AppCompatActivity {
 
     ImageView driverImg, vehicleImg;
     TextView driverTv, vehicleTv;

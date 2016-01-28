@@ -181,15 +181,6 @@ public class AdvanceVehicleFragment extends Fragment implements IDeleteAdvance {
         return view;
     }
 
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-        }
-
 	/*
 	 * Purpose - Deletes a row on long press of row. Method Name -
 	 * alertLongPressed Parameters - Row id Return Type - No Return Type
@@ -287,32 +278,39 @@ public class AdvanceVehicleFragment extends Fragment implements IDeleteAdvance {
         refreshActivity();
     }
 
-    public void deleteAdvance(final long id) {
-        String Voucher = null;
-        SendToWebService send = new SendToWebService(getActivity(), mDeleteAdvance);
-        Id = String.valueOf(id);
-        DBAdapter db = new DBAdapter(getActivity());
-        db.open();
-        Cursor advanceDetails = db.getVehNumAdvance(Id);
-        if (advanceDetails.moveToFirst()) {
-            Voucher = advanceDetails.getString(advanceDetails
-                    .getColumnIndex(DBAdapter.getKeyVoucherNo()));
-        }
-        if (Voucher != null) {
+    public void deleteAdvance(final long id)
+    {
+        try {
+            String Voucher = null;
+            SendToWebService send = new SendToWebService(getActivity(), mDeleteAdvance);
+            Id = String.valueOf(id);
+            DBAdapter db = new DBAdapter(getActivity());
+            db.open();
+            Cursor advanceDetails = db.getVehNumAdvance(Id);
+            if (advanceDetails.moveToFirst()) {
+                Voucher = advanceDetails.getString(advanceDetails
+                        .getColumnIndex(DBAdapter.getKeyVoucherNo()));
+            }
+            if (Voucher != null) {
 
-            try {
-                send.execute("27", "DeleteAdvance", Voucher);
+                try {
+                    send.execute("27", "DeleteAdvance", Voucher);
 
-            } catch (Exception e) {
-                Toast.makeText(getActivity().getBaseContext(),
-                        "Try after sometime...", Toast.LENGTH_SHORT).show();
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                        .toString() + " " + "[deleteAdvance]", e.toString());
+                } catch (Exception e) {
+                    Toast.makeText(getActivity().getBaseContext(),
+                            "Try after sometime...", Toast.LENGTH_SHORT).show();
+                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                            .toString() + " " + "[deleteAdvance1]", e.toString());
+                }
+
             }
 
+            db.close();
+        }catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                    .toString() + " " + "[deleteAdvance2]", e.toString());
         }
-
-        db.close();
 
     }
 

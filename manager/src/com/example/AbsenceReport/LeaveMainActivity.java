@@ -23,15 +23,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LeaveMainActivity extends ActionBarActivity {
+public class LeaveMainActivity extends AppCompatActivity {
 
     Bundle bundle = new Bundle();
-    int check=0;
     ViewPager pager;
     ViewPageAdapter adapter;
     SlidingTabLayout tabs;

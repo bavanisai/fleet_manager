@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.anand_roadwayss.DBAdapter;
+import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.R;
 
 import android.support.v7.app.ActionBar;
@@ -38,9 +39,6 @@ public class InboxDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox_details);
-//        final ActionBar actionBar = getSupportActionBar();
-//        actionBar.setIcon(R.drawable.inboxopen);
-//        getActionBar().setDisplayShowTitleEnabled(false);
         db = new DBAdapter(this);
         Id = String.valueOf(getIntent().getExtras().getLong("inboxId"));
         bindData();
@@ -94,10 +92,7 @@ public class InboxDetails extends AppCompatActivity {
                     .getColumnIndex(DBAdapter.getKeyMessage()));
 
             try {
-//				JSONObject jsonResponse = new JSONObject(message);
-//				jsonData = jsonResponse.getString("d");
-
-				JSONArray a=new JSONArray(message);
+                JSONArray a=new JSONArray(message);
 				JSONObject d = a.getJSONObject(1);
 				
                // JSONObject d = new JSONObject(message);
@@ -124,7 +119,10 @@ public class InboxDetails extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
-
+                ExceptionMessage.exceptionLog(InboxDetails.this, this
+                        .getClass().toString()
+                        + " "
+                        + "[getAllData()]", e.toString());
             }
 
             InboxDetails.close();
@@ -175,14 +173,4 @@ public class InboxDetails extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-//    private void deleteInboxItem(String id) {
-//        db.open();
-//        db.deleteTripLocaly(DBAdapter.getInboxDetails(), id);
-//        db.close();
-////		Intent i=new Intent(InboxDetails.this,InboxList.class);
-////		startActivity(i);
-//        finish();
-//    }
-
 }

@@ -56,9 +56,6 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
 
     final int CAMERA_CAPTURE = 1, REQUEST_CODE_PICK_CONTACTS = 2;
     byte[] byteArray;
-
-    Boolean isInternetPresent = false;
-    ConnectionDetector cd = new ConnectionDetector(getActivity());
     Button manVBtnSave;
     String srvrStatus;
     ContentValues cv = new ContentValues();
@@ -105,7 +102,6 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
 
             @Override
             public void onClick(View v) {
-                // ((VehicleEntryActivity) getActivity()).refresh(0);
                 try {
 
                     getTextValue();
@@ -144,7 +140,6 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
                             SendToWebService send = new SendToWebService(
                                     getActivity(),
                                     mInterfaceManageResourcesCleaner);
-                            // if (send.isConnectingToInternet()) {
                             try {
                                 send.execute("10", "ManageEmployee",
                                         "Cleaner", drvName, "null", "null",
@@ -162,13 +157,9 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
                                                         + "[manVBtnSave.setOnClickListener]",
                                                 e.toString());
                             }
-
                         }
-
                         db.close();
-
                     }
-
                 } catch (SQLiteException e) {
                     ExceptionMessage.exceptionLog(getActivity(), this
                             .getClass().toString()
@@ -192,9 +183,7 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
 
                 startActivityForResult(new Intent(Intent.ACTION_PICK,
                         ContactsContract.Contacts.CONTENT_URI), REQUEST_CODE_PICK_CONTACTS);
-                ;
-
-            }
+                }
         });
 
 
@@ -279,9 +268,7 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
     //Contact Info
 
     private void retrieveContactPhoto() {
-
         Bitmap photo = null;
-
         try {
             InputStream inputStream = ContactsContract.Contacts.
                     openContactPhotoInputStream(getActivity().getContentResolver(),
@@ -291,8 +278,6 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
             if (inputStream != null) {
                 photo = BitmapFactory.decodeStream(inputStream);
                 iVempPhoto.setImageBitmap(photo);
-//		                ImageView imageView = (ImageView) findViewById(R.id.img_contact);
-//		                imageView.setImageBitmap(photo);
             }
 
             assert inputStream != null;
@@ -357,12 +342,6 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
 
         cursor.close();
         eTNewEntryEmpName.setText(contactName);
-//		TextView t1 = (TextView)getActivity().findViewById(R.id.textView1);
-//		t1.setText(contactName);
-
-
-        //Log.d(TAG, "Contact Name: " + contactName);
-
     }
 
 
@@ -466,16 +445,8 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
                 // update view
                 eTNewEntryEmpName.setText(cursor.getString(cursor
                         .getColumnIndex(DBAdapter.getKeyName())));
-                // eTNewEntryEmpName, eTNewEntryPhNo, eTNewEntryCommission,
-                // eTNewEntrySalary, eTNewEntryAddress, eTNewEntryLicenseNo;
-                // Toast.makeText(
-                // getActivity(),
-                // cursor.getString(cursor.getColumnIndex(DBAdapter
-                // .getKeyPhNo())), 0).show();
                 eTNewEntryPhNo.setText(cursor.getString(cursor
                         .getColumnIndex(DBAdapter.getKeyPhNo())));
-                // Toast.makeText(getActivity(),
-                // eTNewEntryPhNo.getText().toString(), 0).show();
                 eTNewEntryCommission.setText(cursor.getString(cursor
                         .getColumnIndex(DBAdapter.getKeyCommission())));
                 eTNewEntrySalary.setText(cursor.getString(cursor
@@ -508,149 +479,158 @@ public class AddCleaner extends Fragment implements IManageResourcesCleaner {
     }
 
     @Override
-    public void onTaskCompleteCleaner(String result) {
+    public void onTaskCompleteCleaner(String result)
+    {
+          try {
 
-        if (result.equals("No Internet")) {
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            cd.ConnectingToInternet();
-        } else if (result.contains("refused") || result.contains("timed out")) {
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+              if (result.equals("No Internet")) {
+                  ConnectionDetector cd = new ConnectionDetector(getActivity());
+                  cd.ConnectingToInternet();
+              } else if (result.contains("refused") || result.contains("timed out")) {
+                  ImageView image = new ImageView(getActivity());
+                  image.setImageResource(R.drawable.lowconnection3);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
-        } else if (result.contains("java.net.SocketTimeoutException")) {
+                  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                          .setPositiveButton("OK",
+                                  new DialogInterface.OnClickListener() {
+                                      @Override
+                                      public void onClick(DialogInterface dialog,
+                                                          int which) {
+                                          dialog.dismiss();
+                                      }
+                                  }).setView(image);
+                  builder.create().show();
+              } else if (result.contains("java.net.SocketTimeoutException")) {
 
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+                  ImageView image = new ImageView(getActivity());
+                  image.setImageResource(R.drawable.lowconnection3);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
+                  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                          .setPositiveButton("OK",
+                                  new DialogInterface.OnClickListener() {
+                                      @Override
+                                      public void onClick(DialogInterface dialog,
+                                                          int which) {
+                                          dialog.dismiss();
+                                      }
+                                  }).setView(image);
+                  builder.create().show();
 
-        } else {
-            jsonParsing(result);
+              } else {
+                  jsonParsing(result);
 
-            DBAdapter db = new DBAdapter(getActivity());
-            try {
-                db.open();
-                setTextValue(view);
-                getTextValue();
-                cv.put(DBAdapter.getKeyName(), drvName);
-                cv.put(DBAdapter.getKeyPhNo(), drvPhNo);
-                cv.put(DBAdapter.getKeyAddr(), drvAddress);
-                cv.put(DBAdapter.getKeyLicNo(), drvLicense);
-                cv.put(DBAdapter.getKeySalary(), drvSalary);
-                cv.put(DBAdapter.getKeyCommission(), drvCommission);
-                getBytesFromBitmap(iVempPhoto);
-                cv.put(DBAdapter.getKeyPhoto(), byteArray);
-                cv.put(DBAdapter.getKeyManagetype(), "Cleaner");
+                  DBAdapter db = new DBAdapter(getActivity());
+                  try {
+                      db.open();
+                      setTextValue(view);
+                      getTextValue();
+                      cv.put(DBAdapter.getKeyName(), drvName);
+                      cv.put(DBAdapter.getKeyPhNo(), drvPhNo);
+                      cv.put(DBAdapter.getKeyAddr(), drvAddress);
+                      cv.put(DBAdapter.getKeyLicNo(), drvLicense);
+                      cv.put(DBAdapter.getKeySalary(), drvSalary);
+                      cv.put(DBAdapter.getKeyCommission(), drvCommission);
+                      getBytesFromBitmap(iVempPhoto);
+                      cv.put(DBAdapter.getKeyPhoto(), byteArray);
+                      cv.put(DBAdapter.getKeyManagetype(), "Cleaner");
 
-                switch (srvrStatus) {
+                      switch (srvrStatus) {
 
-                    case "inserted":
-                        cv.put(DBAdapter.getKeyEmployeeId(), srvrEmpId);
-                        long id = db.insertContact(DBAdapter.getEmployeeDetails(),
-                                cv);
-                        if (id != -1) {
-                            Toast.makeText(getActivity(), "Data Saved Successfull",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        refreshActivity();
-                        break;
+                          case "inserted":
+                              cv.put(DBAdapter.getKeyEmployeeId(), srvrEmpId);
+                              long id = db.insertContact(DBAdapter.getEmployeeDetails(),
+                                      cv);
+                              if (id != -1) {
+                                  Toast.makeText(getActivity(), "Data Saved Successfull",
+                                          Toast.LENGTH_LONG).show();
+                              }
+                              refreshActivity();
+                              break;
 
-                    case "phonenumber already exist":
-                        String name = db.getEmployeeName(srvrEmpId,
-                                DBAdapter.getEmployeeDetails(),
-                                DBAdapter.getKeyName());
-                        Toast.makeText(getActivity(),
-                                name + "  is having same mobile number",
-                                Toast.LENGTH_LONG).show();
-                        break;
+                          case "phonenumber already exist":
+                              String name = db.getEmployeeName(srvrEmpId,
+                                      DBAdapter.getEmployeeDetails(),
+                                      DBAdapter.getKeyName());
+                              Toast.makeText(getActivity(),
+                                      name + "  is having same mobile number",
+                                      Toast.LENGTH_LONG).show();
+                              break;
 
-                    case "licensenumber already exist":
-                        String name1 = db.getEmployeeName(srvrEmpId,
-                                DBAdapter.getEmployeeDetails(),
-                                DBAdapter.getKeyName());
-                        Toast.makeText(getActivity(),
-                                name1 + "  is having same License number",
-                                Toast.LENGTH_LONG).show();
-                        break;
-						
-					 case "emailid already exist":
-                        String name2 = db.getEmployeeName(srvrEmpId,
-                                DBAdapter.getEmployeeDetails(),
-                                DBAdapter.getKeyName());
-                        Toast.makeText(getActivity(),
-                                name2 + "  is having same Email id",
-                                Toast.LENGTH_LONG).show();
-                        break;
+                          case "licensenumber already exist":
+                              String name1 = db.getEmployeeName(srvrEmpId,
+                                      DBAdapter.getEmployeeDetails(),
+                                      DBAdapter.getKeyName());
+                              Toast.makeText(getActivity(),
+                                      name1 + "  is having same License number",
+                                      Toast.LENGTH_LONG).show();
+                              break;
 
-                    case "updated":
-                        cv.put(DBAdapter.getKeyEmployeeId(), srvrEmpId);
-                        long rowsaffected = db.updateContact(
-                                DBAdapter.getEmployeeDetails(), cv, drvName,
-                                "Cleaner");
-                        if (rowsaffected != -1) {
-                            Toast.makeText(getActivity(), "Data Updated",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        refreshActivity();
-                        break;
+                          case "emailid already exist":
+                              String name2 = db.getEmployeeName(srvrEmpId,
+                                      DBAdapter.getEmployeeDetails(),
+                                      DBAdapter.getKeyName());
+                              Toast.makeText(getActivity(),
+                                      name2 + "  is having same Email id",
+                                      Toast.LENGTH_LONG).show();
+                              break;
 
-                    case "invalid authkey":
-                        Toast.makeText(getActivity(), "Failed..Try again",
-                                Toast.LENGTH_LONG).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteCleaner]", srvrStatus);
-                        break;
+                          case "updated":
+                              cv.put(DBAdapter.getKeyEmployeeId(), srvrEmpId);
+                              long rowsaffected = db.updateContact(
+                                      DBAdapter.getEmployeeDetails(), cv, drvName,
+                                      "Cleaner");
+                              if (rowsaffected != -1) {
+                                  Toast.makeText(getActivity(), "Data Updated",
+                                          Toast.LENGTH_LONG).show();
+                              }
+                              refreshActivity();
+                              break;
 
-                    case "unknown error":
-                        Toast.makeText(getActivity(), "Failed..Try again",
-                                Toast.LENGTH_LONG).show();
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteCleaner]", srvrStatus);
-                        break;
+                          case "invalid authkey":
+                              Toast.makeText(getActivity(), "Failed..Try again",
+                                      Toast.LENGTH_LONG).show();
+                              ExceptionMessage.exceptionLog(getActivity(), this
+                                      .getClass().toString()
+                                      + " "
+                                      + "[onTaskCompleteCleaner]", srvrStatus);
+                              break;
 
-                    default:
-                        ExceptionMessage.exceptionLog(getActivity(), this
-                                .getClass().toString()
-                                + " "
-                                + "[onTaskCompleteCleaner]", srvrStatus);
-                        break;
+                          case "unknown error":
+                              Toast.makeText(getActivity(), "Failed..Try again",
+                                      Toast.LENGTH_LONG).show();
+                              ExceptionMessage.exceptionLog(getActivity(), this
+                                      .getClass().toString()
+                                      + " "
+                                      + "[onTaskCompleteCleaner]", srvrStatus);
+                              break;
 
-                }
+                          default:
+                              ExceptionMessage.exceptionLog(getActivity(), this
+                                      .getClass().toString()
+                                      + " "
+                                      + "[onTaskCompleteCleaner]", srvrStatus);
+                              break;
 
-            } catch (SQLiteException e) {
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                                .toString() + " " + "[onTaskCompleteCleaner]",
-                        e.toString());
-            } catch (Exception e) {
-                ExceptionMessage.exceptionLog(getActivity(), this.getClass()
-                                .toString() + " " + "[onTaskCompleteCleaner]",
-                        e.toString());
-            }
-            db.close();
-        }
+                      }
+
+                  } catch (SQLiteException e) {
+                      ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                      .toString() + " " + "[onTaskCompleteCleaner1]",
+                              e.toString());
+                  } catch (Exception e) {
+                      ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                      .toString() + " " + "[onTaskCompleteCleaner2]",
+                              e.toString());
+                  }
+                  db.close();
+              }
+          }catch (Exception e)
+          {
+              ExceptionMessage.exceptionLog(getActivity(), this
+                      .getClass().toString()
+                      + " "
+                      + "[onTaskCompleteCleaner3]", e.toString());
+          }
     }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

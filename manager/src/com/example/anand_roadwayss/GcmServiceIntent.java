@@ -152,7 +152,8 @@ public class GcmServiceIntent extends IntentService {
     }
 
     // @SuppressWarnings("deprecation")
-    private void sendNotification(String msg) {
+    private void sendNotification(String msg)
+    {try {
         String subject = null;
         NotificationManager mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -205,9 +206,20 @@ public class GcmServiceIntent extends IntentService {
         mNotificationManager.notify(notificationId, notification);
         mNotificationManager.cancel(notificationId);
         notificationId++;
+    }catch (Exception e)
+    {
+        ExceptionMessage
+                .exceptionLog(
+                        getApplicationContext(),
+                        this.getClass().toString()
+                                + " "
+                                + "[sendNotification]",
+                        e.toString());
+    }
     }
 
-    private void sendNotification1(String msg) {
+    private void sendNotification1(String msg)
+    {try {
         String subject = null;
 
         NotificationManager mNotificationManager = (NotificationManager) this
@@ -235,7 +247,7 @@ public class GcmServiceIntent extends IntentService {
 
         Notification notification = new Notification(icon, tickerText, when);
         Intent Destination = new Intent(context, LocationActivity.class);
-        Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 Destination, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -250,7 +262,16 @@ public class GcmServiceIntent extends IntentService {
         notification.defaults |= Notification.DEFAULT_SOUND;
         mNotificationManager.notify(notificationId, notification);
         notificationId++;
-
+    }catch (Exception e)
+    {
+        ExceptionMessage
+                .exceptionLog(
+                        getApplicationContext(),
+                        this.getClass().toString()
+                                + " "
+                                + "[sendNotification1]",
+                        e.toString());
+    }
     }
 
     // THIS METHOD FOR FUEL NOTIFICATION SEND BY SERVER MODIFIED ON 20/12/2014
@@ -325,74 +346,87 @@ public class GcmServiceIntent extends IntentService {
         }
 
         catch(Exception e){
-            e.toString();
+            ExceptionMessage
+                    .exceptionLog(
+                            getApplicationContext(),
+                            this.getClass().toString()
+                                    + " "
+                                    + "[sendNotificationFuel]",
+                            e.toString());
         }
     }
 
     private void sendNotificationSourceDestinationAlert(String msg) {
-        if(msg.contains("appUrl")){
-            String[] appUrlArray=msg.split(":");
-            String appUrlData=appUrlArray[1];
-            appUrlData = "http://" + appUrlData + ":" + appUrlArray[2]
-                    + "/";
-            SharedPreferences AppUrl = getSharedPreferences("AppUrl",
-                    Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = AppUrl.edit();
-            editor.putString("appUrl", appUrlData);
-            editor.commit();
-            ExceptionMessage.exceptionLog(this, this.getClass().toString()
-                    + " " + "[GCM]", "AppUrl Updated");
+        try {
+            if (msg.contains("appUrl")) {
+                String[] appUrlArray = msg.split(":");
+                String appUrlData = appUrlArray[1];
+                appUrlData = "http://" + appUrlData + ":" + appUrlArray[2]
+                        + "/";
+                SharedPreferences AppUrl = getSharedPreferences("AppUrl",
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = AppUrl.edit();
+                editor.putString("appUrl", appUrlData);
+                editor.commit();
+                ExceptionMessage.exceptionLog(this, this.getClass().toString()
+                        + " " + "[GCM]", "AppUrl Updated");
 
-        }
-        else if(msg.contains("reRegister")){
-            Intent in = new Intent(this, SynchronizeServerDataService.class);
-            startService(in);
-        }
-        else if(msg.contains("updateApp")){
+            } else if (msg.contains("reRegister")) {
+                Intent in = new Intent(this, SynchronizeServerDataService.class);
+                startService(in);
+            } else if (msg.contains("updateApp")) {
 
-            SharedPreferences AppUrl = getSharedPreferences("updateApp",
-                    Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = AppUrl.edit();
-            editor.putString("update", "true");
-            editor.commit();
-            ExceptionMessage.exceptionLog(this, this.getClass().toString()
-                    + " " + "[GCM]", "updateApp Updated");
-        }
-        else {
-         String subject = null;
-            NotificationManager mNotificationManager = (NotificationManager) this
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            int icon = R.drawable.ic_stat_gcm;
+                SharedPreferences AppUrl = getSharedPreferences("updateApp",
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = AppUrl.edit();
+                editor.putString("update", "true");
+                editor.commit();
+                ExceptionMessage.exceptionLog(this, this.getClass().toString()
+                        + " " + "[GCM]", "updateApp Updated");
+            } else {
+                String subject = null;
+                NotificationManager mNotificationManager = (NotificationManager) this
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                int icon = R.drawable.ic_stat_gcm;
 
-            long when = System.currentTimeMillis(); // now
-            Context context = getApplicationContext();
-            String[] Message = msg.split(",");
-            //subject = "VEHICLE MESSAGE";
-            String messag = Message[0].replace("$", "");
-            CharSequence tickerText = Message[1];
+                long when = System.currentTimeMillis(); // now
+                Context context = getApplicationContext();
+                String[] Message = msg.split(",");
+                //subject = "VEHICLE MESSAGE";
+                String messag = Message[0].replace("$", "");
+                CharSequence tickerText = Message[1];
 
-            DBAdapter db = new DBAdapter(getApplicationContext());
-            ContentValues cv = new ContentValues();
-            db.open();
-            cv.put(DBAdapter.getKeyDate(), Message[2]);
-            cv.put(DBAdapter.getKeySubject(), Message[1]);
-            cv.put(DBAdapter.getKeyMessage(), messag);
-            cv.put(DBAdapter.getKeyFlag(), 0);
-            long id = db.insertContactWithDelete(DBAdapter.getInboxDetails(), cv);
-            db.close();
+                DBAdapter db = new DBAdapter(getApplicationContext());
+                ContentValues cv = new ContentValues();
+                db.open();
+                cv.put(DBAdapter.getKeyDate(), Message[2]);
+                cv.put(DBAdapter.getKeySubject(), Message[1]);
+                cv.put(DBAdapter.getKeyMessage(), messag);
+                cv.put(DBAdapter.getKeyFlag(), 0);
+                long id = db.insertContactWithDelete(DBAdapter.getInboxDetails(), cv);
+                db.close();
 
 
-            Notification notification = new Notification(icon, tickerText, when);
-            Intent Destination = new Intent(context, InboxList.class);
-            Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    Destination, PendingIntent.FLAG_UPDATE_CURRENT);
-            notification.setLatestEventInfo(context, tickerText, messag, contentIntent);
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-            notification.defaults |= Notification.DEFAULT_SOUND;
-            mNotificationManager.notify(notificationId, notification);
-            notificationId++;
+                Notification notification = new Notification(icon, tickerText, when);
+                Intent Destination = new Intent(context, InboxList.class);
+                Destination.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                        Destination, PendingIntent.FLAG_UPDATE_CURRENT);
+                notification.setLatestEventInfo(context, tickerText, messag, contentIntent);
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                notification.defaults |= Notification.DEFAULT_SOUND;
+                mNotificationManager.notify(notificationId, notification);
+                notificationId++;
+            }
+        }catch (Exception e)
+        {
+            ExceptionMessage
+                    .exceptionLog(
+                            getApplicationContext(),
+                            this.getClass().toString()
+                                    + " "
+                                    + "[sendNotificationSourceDestinationAlert]",
+                            e.toString());
         }
     }
-
 }

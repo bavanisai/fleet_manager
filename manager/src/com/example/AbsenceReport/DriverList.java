@@ -119,11 +119,15 @@ public class DriverList extends Fragment implements ILeaveEntryDriver {
                         ExceptionMessage.exceptionLog(getActivity(), this
                                 .getClass().toString()
                                 + " "
-                                + "[btnSend.setOnClickListener]", e.toString());
+                                + "[btnSend.setOnClickListener1]", e.toString());
                     }
                     db.close();
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), "Please select the Driver", Toast.LENGTH_LONG).show();
+                    ExceptionMessage.exceptionLog(getActivity(), this
+                            .getClass().toString()
+                            + " "
+                            + "[btnSend.setOnClickListener2]", e.toString());
                 }
             }
         });
@@ -225,54 +229,62 @@ public class DriverList extends Fragment implements ILeaveEntryDriver {
     };
 
     @Override
-    public void onTaskCompleteDriverLeave(String result) {
-        if (result.equals("No Internet")) {
-            ConnectionDetector cd = new ConnectionDetector(getActivity());
-            cd.ConnectingToInternet();
-        }
+    public void onTaskCompleteDriverLeave(String result)
+    {
+        try {
 
-        if (result.contains("refused") || result.contains("timed out")) {
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+            if (result.equals("No Internet")) {
+                ConnectionDetector cd = new ConnectionDetector(getActivity());
+                cd.ConnectingToInternet();
+            }
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
+            if (result.contains("refused") || result.contains("timed out")) {
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
 
-        } else if (result.contains("java.net.SocketTimeoutException")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
 
-            ImageView image = new ImageView(getActivity());
-            image.setImageResource(R.drawable.lowconnection3);
+            } else if (result.contains("java.net.SocketTimeoutException")) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    .setPositiveButton("OK",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    dialog.dismiss();
-                                }
-                            }).setView(image);
-            builder.create().show();
+                ImageView image = new ImageView(getActivity());
+                image.setImageResource(R.drawable.lowconnection3);
 
-        } else {
-		
-		String response = jsonParsing1(result);
-            if(response.equals("updated")){
-                Toast.makeText(getActivity(), "Driver leave updated to server",
-                        Toast.LENGTH_LONG).show();
-						}
-            else{
-                Toast.makeText(getActivity(), "Try after sometime.....",
-                        Toast.LENGTH_LONG).show();
-						}
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                builder.create().show();
+
+            } else {
+
+                String response = jsonParsing1(result);
+                if (response.equals("updated")) {
+                    Toast.makeText(getActivity(), "Driver leave updated to server",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "Try after sometime.....",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e)
+        {
+            ExceptionMessage.exceptionLog(getActivity(), this
+                    .getClass().toString()
+                    + " " + "[onTaskCompleteDriverLeave()]",e.toString());
         }
 
     }

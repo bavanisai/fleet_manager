@@ -59,11 +59,10 @@ public class AddExpense extends Fragment implements View.OnClickListener, IAddEx
     Bitmap bitmap;
     SendToWebService send;
     List<String> label1, label2;
-    String mSpinnerVehicleNo, mSpinnerDriver, mUzrDate, mVoucherNum, mParticular, mAmount = "0", mEmpId, parsedString = null,
+    String mSpinnerVehicleNo, mSpinnerDriver, mUzrDate, mVoucherNum, mParticular, mAmount = "0", mEmpId,
             LocalVoucherNo, srvrStatus, srvrVoucher,updateExpenseId;
     final int CAMERA_CAPTURE = 1;
     byte[] byteArray,receipt;
-   // ImageView fragmentExpenseAddImgVReceipt;
     TextView fragmentExpenseAddTvDate;
     Spinner fragmentExpenseAddSpinnerVehicle, fragmentExpenseAddSpinnerDriver;
     EditText fragmentExpenseAddEdtVoucherNo, fragmentExpenseAddEdtParticular, fragmentExpenseAddEdtAmount;
@@ -424,12 +423,15 @@ public class AddExpense extends Fragment implements View.OnClickListener, IAddEx
                         ExceptionMessage.exceptionLog(getActivity(), this
                                 .getClass().toString()
                                 + " "
-                                + "[onSaveAdvance]", e.toString());
-
+                                + "[onSaveAdvance1]", e.toString());
                     }
                 }
-            } catch (Exception e) {
-
+            } catch (Exception e)
+            {
+                ExceptionMessage.exceptionLog(getActivity(), this
+                        .getClass().toString()
+                        + " "
+                        + "[onSaveAdvance2]", e.toString());
             }
         }
 
@@ -517,24 +519,11 @@ public class AddExpense extends Fragment implements View.OnClickListener, IAddEx
                                     .toString() + " " + "[saveExpense]",
                             parsedString);
                     break;
-					
-				
-
                 case "updated":
-//                    db.open();
-//
-//                    long rowsaffected = db.updateExpense(
-//                            DBAdapter.getExpensedetails(), cv, srvrVoucher);
-                    //if (rowsaffected != -1) {
-                        Toast.makeText(getActivity(), "Data Updated",
+                    Toast.makeText(getActivity(), "Data Updated",
                                 Toast.LENGTH_LONG).show();
-//                    }
-//                    db.close();
                     refreshActivity();
-//                    ((Expense) getActivity()).setCurrentItem(0, true);
                     break;
-
-
                 case "invalid authkey":
                     ExceptionMessage.exceptionLog(getActivity(), this.getClass()
                                     .toString() + " " + "[saveExpense]",

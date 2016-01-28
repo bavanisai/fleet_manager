@@ -116,103 +116,106 @@ public class BackUpService extends IntentService {
                             JSONObject c = table1
                                     .getJSONObject(table1.length() - 1);
                             int tableId = c.getInt("tableId");
-                            // switch (tableId) {
-                            // case 1:
-                            // AddToVehicleTable(response);
-                            // break;
-                            // case 2:
-                            // AddToEmployeeTable(response);
-                            // break;
-                            //
-                            // case 3:
-                            // addToLocationTable(response);
-                            // break;
-                            // case 4:
-                            // addToFuelTable(response);
-                            // break;
-                            // case 5:
-                            // addToAdvance(response);
-                            // break;
-                            // case 6:
-                            // addToPaymentTable(response);
-                            // break;
-                            // case 7:
+                             switch (tableId) {
+                             case 1:
+                             AddToVehicleTable(response);
+                             break;
+                             case 2:
+                             AddToEmployeeTable(response);
+                             break;
+
+                             case 3:
+                             addToLocationTable(response);
+                             break;
+                             case 4:
+                             addToFuelTable(response);
+                             break;
+                             case 5:
+                             addToAdvance(response);
+                             break;
+                             case 6:
+                             addToPaymentTable(response);
+                             break;
+                             case 7:
                             // addToTripTable(response);
-                            // break;
-                            // default:
-                            // AckProcessId(processList.get(count));
-                            // break;
-                            // }
+                             break;
+                             default:
+                             AckProcessId(processList.get(count));
+                             break;
+                             }
 
-                            if (activit.equals("ManageResources") || activit.equals("TrackingModule")) {
-                                switch (tableId) {
-                                    case 1:
-                                        AddToVehicleTable(response);
-                                        break;
-                                    case 2:
-                                        AddToEmployeeTable(response);
-                                        break;
-                                    default:
-                                        break;
-                                }
+//                            if (activit.equals("ManageResources") || activit.equals("TrackingModule")) {
+//                                switch (tableId) {
+//                                    case 1:
+//                                        AddToVehicleTable(response);
+//                                        break;
+//                                    case 2:
+//                                        AddToEmployeeTable(response);
+//                                        break;
+//                                    case 4:
+//                                        addToFuelTable(response);
+//                                        break;
+//                                    default:
+//                                        break;
+//                                }
+//
+//                            } else if (activit.equals("TripModule")) {
+//                                switch (tableId) {
+//                                    case 3:
+//                                        addToLocationTable(response);
+//                                        break;
+//                                    case 7:
+//                                        //addToTripTable(response);
+//                                        break;
+//                                    default:
+//                                        break;
+//                                }
+//
+//                            } else if (activit.equals("FuelModule")) {
+//                                switch (tableId) {
+//                                    case 1:
+//                                        AddToVehicleTable(response);
+//                                        break;
+//                                    case 2:
+//                                        AddToEmployeeTable(response);
+//                                        break;
+//                                    case 4:
+//                                        addToFuelTable(response);
+//                                        break;
+//                                    default:
+//                                        break;
+//
+//                                }
+//                            } else if (activit.equals("AdvanceModule")) {
+//                                switch (tableId) {
+//                                    case 1:
+//                                        AddToVehicleTable(response);
+//                                        break;
+//                                    case 2:
+//                                        AddToEmployeeTable(response);
+//                                        break;
+//                                    case 5:
+//                                        addToAdvance(response);
+//                                        break;
+//                                    default:
+//                                        break;
+//
+//                                }
+//
+//                            } else if (activit.equals("PaymentModule")) {
+//                                switch (tableId) {
+//                                    case 1:
+//                                        AddToVehicleTable(response);
+//                                        break;
+//                                    case 6:
+//                                        addToPaymentTable(response);
+//                                        break;
+//                                    default:
+//                                        break;
+//
+//                                }
 
-                            } else if (activit.equals("TripModule")) {
-                                switch (tableId) {
-                                    case 3:
-                                        addToLocationTable(response);
-                                        break;
-                                    case 7:
-                                        //addToTripTable(response);
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                            } else if (activit.equals("FuelModule")) {
-                                switch (tableId) {
-                                    case 1:
-                                        AddToVehicleTable(response);
-                                        break;
-                                    case 2:
-                                        AddToEmployeeTable(response);
-                                        break;
-                                    case 4:
-                                        addToFuelTable(response);
-                                        break;
-                                    default:
-                                        break;
-
-                                }
-                            } else if (activit.equals("AdvanceModule")) {
-                                switch (tableId) {
-                                    case 1:
-                                        AddToVehicleTable(response);
-                                        break;
-                                    case 2:
-                                        AddToEmployeeTable(response);
-                                        break;
-                                    case 5:
-                                        addToAdvance(response);
-                                        break;
-                                    default:
-                                        break;
-
-                                }
-
-                            } else if (activit.equals("PaymentModule")) {
-                                switch (tableId) {
-                                    case 1:
-                                        AddToVehicleTable(response);
-                                        break;
-                                    case 6:
-                                        addToPaymentTable(response);
-                                        break;
-                                    default:
-                                        break;
-
-                                }
-
-                            }
+ //                           }
                             //    SyncStart(++count);
                         } else if (status.equals("data does not exist")) {
                             SyncStart(++count);

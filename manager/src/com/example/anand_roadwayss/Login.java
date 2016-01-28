@@ -67,11 +67,9 @@ public class Login extends Activity {
             db.close();
 
 
-//for time being am commenting
-
-//            Intent in = new Intent(this, UpdateAppService.class);
-//            in.putExtra("client", clientName);
-//            startService(in);
+            Intent in = new Intent(this, UpdateAppService.class);
+            in.putExtra("client", clientName);
+            startService(in);
         } catch (Exception e) {
             ExceptionMessage.exceptionLog(this, this
                     .getClass().toString()
@@ -108,8 +106,6 @@ public class Login extends Activity {
                     } else {
                         loginEdtPin1.setText("");
                         loginEdtPin1.setError("Incorrect Pin");
-//						Toast.makeText(getApplicationContext(),
-//								"Incorrect Pin", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -140,7 +136,8 @@ public class Login extends Activity {
                     db.open();
                     String storedPin = db.getSinlgeEntry(pin);
 
-                    if (pin.equals(storedPin)) {
+                    if (pin.equals(storedPin))
+                    {
                         // editor.putString("register", "true");
                         // editor.commit();
                         loginEdtPin1.setText("");
