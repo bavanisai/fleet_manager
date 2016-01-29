@@ -45,13 +45,13 @@ import android.widget.Toast;
 
 public class TripDetailsFragment extends Fragment implements IAck {
 
-    String  SourceName, DestinationName, driverId, Status,driverName,
+    String  SourceName, DestinationName, Status,driverName,
             Speed="", RunningTime, KMTravelled,tripstatus1;
     static String VehLV;
     static boolean bValid = false;
     private static String Fuel = "0";
     TextView  tVehicle, tDriver, tContact,
-            ErrorMessage, tSource, tDestination, tFuel, tStatus, tSpeed, tRunningTime,
+            ErrorMessage, tSource, tDestination, tFuel, tStatus, tSpeed, tRunningTime,fuel,
             tKmTravel;
     Button viewMap, ErrorBtn;
     ImageView iDriver;
@@ -69,10 +69,8 @@ public class TripDetailsFragment extends Fragment implements IAck {
 
         view.findViewById(R.id.btnAddFuel).setOnClickListener(
                 new OnClickListener() {
-
                     @Override
                     public void onClick(View v) {
-
                         if (VehLV != null) {
                             DialogForFuel();
                         } else {
@@ -107,7 +105,7 @@ public class TripDetailsFragment extends Fragment implements IAck {
 
                 String map = ErrorBtn.getText().toString();
                 if (map.equals("See Current Location")) {
-                    Toast.makeText(getActivity(),"map loading..",Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getActivity(),"map loading..",Toast.LENGTH_LONG).show();
                     ((TrackActivity) getActivity()).setCurrentItem(2, true);
                 }
                 else if (map.equals("OK"))
@@ -522,7 +520,14 @@ public class TripDetailsFragment extends Fragment implements IAck {
                                 R.id.ErrorStatusinTrack);
                         tSpeed = (TextView) getActivity().findViewById(
                                 R.id.ErrorSpeedinTrack);
+                        fuel = (TextView) getActivity().findViewById(
+                                R.id.ErrorFuelinTrack);
                         tSpeed.setVisibility(View.GONE);
+                        if(Status.equals("running") || Status.equals("idle") || Status.equals("stopped"))
+                        {
+                            fuel.setText("Fuel : " + Fuel + " ltr");
+                        }else
+                        fuel.setVisibility(View.GONE);
 
                         tStatus.setText("Status : " + Status);
                         tStatus.setVisibility(View.VISIBLE);
@@ -545,20 +550,14 @@ public class TripDetailsFragment extends Fragment implements IAck {
                         }
                     }
                     else {
-//                        Toast.makeText(getActivity(), "Try After Some Times",
-//                                Toast.LENGTH_LONG).show();
                         ErrorMessage = (TextView) getActivity().findViewById(
                                 R.id.ErrorMessageinTrack);
                         ErrorMessage.setText("TRY AFTER SOME TIME");
 
                     }
-
-
-
-
                 }
-
-            }catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 ErrorMessage.setText("TRY AFTER SOME TIME");
                 Toast.makeText(getActivity(), "Try After Some Times",
                         Toast.LENGTH_LONG).show();
@@ -612,10 +611,10 @@ try {
             tDestination.setText("Not Available");
             tSource.setText("Not Available");
         }
-        if (!Fuel.equals("0.0") && (!Fuel.equals(""))
-                && (!Fuel.equals("0"))) {
+//        if (!Fuel.equals("0.0") && (!Fuel.equals(""))
+//                && (!Fuel.equals("0"))) {
             tFuel.setText(Fuel);
-        }
+       // }
         if (RunningTime.equals(""))
             tRunningTime.setText("Not Available");
         else

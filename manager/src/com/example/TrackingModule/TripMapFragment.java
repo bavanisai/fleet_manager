@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.Interface.ILiveTrack;
+import com.example.Interface.ITrackingVehicleTrip;
 import com.example.anand_roadwayss.ConnectionDetector;
 import com.example.anand_roadwayss.ExceptionMessage;
 import com.example.anand_roadwayss.R;
@@ -41,6 +42,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -72,7 +74,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TripMapFragment extends Fragment implements ILiveTrack {
+public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVehicleTrip {
 
     GoogleMap map;
     MarkerOptions currMark;
@@ -90,12 +92,14 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
     String currId, srcId, destId;
     String vehNo;
     final ILiveTrack mTrackLive = this;
+    final ITrackingVehicleTrip mTrackingVehicleTrip = this;
     static String disable;
     RelativeLayout ml;
     Boolean val = true;
     PolylineOptions polylineOptions;
+    String currentLat,currentLong;
 
-
+    String  Status,driverName, Speed="", RunningTime, KMTravelled,tripstatus1;
     //Older init
     private SupportMapFragment fragment;
     static List<LatLng> routePoints = new ArrayList<LatLng>();
@@ -238,22 +242,25 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                         ((TrackActivity) getActivity()).setCurrentItem(0, true);
                     } else if (currentPlace != null) {
 
-                        map.moveCamera(CameraUpdateFactory.newLatLng(current));
-                        map.animateCamera(CameraUpdateFactory.zoomTo(10));
+                        SendToWebService send = new SendToWebService(getActivity(),
+                                mTrackingVehicleTrip);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
+                        //if (send.isConnectingToInternet()) {
+                        try {
+                              if(VehicleListFragment.vehicleName!=null)
+                            send.execute("15", "GetTrackingTripDetails", VehicleListFragment.vehicleName);
 
-                                .setCancelable(false)
-                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
-                        alert.show();
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), "Try after sometime...",
+                                    Toast.LENGTH_SHORT).show();
+                            ExceptionMessage.exceptionLog(getActivity(), this
+                                    .getClass().toString()
+                                    + " "
+                                    + "[vehPayLV.setOnItemClickListener]", e
+                                    .toString());
+                        }
+
+
                     }
                 } catch (Exception e) {
                     ExceptionMessage.exceptionLog(getActivity(), this
@@ -806,7 +813,187 @@ public class TripMapFragment extends Fragment implements ILiveTrack {
                     .toString() + " " + "[onTrackLive()]", e.toString());
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onTrackingVehicleTrip(String response)
+    {
+        if (response.equals("No Internet")) {
+            ConnectionDetector cd = new ConnectionDetector(getActivity());
+            cd.ConnectingToInternet();
+        } else if (response.contains("refused") || response.contains("timed out")) {
+            ImageView image = new ImageView(getActivity());
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+
+        } else if (response.contains("java.net.SocketTimeoutException")) {
+
+            ImageView image = new ImageView(getActivity());
+            image.setImageResource(R.drawable.lowconnection3);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).setView(image);
+            builder.create().show();
+
+        } else {
+            if (response != null) {
+                String statuschk = null;
+                MatrixCursor cursorDestination;
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    String jsonData = jsonResponse.getString("d");
+                    if (jsonData.equals("[]")) {
+                        Toast.makeText(
+                                getActivity(),
+                                "Sorry This " + TripDetailsFragment.VehLV
+                                        + " is not in trip!!!!",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        TripMapFragment.routePoints.clear();
+                        TripDetailsFragment.bValid = false;
+                        if (response != null)
+                        {
+                            try {
+                                JSONObject jsonResponse1 = new JSONObject(response);
+                                // getting the data with tag d
+                                String jsonData1 = jsonResponse1.getString("d");
+
+                                JSONArray trackArray = new JSONArray(jsonData1);
+                                JSONObject status1 = trackArray.getJSONObject(0);
+                                statuschk = status1.getString("status").trim();
+
+                                if (statuschk.equals("invalid authkey")) {
+                                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                            .toString(), statuschk);
+                                } else if (statuschk.equals("vehicle does not exist")) {
+                                    ExceptionMessage.exceptionLog(getActivity(), this.getClass()
+                                            .toString(), statuschk);
+                                } else if (statuschk.equals("OK")) {
+                                    JSONArray vehicleArray = trackArray.getJSONArray(4);
+                                    if (vehicleArray.length() != 0) {
+
+                                        JSONArray currentArray = trackArray.getJSONArray(4);
+                                        if (currentArray.length() != 0) {
+
+                                            JSONObject cLat = currentArray.getJSONObject(1);
+                                            if (!(cLat.isNull("currLatitude"))) {
+                                                currentLat = cLat.getString("currLatitude").trim();
+                                            }
+
+                                            // JSONObject cLong = currentArray.getJSONObject(1);
+                                            if (!(cLat.isNull("currLongitude"))) {
+                                                currentLong = cLat.getString("currLongitude").trim();
+                                            }
+
+                                            if ((!currentLat.equals("null"))
+                                                    && !currentLong.equals("null")
+                                                    && !currentLat.equals("")
+                                                    && !currentLong.equals("")) {
+                                                dCurrentLat = Double.parseDouble(currentLat);
+                                                dCurrentLng = Double.parseDouble(currentLong);
+                                                current = new LatLng(dCurrentLat, dCurrentLng);
+                                            }
+                                            if (!(cLat.isNull("deviceDateTime"))) {
+                                                CurrentTime = cLat.getString("deviceDateTime").trim();
+                                            }
+                                            map.moveCamera(CameraUpdateFactory.newLatLng(current));
+                                            map.animateCamera(CameraUpdateFactory.zoomTo(10));
+                                            map.clear();
+                                            MarkerOptions mark=new MarkerOptions();
+                                            mark.position(current);
+                                            map.addMarker(mark);
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                            builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Vehicle Name : </b></font>" + "<small>" + VehicleListFragment.vehicleName +"</small>" + "<br/><br/>"+"<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
+
+                                                    .setCancelable(false)
+                                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                            AlertDialog alert = builder.create();
+                                            alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
+                                            alert.show();
+                                        }
+
+                                    }
+                                }
+                            }
+                            catch (JSONException e)
+
+                            {
+                              ExceptionMessage.exceptionLog(getActivity(), this.getClass().toString(), response);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+
+
+                    if (e.toString().contains("refused")) {
+                        ImageView image = new ImageView(getActivity());
+                        image.setImageResource(R.drawable.lowconnection3);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(
+                                getActivity()).setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                        builder.create().show();
+
+                    } else if (e.toString().contains(
+                            "java.net.SocketTimeoutException")) {
+
+                        ImageView image = new ImageView(getActivity());
+                        image.setImageResource(R.drawable.lowconnection3);
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(
+                                getActivity()).setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setView(image);
+                        builder.create().show();
+
+                    } else {
+                        Toast.makeText(getActivity(),
+                                "Try After SomeTimes....", Toast.LENGTH_LONG)
+                                .show();
+                    }
+                    ExceptionMessage.exceptionLog(getActivity(), this
+                            .getClass().toString()
+                            + " "
+                            + "[onTrackingVehicleTrip]", e.toString() + " "
+                            + TripDetailsFragment.VehLV);
+                }
+            }
+        }
     }
 
 

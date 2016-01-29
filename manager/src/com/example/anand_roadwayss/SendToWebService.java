@@ -539,9 +539,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     public String doInBackground(String... params) {
 
         try {
-
-
-            String regServerUrl = "http://49.50.72.13:14100/fleet_registration_api.asmx/";
+            String regServerUrl = "http://103.56.252.67:14100/fleet_registration_api.asmx/";
 
             SharedPreferences settings = _context.getSharedPreferences("AppUrl", 0);
 
@@ -550,6 +548,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
             // Server
             authKey = settings.getString("AuthKey", null);
+          //  System.out.println(authKey);
             if (params[1] == "RegisterAnApplication" || params[1] == "ApplicationUpdateCheck" || params[1]=="GetClientsDevices") {
                 prefixUrl = regServerUrl;
                 isAppServerIpConfigured = true;

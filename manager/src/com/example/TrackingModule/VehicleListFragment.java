@@ -53,6 +53,7 @@ public class
     final ITrackingVehicleTrip mTrackingVehicleTrip = this;
     MenuItem item;
     LinearLayout noDataLayout;
+    static String vehicleName;
 
     // final IStatusTrack mStatusTrack=this;
 
@@ -118,6 +119,7 @@ public class
                 public void onItemClick(AdapterView<?> parent, View selectedView,
                                         int arg2, long arg3) {
                     String Veh = vehPayLV.getItemAtPosition(arg2).toString();
+                    vehicleName=Veh;
                     TripDetailsFragment.VehLV = Veh;
                     MenuItemCompat.collapseActionView(item);
 
