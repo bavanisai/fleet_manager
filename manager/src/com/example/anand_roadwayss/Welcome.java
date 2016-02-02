@@ -4,24 +4,17 @@
 package com.example.anand_roadwayss;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,16 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.AbsenceReport.LeaveMainActivity;
-import com.example.AdvanceModule.AdvanceMain;
-import com.example.DashBoardModule.DashBoard;
 import com.example.Expense.Expense;
 import com.example.FuelModule.FuelActivity;
 import com.example.FuelModule.FuelReport;
@@ -47,17 +35,10 @@ import com.example.Inbox.InboxList;
 import com.example.ManageResources.MainActivity;
 import com.example.ManualAppServerSync.RepairApp;
 import com.example.PaymentModule.PaymentDriver;
-import com.example.Reminder.ReminderListActivity;
 import com.example.TrackingModule.TrackActivity;
 import com.example.TrackingModule.TrackReportActivity;
 import com.example.tripmodule.ConflictTripList;
 import com.example.tripmodule.TripActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author MKSoft01
@@ -77,23 +58,6 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-
-        reminder=(LinearLayout)findViewById(R.id.welcomeIVReminders);
-        fuel=(LinearLayout)findViewById(R.id.welcomeIvFuel);
-        payment=(LinearLayout)findViewById(R.id.welcomeIVSalary);
-        advance=(LinearLayout)findViewById(R.id.welcomeIVAdvance);
-        dashboard=(LinearLayout)findViewById(R.id.welcomeIVDashBoard);
-        leave=(LinearLayout)findViewById(R.id.welcomeIVLeave);
-
-
-
-//        reminder.setEnabled(false);
-//        fuel.setEnabled(false);
-//        payment.setEnabled(false);
-//        advance.setEnabled(false);
-//        dashboard.setEnabled(false);
-//        leave.setEnabled(false);
-
 
 
         try{
@@ -247,15 +211,17 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 //        }
         // END
 
-        findViewById(R.id.welcomeIVReminders).setOnClickListener(this);
-        findViewById(R.id.welcomeIVAdvance).setOnClickListener(this);
+
+        //commented by sneha
+        // findViewById(R.id.welcomeIVReminders).setOnClickListener(this);
+        // findViewById(R.id.welcomeIVAdvance).setOnClickListener(this);
         findViewById(R.id.welcomeIVCurrentTrips).setOnClickListener(this);
-        findViewById(R.id.welcomeIVDashBoard).setOnClickListener(this);
-        findViewById(R.id.welcomeIVLeave).setOnClickListener(this);
+        //findViewById(R.id.welcomeIVDashBoard).setOnClickListener(this);
+        //  findViewById(R.id.welcomeIVLeave).setOnClickListener(this);
         findViewById(R.id.welcomeIVNewEntries).setOnClickListener(this);
-        findViewById(R.id.welcomeIVSalary).setOnClickListener(this);
+        // findViewById(R.id.welcomeIVSalary).setOnClickListener(this);
         findViewById(R.id.welcomeIVTracking).setOnClickListener(this);
-        findViewById(R.id.welcomeIvFuel).setOnClickListener(this);
+        // findViewById(R.id.welcomeIvFuel).setOnClickListener(this);
     }
 
     public boolean isConnectingToInternet() {
@@ -276,7 +242,9 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.welcomeIVReminders:
+            //commented by sneha
+
+            //           case R.id.welcomeIVReminders:
 //                SharedPreferences login = getSharedPreferences("updateApp",
 //                        MODE_PRIVATE);
 //                String upStatus=login.getString("update","nil");
@@ -290,18 +258,9 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 //                            RepairApp.class);
 //                    startActivity(welcomeIntent);
 //                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder.create().show();
-                break;
-            case R.id.welcomeIVAdvance:
+
+            //             break;
+            //          case R.id.welcomeIVAdvance:
 //                SharedPreferences login1 = getSharedPreferences("updateApp",
 //                        MODE_PRIVATE);
 //                String upStatus1=login1.getString("update","nil");
@@ -318,17 +277,8 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 //                            RepairApp.class);
 //                    startActivity(welcomeIntent);
 //                }
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder1.create().show();
-                break;
+//
+//                break;
             case R.id.welcomeIVCurrentTrips:
                 Intent intentTripSync = new Intent(getApplicationContext(),
                         BackUpService.class);
@@ -337,7 +287,7 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 TripAlertDialog();
                 break;
 
-            case R.id.welcomeIVDashBoard:
+//            case R.id.welcomeIVDashBoard:
 //                SharedPreferences login3 = getSharedPreferences("updateApp",
 //                        MODE_PRIVATE);
 //                String upStatus3=login3.getString("update","nil");
@@ -350,18 +300,8 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 //                        RepairApp.class);
 //                startActivity(welcomeIntent);
 //            }
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder2.create().show();
-                break;
-            case R.id.welcomeIVLeave:
+//                break;
+//            case R.id.welcomeIVLeave:
 //                SharedPreferences login4 = getSharedPreferences("updateApp",
 //                        MODE_PRIVATE);
 //                String upStatus4=login4.getString("update","nil");
@@ -376,17 +316,8 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
 //                            RepairApp.class);
 //                    startActivity(welcomeIntent);
 //                }
-                AlertDialog.Builder builder4 = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder4.create().show();
-                break;
+
+            //               break;
             case R.id.welcomeIVNewEntries:
                 try{
                 SharedPreferences login5 = getSharedPreferences("updateApp",
@@ -415,23 +346,13 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                     e.toString();
                 }
                 break;
-            case R.id.welcomeIVSalary:
+//            case R.id.welcomeIVSalary:
 //                Intent intentPaymentSync = new Intent(getApplicationContext(),
 //                        BackUpService.class);
 //                intentPaymentSync.putExtra("act", "PaymentModule");
 //                startService(intentPaymentSync);
 //                paymentAlertDialog();
-                AlertDialog.Builder builder5 = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder5.create().show();
-                break;
+            //break;
             case R.id.welcomeIVTracking:
                 Intent intentTrackSync = new Intent(getApplicationContext(),
                         BackUpService.class);
@@ -439,22 +360,12 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 startService(intentTrackSync);
                 trackAlertDialog();
                 break;
-            case R.id.welcomeIvFuel:
+            //           case R.id.welcomeIvFuel:
 //                Intent intentFuelSync = new Intent(getApplicationContext(), BackUpService.class);
 //                intentFuelSync.putExtra("act", "FuelModule");
 //                startService(intentFuelSync);
 //                fuelAlertDialog();
-                AlertDialog.Builder builder6 = new AlertDialog.Builder(this)
-                        .setPositiveButton("OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setMessage("This module is disable");
-                builder6.create().show();
-                break;
+//                break;
 
         }
     }

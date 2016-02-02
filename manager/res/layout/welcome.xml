@@ -34,13 +34,118 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:baselineAligned="false"
         android:orientation="vertical">
 
 
+        <LinearLayout
+            android:id="@+id/welcomeIVTracking"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1"
+            android:background="@color/vivid_pink"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/Tracking"
+                android:src="@drawable/track_large" />
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/Tracking"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/white"
+                android:textColorLink="@color/AliceBlue"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcomeIVCurrentTrips"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@color/RoyalBlue"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/current_trip"
+                android:src="@drawable/tripp" />
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/CurrentTrips"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/AliceBlue"
+                android:textColorLink="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@color/green"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/welcomeIVNewEntries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="@string/add_vehicle_user"
+                android:longClickable="true"
+                android:src="@drawable/new_entry" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:singleLine="true"
+                android:text="@string/new_entries"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:textColor="@color/AliceBlue"
+                android:textColorLink="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         </LinearLayout>
 

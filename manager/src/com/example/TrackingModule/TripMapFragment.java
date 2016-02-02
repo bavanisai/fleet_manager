@@ -1,20 +1,39 @@
 package com.example.TrackingModule;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.animation.IntEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.database.MatrixCursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.Html;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Interface.ILiveTrack;
 import com.example.Interface.ITrackingVehicleTrip;
@@ -33,56 +52,34 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import android.animation.IntEvaluator;
-import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.MatrixCursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.text.Html;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVehicleTrip {
 
+    static int count = 0;
+    static String disable;
+    static List<LatLng> routePoints = new ArrayList<LatLng>();
+    final ILiveTrack mTrackLive = this;
+    final ITrackingVehicleTrip mTrackingVehicleTrip = this;
     GoogleMap map;
     MarkerOptions currMark;
     ProgressDialog pd;
     Button track, loc;
     ArrayList<LatLng> markerPoints;
     String currentPlace = "";
-    static int count = 0;
     MarkerOptions in;
     ArrayList<LatLng> valuesList;
     LatLng currentVal;
@@ -91,27 +88,21 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
     String tripStatus;
     String currId, srcId, destId;
     String vehNo;
-    final ILiveTrack mTrackLive = this;
-    final ITrackingVehicleTrip mTrackingVehicleTrip = this;
-    static String disable;
     RelativeLayout ml;
     Boolean val = true;
     PolylineOptions polylineOptions;
     String currentLat,currentLong;
-
     String  Status,driverName, Speed="", RunningTime, KMTravelled,tripstatus1;
-    //Older init
-    private SupportMapFragment fragment;
-    static List<LatLng> routePoints = new ArrayList<LatLng>();
     double SourceLatitude = 0.0, SourceLongitude = 0.0,
             DestinationLatitude = 0.0, DestinationLongitude = 0.0,
             dCurrentLat = 0.0, dCurrentLng = 0.0;
-
     String SourceName = null, DestinationName = null, VehLV = "", CurrentTime = "";
     View view;
     Bundle save;
     AlertDialog.Builder builder;
     JSONObject o;
+    //Older init
+    private SupportMapFragment fragment;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -913,26 +904,30 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
                                             if (!(cLat.isNull("deviceDateTime"))) {
                                                 CurrentTime = cLat.getString("deviceDateTime").trim();
                                             }
-                                            map.moveCamera(CameraUpdateFactory.newLatLng(current));
-                                            map.animateCamera(CameraUpdateFactory.zoomTo(10));
-                                            map.clear();
-                                            MarkerOptions mark=new MarkerOptions();
-                                            mark.position(current);
-                                            map.addMarker(mark);
+                                            try {
+                                                map.moveCamera(CameraUpdateFactory.newLatLng(current));
+                                                map.animateCamera(CameraUpdateFactory.zoomTo(10));
+                                                map.clear();
+                                                MarkerOptions mark = new MarkerOptions();
+                                                mark.position(current);
+                                                map.addMarker(mark);
 
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                            builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Vehicle Name : </b></font>" + "<small>" + VehicleListFragment.vehicleName +"</small>" + "<br/><br/>"+"<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                                builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Vehicle Name : </b></font>" + "<small>" + VehicleListFragment.vehicleName + "</small>" + "<br/><br/>" + "<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
 
-                                                    .setCancelable(false)
-                                                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                            AlertDialog alert = builder.create();
-                                            alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
-                                            alert.show();
+                                                        .setCancelable(false)
+                                                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                dialog.cancel();
+                                                            }
+                                                        });
+                                                AlertDialog alert = builder.create();
+                                                alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
+                                                alert.show();
+                                            } catch (Exception e) {
+                                                ExceptionMessage.exceptionLog(getActivity(), this.getClass().toString(), e.toString());
+                                            }
                                         }
 
                                     }
@@ -996,6 +991,91 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
         }
     }
 
+    public void startLiveTracking() {
+        HandlerThread hThread = new HandlerThread("HandlerThread");
+        hThread.start();
+        Handler handler = new Handler(Looper.getMainLooper());
+        final Handler handler1 = new Handler(Looper.getMainLooper());
+        final long twoSec = 2000;
+
+        Runnable eachMinute = new Runnable() {
+            @Override
+            public void run() {
+                if (count < valuesList.size()) {
+                    if (map == null) {
+                        map = fragment.getMap();
+
+                    }
+                    map.clear();
+
+                    currentVal = valuesList.get(count);
+                    map.moveCamera(CameraUpdateFactory.newLatLng(currentVal));
+                    in = new MarkerOptions();
+                    in.position(currentVal);
+
+//                    // for adding polyline to map
+//                    for(int i=0; i<valuesList.size(); i++) {
+//                        polylineOptions.add(currentVal);
+//                        map.addPolyline(polylineOptions);
+//                    }
+
+                    // Getting URL to the Google Directions API
+                    String url = getDirectionsUrl(origin, currentVal);
+
+                    DownloadTask downloadTask = new DownloadTask();
+
+                    // Start downloading json data from Google Directions API
+                    downloadTask.execute(url);
+
+
+//                    animatedCircles(currentVal);
+                    // in.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
+                    in.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    MarkerOptions temp1 = new MarkerOptions();
+                    MarkerOptions temp2 = new MarkerOptions();
+                    temp1.position(origin);
+                    temp2.position(dest);
+//                    temp1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    // temp1.icon(BitmapDescriptorFactory.fromResource(R.drawable.sourceicon));
+                    temp1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+//                    temp2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    //      temp2.icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationicon));
+                    temp2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    Marker t1 = map.addMarker(temp1);
+                    Marker t2 = map.addMarker(temp2);
+
+                    srcId = t1.getId();
+                    destId = t2.getId();
+
+                    try {
+                        map.addMarker(in);
+                        animatedCircles(currentVal);
+                        currentPlace = getLocation(currentVal);
+                        count++;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Log.d("ErrMsg", "No values available in list");
+                }
+
+                handler1.postDelayed(this, twoSec);
+
+            }
+        };
+        eachMinute.run();
+        handler.postDelayed(eachMinute, twoSec);
+        //     GetLiveTracking(vehNo);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            TrackActivity.pos = 3;
+        }
+    }
 
     // Fetches data from url passed
     public class DownloadTask extends AsyncTask<String, Void, String> {
@@ -1034,7 +1114,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
             parserTask.execute(result);
         }
     }
-
 
     /**
      * A class to parse the Google Places in JSON format
@@ -1107,93 +1186,6 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void startLiveTracking() {
-        HandlerThread hThread = new HandlerThread("HandlerThread");
-        hThread.start();
-        Handler handler = new Handler(Looper.getMainLooper());
-        final Handler handler1 = new Handler(Looper.getMainLooper());
-        final long twoSec = 2000;
-
-        Runnable eachMinute = new Runnable() {
-            @Override
-            public void run() {
-                if (count < valuesList.size()) {
-                    if (map == null) {
-                        map = fragment.getMap();
-
-                    }
-                    map.clear();
-
-                    currentVal = valuesList.get(count);
-                    map.moveCamera(CameraUpdateFactory.newLatLng(currentVal));
-                    in = new MarkerOptions();
-                    in.position(currentVal);
-
-//                    // for adding polyline to map
-//                    for(int i=0; i<valuesList.size(); i++) {
-//                        polylineOptions.add(currentVal);
-//                        map.addPolyline(polylineOptions);
-//                    }
-
-                    // Getting URL to the Google Directions API
-                    String url = getDirectionsUrl(origin, currentVal);
-
-                    DownloadTask downloadTask = new DownloadTask();
-
-                    // Start downloading json data from Google Directions API
-                    downloadTask.execute(url);
-
-
-//                    animatedCircles(currentVal);
-                    // in.icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
-                    in.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                    MarkerOptions temp1 = new MarkerOptions();
-                    MarkerOptions temp2 = new MarkerOptions();
-                    temp1.position(origin);
-                    temp2.position(dest);
-//                    temp1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                    // temp1.icon(BitmapDescriptorFactory.fromResource(R.drawable.sourceicon));
-                    temp1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-//                    temp2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                    //      temp2.icon(BitmapDescriptorFactory.fromResource(R.drawable.destinationicon));
-                    temp2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    Marker t1 = map.addMarker(temp1);
-                    Marker t2 = map.addMarker(temp2);
-
-                    srcId = t1.getId();
-                    destId = t2.getId();
-
-                    try {
-                        map.addMarker(in);
-                        animatedCircles(currentVal);
-                        currentPlace = getLocation(currentVal);
-                        count++;
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    Log.d("ErrMsg", "No values available in list");
-                }
-
-                handler1.postDelayed(this, twoSec);
-
-            }
-        };
-        eachMinute.run();
-        handler.postDelayed(eachMinute, twoSec);
-        //     GetLiveTracking(vehNo);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            TrackActivity.pos = 3;
         }
     }
 }

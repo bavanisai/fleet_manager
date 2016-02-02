@@ -1,20 +1,5 @@
 package com.example.TrackingModule;
 
-import java.io.ByteArrayInputStream;
-import java.text.DecimalFormat;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.example.Interface.IAck;
-import com.example.anand_roadwayss.ConnectionDetector;
-import com.example.anand_roadwayss.DBAdapter;
-import com.example.anand_roadwayss.ExceptionMessage;
-import com.example.anand_roadwayss.R;
-import com.example.anand_roadwayss.SendToWebService;
-import com.example.anand_roadwayss.IpAddress;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,12 +10,9 @@ import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,19 +25,33 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Interface.IAck;
+import com.example.anand_roadwayss.ConnectionDetector;
+import com.example.anand_roadwayss.DBAdapter;
+import com.example.anand_roadwayss.ExceptionMessage;
+import com.example.anand_roadwayss.R;
+import com.example.anand_roadwayss.SendToWebService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayInputStream;
+import java.text.DecimalFormat;
+
 public class TripDetailsFragment extends Fragment implements IAck {
 
-    String  SourceName, DestinationName, Status,driverName,
-            Speed="", RunningTime, KMTravelled,tripstatus1;
     static String VehLV;
     static boolean bValid = false;
     private static String Fuel = "0";
+    private final IAck mAck = this;
+    String  SourceName, DestinationName, Status,driverName,
+            Speed="", RunningTime, KMTravelled,tripstatus1;
     TextView  tVehicle, tDriver, tContact,
             ErrorMessage, tSource, tDestination, tFuel, tStatus, tSpeed, tRunningTime,fuel,
             tKmTravel;
     Button viewMap, ErrorBtn;
     ImageView iDriver;
-    private final IAck mAck = this;
     LinearLayout SpeedLay,distanceLay;
     MatrixCursor cursorDestination;
     EditText et1;
@@ -555,6 +551,7 @@ public class TripDetailsFragment extends Fragment implements IAck {
                         ErrorMessage.setText("TRY AFTER SOME TIME");
 
                     }
+
                 }
             }
             catch (JSONException e) {
