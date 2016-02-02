@@ -13,6 +13,46 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import com.example.Interface.IAck;
+import com.example.Interface.IAddAdvanceFragment;
+import com.example.Interface.IAddExpense;
+import com.example.Interface.IAddLocation;
+import com.example.Interface.IConflictTrips;
+import com.example.Interface.IDashBoardDriverChart;
+import com.example.Interface.IDashBoardVehicleChart;
+import com.example.Interface.IDeleteAdvance;
+import com.example.Interface.IDeleteExpense;
+import com.example.Interface.IDeleteLocation;
+import com.example.Interface.IDeletePayment;
+import com.example.Interface.IDriverCleanerPayment;
+import com.example.Interface.IDriverDistancePieChart;
+import com.example.Interface.IDriverNotInTrip;
+import com.example.Interface.IExpenseList;
+import com.example.Interface.IFuelEntryFragment;
+import com.example.Interface.IFuelGraph;
+import com.example.Interface.IFuelReport;
+import com.example.Interface.IGetImeiNumbers;
+import com.example.Interface.IGetParticularTripData;
+import com.example.Interface.IGetTripList;
+import com.example.Interface.IGetTripStatus;
+import com.example.Interface.IInstallation;
+import com.example.Interface.ILeaveEntryCleaner;
+import com.example.Interface.ILeaveEntryDriver;
+import com.example.Interface.ILiveTrack;
+import com.example.Interface.IManageResources;
+import com.example.Interface.IManageResourcesCleaner;
+import com.example.Interface.IManageResourcesVehicle;
+import com.example.Interface.IRegistration;
+import com.example.Interface.ISignature;
+import com.example.Interface.ITrackingReport;
+import com.example.Interface.ITrackingStatus;
+import com.example.Interface.ITrackingVehicleTrip;
+import com.example.Interface.ITripListFragment;
+import com.example.Interface.ITripManageFragment;
+import com.example.Interface.IVehicleDistancePieChart;
+import com.example.Interface.IVehicleNotInTrip;
+import com.example.Interface.Synchronization;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -25,20 +65,23 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.Interface.*;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class SendToWebService extends AsyncTask<String, String, String> {
+    // public static String regServerUrl;
+    public static Boolean isDemoApp = false;
+    private static String authKey = null;
+    private static IManageResources mInterfaceManageResources;
+    private static IManageResourcesCleaner mInterfaceManageResourcesCleaner;
+    private static IManageResourcesVehicle mInterfaceManageResourcesVehicle;
     boolean isAppServerIpConfigured = false;
     int interfaceToBeExecuted = 0, noDialog = 0;
     String responseData = " Error : netPrerequisites is become false ";
     boolean netPrerequisites = true;
     String methodToBeCalled;
-    private static String authKey = null;
-   // public static String regServerUrl;
-    public static Boolean isDemoApp = false;
+    ProgressDialog dialog;
+    JSONObject data = new JSONObject();
     private IRegistration mRegistration;
     private ITrackingVehicleTrip mTrackingVehicleTrip;
     private IDashBoardDriverChart mDashBoardDriverChart;
@@ -53,9 +96,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     private IAddLocation mAddLocation;
     private IDeleteLocation mDeleteLocation;
     private IAck mAck;
-    private static IManageResources mInterfaceManageResources;
-    private static IManageResourcesCleaner mInterfaceManageResourcesCleaner;
-    private static IManageResourcesVehicle mInterfaceManageResourcesVehicle;
     private ILeaveEntryCleaner mLeaveEntryCleaneri;
     private ILeaveEntryDriver mLeaveEntryDriveri;
     private IInstallation mInstalled;
@@ -79,7 +119,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
     private IGetImeiNumbers mGetImeiNumbers;
     private IVehicleNotInTrip mVehicleNotInTrip;
     private IDriverNotInTrip mDriverNotInTrip;
-    ProgressDialog dialog;
 
     public SendToWebService(Context context, int a) {
         _context = context;
@@ -270,7 +309,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
         dialog=new ProgressDialog(_context);
         this.mTrackingStatus=mTrackingStatus;
     }
-
     public SendToWebService(Context context, ITrackingReport mTrackingReport) {
         _context = context;
         dialog = new ProgressDialog(_context);
@@ -307,6 +345,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
         dialog = new ProgressDialog(_context);
         this.mGetTripStatus = mGetTripStatus;
     }
+
     public SendToWebService(Context context, IGetTripList  mGetTripList) {
         _context = context;
         dialog = new ProgressDialog(_context);
@@ -334,13 +373,13 @@ public class SendToWebService extends AsyncTask<String, String, String> {
         this.mDriverNotInTrip = mDriverNotInTrip;
     }
 
+
     public SendToWebService(Context context,IGetImeiNumbers mGetImeiNumbers)
     {
         _context=context;
         dialog=new ProgressDialog(_context);
         this.mGetImeiNumbers=mGetImeiNumbers;
     }
-
 
     public boolean isConnectingToInternet() {
         ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -488,7 +527,8 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     mDeleteExpense.onDeleteExpense(response);
                     break;
 
-                case 31:mTrackingStatus.onTrackingStatus(response);
+                case 31:
+                    mTrackingStatus.onTrackingStatus(response);
                     break;
 
                 case 32:
@@ -513,27 +553,45 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     mGetParticularTripData.onGetParticularTripData(response);
                     break;
 
-                case 38:mGetTripStatus.onGetTripStatus(response);
+                case 38:
+                    mGetTripStatus.onGetTripStatus(response);
                     break;
 
-                case 39:mLiveTrack.onTrackLive(response);
+                case 39:
+                    mLiveTrack.onTrackLive(response);
                     break;
 
-                case 40:mFuelGraph.onFuelGraph(response);
+                case 40:
+                    mFuelGraph.onFuelGraph(response);
                     break;
 
-                case 46:mVehicleNotInTrip.onVehicleData(response);
+                case 46:
+                    mVehicleNotInTrip.onVehicleData(response);
                     break;
 
-                case 47:mDriverNotInTrip.onDriverData(response);
+                case 47:
+                    mDriverNotInTrip.onDriverData(response);
                     break;
 
-                case 48:mGetImeiNumbers.onGetImeiNums(response);
+                case 48:
+                    mGetImeiNumbers.onGetImeiNums(response);
                 default:
                     break;
             }
         }
     }
+
+    // GET HTTP PARAMETER OBJECT METHOD!
+
+	/*
+     * Build HTTP Parameters, such as timeOut.
+	 * 
+	 * @param timeOutConnection
+	 * 
+	 * @param timeOutSocket
+	 * 
+	 * @return
+	 */
 
     @Override
     public String doInBackground(String... params) {
@@ -548,20 +606,20 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
             // Server
             authKey = settings.getString("AuthKey", null);
-          //  System.out.println(authKey);
-            if (params[1] == "RegisterAnApplication" || params[1] == "ApplicationUpdateCheck" || params[1]=="GetClientsDevices") {
+            //  System.out.println(authKey);
+            if (params[1].equals("RegisterAnApplication") || params[1].equals("ApplicationUpdateCheck") || params[1].equals("GetClientsDevices")) {
                 prefixUrl = regServerUrl;
                 isAppServerIpConfigured = true;
             }
 
-             methodToBeCalled = params[0];// Value specifies which method
+            methodToBeCalled = params[0];// Value specifies which method
             // to be called.
             String url = prefixUrl + params[1];// Server url of the specific
             // method to be called.
 
             int methodNo = Integer.parseInt(methodToBeCalled);
 
-            String methodN=params[1];
+            String methodN = params[1];
 
             // Creating an HTTP Post call, and passing the URL
             HttpPost httpPost = new HttpPost(url);
@@ -658,7 +716,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                                 .fetchOfflineDataByMethodName(methodNo);
                     } else {
                         manageVehicle(params[2], params[3], params[4], params[5],
-                                params[6], params[7],params[8]);
+                                params[6], params[7], params[8]);
                     }
                     break;
 
@@ -675,9 +733,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     break;
 
                 case 10:
-                    if (params[2] == "Driver")
+                    if (params[2].equals("Driver"))
                         interfaceToBeExecuted = 10;
-                    if (params[2] == "Cleaner")
+                    if (params[2].equals("Cleaner"))
                         interfaceToBeExecuted = 101;
                     if (isDemoApp) {
                         responseData = offlineWebService
@@ -700,6 +758,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                                 params[8]);
                     }
                     break;
+
 
                 case 12:
                     if (isDemoApp) {
@@ -900,11 +959,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     break;
 
                 case 34:
-                    if (!isDemoApp){
-                    SyncCheck();
-                    }
-
-                    else{
+                    if (!isDemoApp) {
+                        SyncCheck();
+                    } else {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
                     }
@@ -914,97 +971,89 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                 case 35:
                     interfaceToBeExecuted = 29;
                     if (isDemoApp) {
-                    responseData = offlineWebService
-                            .fetchOfflineDataByMethodName(methodNo);}
-                    else {
+                        responseData = offlineWebService
+                                .fetchOfflineDataByMethodName(methodNo);
+                    } else {
                         ManageExpense(params[2], params[3], params[4], params[5], params[6], params[7], params[8], params[9], params[10]);
                     }
                     break;
 
                 case 36:
-                    interfaceToBeExecuted=33;
+                    interfaceToBeExecuted = 33;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetFuelReport(params[2], params[3], params[4]);
                     }
                     break;
 
                 case 37:
-                    interfaceToBeExecuted=30;
+                    interfaceToBeExecuted = 30;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         DeleteExpense(params[2]);
                     }
                     break;
 
                 case 38:
-                    interfaceToBeExecuted=31;
+                    interfaceToBeExecuted = 31;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetVehicleStatus();
                     }
                     break;
 
                 case 39:
-                    interfaceToBeExecuted=35;
+                    interfaceToBeExecuted = 35;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetExpenseList(params[2], params[3], params[4]);
                     }
                     break;
 
                 case 40:
-                    interfaceToBeExecuted=32;
+                    interfaceToBeExecuted = 32;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetTrackingReport(params[2], params[3], params[4]);
                     }
                     break;
 
                 case 41:
-                    interfaceToBeExecuted=34;
+                    interfaceToBeExecuted = 34;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         SaveSignature(params[2], params[3]);
                     }
                     break;
 
                 case 42:
-                    interfaceToBeExecuted=39;
+                    interfaceToBeExecuted = 39;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetLiveTracking(params[2]);
                     }
                     break;
 
                 case 43:
-                    interfaceToBeExecuted=36;
+                    interfaceToBeExecuted = 36;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetActiveTrips();
                     }
                     break;
@@ -1030,18 +1079,18 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     break;
 
                 case 46:
-                    interfaceToBeExecuted=47;
+                    interfaceToBeExecuted = 47;
                     GetDriversNotInTrip();
                     break;
 
                 case 47:
-                    interfaceToBeExecuted=46;
+                    interfaceToBeExecuted = 46;
                     GetVehiclesNotInTrip();
                     break;
 
 
                 case 48:
-                    interfaceToBeExecuted=11;
+                    interfaceToBeExecuted = 11;
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
@@ -1056,19 +1105,17 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                     if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else {
+                    } else {
                         GetFuelData(params[2], params[3], params[4]);
                     }
                     break;
 
                 case 50:
-                    interfaceToBeExecuted=48;
-                    if(isDemoApp){
+                    interfaceToBeExecuted = 48;
+                    if (isDemoApp) {
                         responseData = offlineWebService
                                 .fetchOfflineDataByMethodName(methodNo);
-                    }
-                    else{
+                    } else {
                         GetClientsDevices(params[2]);
                     }
                     break;
@@ -1100,7 +1147,7 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                         String jsonResultStr = reader.readLine();
                         data = new JSONObject(jsonResultStr);
 
-                        if (data.toString() == "") {
+                        if (data.toString().equals("")) {
                             responseData = "";
                         } else {
                             responseData = data.toString();
@@ -1134,18 +1181,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
         return responseData;
     }
 
-    // GET HTTP PARAMETER OBJECT METHOD!
-
-	/*
-	 * Build HTTP Parameters, such as timeOut.
-	 * 
-	 * @param timeOutConnection
-	 * 
-	 * @param timeOutSocket
-	 * 
-	 * @return
-	 */
-
     public HttpParams getHttpParameterObj(int timeOutConnection,
                                           int timeOutSocket) {
 
@@ -1174,8 +1209,6 @@ public class SendToWebService extends AsyncTask<String, String, String> {
 
         // code goes here
     }
-
-    JSONObject data = new JSONObject();
 
     // -----------------------------------------------------
     // Method:1 in Switch Case
@@ -1355,9 +1388,9 @@ public class SendToWebService extends AsyncTask<String, String, String> {
                                  String employeePhoneNumber, String employeeAddress,
                                  String commission, String salary, String statusFlag,
                                  String UpdateEmpId) {
-        if (employeeType == "Driver")
+        if (employeeType.equals("Driver"))
             interfaceToBeExecuted = 10;
-        if (employeeType == "Cleaner")
+        if (employeeType.equals("Cleaner"))
             interfaceToBeExecuted = 101;
         try {
             data.put("authKey", authKey);
