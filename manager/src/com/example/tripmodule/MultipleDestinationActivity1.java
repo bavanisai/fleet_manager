@@ -42,7 +42,7 @@ public class MultipleDestinationActivity1 extends Activity implements View.OnCli
             multipleDestinationEdtProduct, multipleDestinationEdtRouteName, multipleDestinationEdtRent, multipleDestinationEdtPercentOrPayPerKM;
     TextView multipleDestinationTvVehNo, multipleDestinationTvLastDest;
     Spinner multipleDestinationSpinnerDestination, multipleDestinationSpinnerPaymentType;
-    Button multipleDestinationBtnSave, multipleDestinationBtnView, multipleDestinationBtnAdd;
+    Button multipleDestinationBtnSave,multipleDestinationBtnAdd;
     String selDest,formattedDate;
     DBAdapter db;
     List<String> Destination;
@@ -530,6 +530,11 @@ catch (Exception e){
             else if (parsedValue.equals("driver already in trip")) {
                 Toast.makeText(MultipleDestinationActivity1.this,
                         "Driver Already in trip...",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else if (parsedValue.equals("invalid input")) {
+                Toast.makeText(MultipleDestinationActivity1.this,
+                        "invalid inputs...",
                         Toast.LENGTH_SHORT).show();
             }
             else {

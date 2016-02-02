@@ -469,6 +469,7 @@ catch (Exception e){
                     in.putExtra("voucher", voucher);
                     in.putExtra("vehicle", vehicle);
                     startActivity(in);
+                    alertDialog1.dismiss();
                 }
             });
             cancel.setOnClickListener(new View.OnClickListener() {
