@@ -70,12 +70,31 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     SharedPreferences sp;
     ImageView img;
     TextView txt;
+    LinearLayout reminder,fuel,payment,advance,dashboard,leave;
 
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
+
+        reminder=(LinearLayout)findViewById(R.id.welcomeIVReminders);
+        fuel=(LinearLayout)findViewById(R.id.welcomeIvFuel);
+        payment=(LinearLayout)findViewById(R.id.welcomeIVSalary);
+        advance=(LinearLayout)findViewById(R.id.welcomeIVAdvance);
+        dashboard=(LinearLayout)findViewById(R.id.welcomeIVDashBoard);
+        leave=(LinearLayout)findViewById(R.id.welcomeIVLeave);
+
+
+
+//        reminder.setEnabled(false);
+//        fuel.setEnabled(false);
+//        payment.setEnabled(false);
+//        advance.setEnabled(false);
+//        dashboard.setEnabled(false);
+//        leave.setEnabled(false);
+
+
 
         try{
             String check = getIntent().getStringExtra("comeback");
@@ -88,8 +107,6 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
             ExceptionMessage.exceptionLog(this, this.getClass()
                     .toString() + " " + "[saveFuelDetails]",e.toString());
         }
-
-
         sp = getSharedPreferences("testapp", Context.MODE_PRIVATE);
         String regComplete = sp.getString("checkReg", "false");
         if(regComplete.equals("true")) {
@@ -102,6 +119,7 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 public void onClick(View arg0) {
                     dialog.dismiss();
                     final Dialog d1 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+
                     d1.setContentView(R.layout.transparent_fuel);
                     RelativeLayout layoutfuel = (RelativeLayout) d1.findViewById(R.id.fueltransparent);
 
@@ -259,37 +277,57 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.welcomeIVReminders:
-                SharedPreferences login = getSharedPreferences("updateApp",
-                        MODE_PRIVATE);
-                String upStatus=login.getString("update","nil");
-                if(!upStatus.equals("nil")) {
-                    Intent welcomeIntent = new Intent(Welcome.this,
-                            ReminderListActivity.class);
-                    startActivity(welcomeIntent);
-                }
-                else{
-                    Intent welcomeIntent = new Intent(Welcome.this,
-                            RepairApp.class);
-                    startActivity(welcomeIntent);
-                }
+//                SharedPreferences login = getSharedPreferences("updateApp",
+//                        MODE_PRIVATE);
+//                String upStatus=login.getString("update","nil");
+//                if(!upStatus.equals("nil")) {
+//                    Intent welcomeIntent = new Intent(Welcome.this,
+//                            ReminderListActivity.class);
+//                    startActivity(welcomeIntent);
+//                }
+//                else{
+//                    Intent welcomeIntent = new Intent(Welcome.this,
+//                            RepairApp.class);
+//                    startActivity(welcomeIntent);
+//                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder.create().show();
                 break;
             case R.id.welcomeIVAdvance:
-                SharedPreferences login1 = getSharedPreferences("updateApp",
-                        MODE_PRIVATE);
-                String upStatus1=login1.getString("update","nil");
-                if(!upStatus1.equals("nil")) {
-                    Intent intentAdvanceSync = new Intent(getApplicationContext(),
-                            BackUpService.class);
-                    intentAdvanceSync.putExtra("act", "AdvanceModule");
-                    startService(intentAdvanceSync);
-                    Intent advanceIntent = new Intent(Welcome.this, AdvanceMain.class);
-                    startActivity(advanceIntent);
-                }
-                else{
-                    Intent welcomeIntent = new Intent(Welcome.this,
-                            RepairApp.class);
-                    startActivity(welcomeIntent);
-                }
+//                SharedPreferences login1 = getSharedPreferences("updateApp",
+//                        MODE_PRIVATE);
+//                String upStatus1=login1.getString("update","nil");
+//                if(!upStatus1.equals("nil")) {
+//                    Intent intentAdvanceSync = new Intent(getApplicationContext(),
+//                            BackUpService.class);
+//                    intentAdvanceSync.putExtra("act", "AdvanceModule");
+//                    startService(intentAdvanceSync);
+//                    Intent advanceIntent = new Intent(Welcome.this, AdvanceMain.class);
+//                    startActivity(advanceIntent);
+//                }
+//                else{
+//                    Intent welcomeIntent = new Intent(Welcome.this,
+//                            RepairApp.class);
+//                    startActivity(welcomeIntent);
+//                }
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder1.create().show();
                 break;
             case R.id.welcomeIVCurrentTrips:
                 Intent intentTripSync = new Intent(getApplicationContext(),
@@ -300,34 +338,54 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 break;
 
             case R.id.welcomeIVDashBoard:
-                SharedPreferences login3 = getSharedPreferences("updateApp",
-                        MODE_PRIVATE);
-                String upStatus3=login3.getString("update","nil");
-                if(!upStatus3.equals("nil")) {
-                    Intent dashBoardIntent = new Intent(Welcome.this, DashBoard.class);
-                    startActivity(dashBoardIntent);
-                }
-                else{
-                Intent welcomeIntent = new Intent(Welcome.this,
-                        RepairApp.class);
-                startActivity(welcomeIntent);
-            }
+//                SharedPreferences login3 = getSharedPreferences("updateApp",
+//                        MODE_PRIVATE);
+//                String upStatus3=login3.getString("update","nil");
+//                if(!upStatus3.equals("nil")) {
+//                    Intent dashBoardIntent = new Intent(Welcome.this, DashBoard.class);
+//                    startActivity(dashBoardIntent);
+//                }
+//                else{
+//                Intent welcomeIntent = new Intent(Welcome.this,
+//                        RepairApp.class);
+//                startActivity(welcomeIntent);
+//            }
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder2.create().show();
                 break;
             case R.id.welcomeIVLeave:
-                SharedPreferences login4 = getSharedPreferences("updateApp",
-                        MODE_PRIVATE);
-                String upStatus4=login4.getString("update","nil");
-                if(!upStatus4.equals("nil")) {
-                    Intent leaveIntent = new Intent(Welcome.this,
-                            LeaveMainActivity.class);
-                    startActivity(leaveIntent);
-                }
-
-                else{
-                    Intent welcomeIntent = new Intent(Welcome.this,
-                            RepairApp.class);
-                    startActivity(welcomeIntent);
-                }
+//                SharedPreferences login4 = getSharedPreferences("updateApp",
+//                        MODE_PRIVATE);
+//                String upStatus4=login4.getString("update","nil");
+//                if(!upStatus4.equals("nil")) {
+//                    Intent leaveIntent = new Intent(Welcome.this,
+//                            LeaveMainActivity.class);
+//                    startActivity(leaveIntent);
+//                }
+//
+//                else{
+//                    Intent welcomeIntent = new Intent(Welcome.this,
+//                            RepairApp.class);
+//                    startActivity(welcomeIntent);
+//                }
+                AlertDialog.Builder builder4 = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder4.create().show();
                 break;
             case R.id.welcomeIVNewEntries:
                 try{
@@ -358,11 +416,21 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 }
                 break;
             case R.id.welcomeIVSalary:
-                Intent intentPaymentSync = new Intent(getApplicationContext(),
-                        BackUpService.class);
-                intentPaymentSync.putExtra("act", "PaymentModule");
-                startService(intentPaymentSync);
-                paymentAlertDialog();
+//                Intent intentPaymentSync = new Intent(getApplicationContext(),
+//                        BackUpService.class);
+//                intentPaymentSync.putExtra("act", "PaymentModule");
+//                startService(intentPaymentSync);
+//                paymentAlertDialog();
+                AlertDialog.Builder builder5 = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder5.create().show();
                 break;
             case R.id.welcomeIVTracking:
                 Intent intentTrackSync = new Intent(getApplicationContext(),
@@ -372,10 +440,20 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                 trackAlertDialog();
                 break;
             case R.id.welcomeIvFuel:
-                Intent intentFuelSync = new Intent(getApplicationContext(), BackUpService.class);
-                intentFuelSync.putExtra("act", "FuelModule");
-                startService(intentFuelSync);
-                fuelAlertDialog();
+//                Intent intentFuelSync = new Intent(getApplicationContext(), BackUpService.class);
+//                intentFuelSync.putExtra("act", "FuelModule");
+//                startService(intentFuelSync);
+//                fuelAlertDialog();
+                AlertDialog.Builder builder6 = new AlertDialog.Builder(this)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).setMessage("This module is disable");
+                builder6.create().show();
                 break;
 
         }

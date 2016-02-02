@@ -324,9 +324,6 @@ public class AddLocation extends Fragment implements OnClickListener,
                         Toast.makeText(getActivity(),
                                 "Location Saved Successfully", Toast.LENGTH_SHORT)
                                 .show();
-                    else {
-
-                    }
                     db.close();
                     break;
 
