@@ -904,13 +904,14 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
                                             if (!(cLat.isNull("deviceDateTime"))) {
                                                 CurrentTime = cLat.getString("deviceDateTime").trim();
                                             }
-                                            try {
+                                            if (current != null) {
                                                 map.moveCamera(CameraUpdateFactory.newLatLng(current));
                                                 map.animateCamera(CameraUpdateFactory.zoomTo(10));
                                                 map.clear();
                                                 MarkerOptions mark = new MarkerOptions();
                                                 mark.position(current);
                                                 map.addMarker(mark);
+                                            }
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                                                 builder.setMessage(Html.fromHtml("<font color='#009acd'><b>Vehicle Name : </b></font>" + "<small>" + VehicleListFragment.vehicleName + "</small>" + "<br/><br/>" + "<font color='#009acd'><b>Location : </b></font>" + "<small>" + getLocation(current) + "</small>" + "<br/><br/>" + ("<font color='#009acd'><b>Time : </b></font>" + "<small>" + CurrentTime + "</small>")))
@@ -925,9 +926,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
                                                 AlertDialog alert = builder.create();
                                                 alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
                                                 alert.show();
-                                            } catch (Exception e) {
-                                                ExceptionMessage.exceptionLog(getActivity(), this.getClass().toString(), e.toString());
-                                            }
+
                                         }
 
                                     }
