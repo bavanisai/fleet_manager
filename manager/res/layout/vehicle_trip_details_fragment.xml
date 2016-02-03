@@ -340,9 +340,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            >
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/ErrorFuelinTrack"
                 android:layout_width="match_parent"
@@ -353,6 +351,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:textColor="#000000"
+                android:visibility="gone"
                 android:textSize="15sp"
                 />
 
@@ -369,20 +368,21 @@
                 android:textSize="15sp"
                 android:visibility="gone"
              />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/ErrorSpeedinTrack"
-            android:layout_width="match_parent"
-            android:layout_height="10sp"
-            android:layout_gravity="center"
-            android:layout_margin="5sp"
-            android:layout_weight="0.13"
-            android:background="@drawable/buttonflatulta"
-            android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#000000"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/ErrorSpeedinTrack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5sp"
+                android:layout_weight="0.13"
+                android:background="@drawable/buttonflatulta"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:padding="3dp"
+                android:textColor="#000000"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/ErrorTrackbtn"

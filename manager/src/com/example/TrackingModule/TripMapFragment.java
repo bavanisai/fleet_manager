@@ -924,7 +924,7 @@ public class TripMapFragment extends Fragment implements ILiveTrack, ITrackingVe
                                                             }
                                                         });
                                                 AlertDialog alert = builder.create();
-                                                alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Current Location & Time</small> </b></font>"));   // alert
+                                                alert.setTitle(Html.fromHtml("<font color='#009acd'><b><small>Vehicle Details</small> </b></font>"));   // alert
                                                 alert.show();
 
                                         }

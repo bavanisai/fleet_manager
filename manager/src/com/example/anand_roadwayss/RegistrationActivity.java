@@ -207,19 +207,19 @@ public class RegistrationActivity extends AppCompatActivity implements IRegistra
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    if (regEtName.getText().toString() != null | !regEtName.getText().toString().trim().equals("")) {
-                        for (int i = 0; i < regEtName.getText().toString().length(); i++) {
-                            if (!Character.isLetter(regEtName.getText().toString().charAt(i))) {
-                                regEtName.setError("Name should contain only Letters! ");
-                            }
-                        }
-                        if (regEtName.getText().toString().length() < 3)
-                            regEtName.setError("Name should contain minimum 3 letters");
+//                    if (regEtName.getText().toString() != null | !regEtName.getText().toString().trim().equals("")) {
+//                        for (int i = 0; i < regEtName.getText().toString().length(); i++) {
+//                            if (!Character.isLetter(regEtName.getText().toString().charAt(i))) {
+//                                regEtName.setError("Name should contain only Letters! ");
+//                            }
+//                        }
+//                        if (regEtName.getText().toString().length() < 3)
+//                            regEtName.setError("Name should contain minimum 3 letters");
 
-                        else if (regEtName.getText().toString().length() > 30)
+                        if (regEtName.getText().toString().length() > 30)
                             regEtName.setError("Name cannot be more than 30 letters");
                     }
-                }
+              //  }
             });
 
             // Registration Phone Number Validation
@@ -289,6 +289,7 @@ public class RegistrationActivity extends AppCompatActivity implements IRegistra
             cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);  // permission to access clipboard data
 
             if (cb != null) {
+                boolean valu = cb.hasPrimaryClip();
                 if (cb.hasPrimaryClip() == true) {
                     ClipData.Item data = cb.getPrimaryClip().getItemAt(0);
                     val = data.getText().toString().trim();

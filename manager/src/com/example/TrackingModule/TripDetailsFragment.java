@@ -504,10 +504,7 @@ public class TripDetailsFragment extends Fragment implements IAck {
                         details.setVisibility(View.VISIBLE);
                         isValidData = true;
                         bValid = true;
-
                     }
-
-
                     else if (tripstatus1.equals("off trip"))
                     {
                         ErrorMessage = (TextView) getActivity().findViewById(
@@ -519,21 +516,27 @@ public class TripDetailsFragment extends Fragment implements IAck {
                         fuel = (TextView) getActivity().findViewById(
                                 R.id.ErrorFuelinTrack);
                         tSpeed.setVisibility(View.GONE);
-                        if(Status.equals("running") || Status.equals("idle") || Status.equals("stopped"))
+                        if(Status.equals("Running") || Status.equals("Stopped [Engine ON]") || Status.equals("Stopped [Engine OFF]"))
                         {
-                            fuel.setText("Fuel : " + Fuel + " ltr");
-                        }else
-                        fuel.setVisibility(View.GONE);
+                            fuel.setVisibility(View.VISIBLE);
+                            if(Fuel.equals("0.0")) {
+                                fuel.setText("Fuel : " +" No Status");
+                            }
+                            else
+                                fuel.setText("Fuel Remaining : " + Fuel + " ltr");
+                        }
+//                        else
+//                        fuel.setVisibility(View.GONE);
 
-                        tStatus.setText("Status : " + Status);
+                        tStatus.setText("Vehicle Status : " + Status);
                         tStatus.setVisibility(View.VISIBLE);
 
-                        if (Status.equals("running")) {
+                        if (Status.equals("Running")) {
                             double spd = Double.parseDouble(Speed);
                             DecimalFormat numberFormat = new DecimalFormat("##.00");
                             String sp=String.valueOf(numberFormat.format(spd));
                             if(!sp.equals("0.0")) {
-                                tSpeed.setText("SPEED(Km/h) : " + sp);
+                                tSpeed.setText("SPEED : " + sp+" km/hr");
                                 tSpeed.setVisibility(View.VISIBLE);
                             }
                         }

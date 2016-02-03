@@ -72,108 +72,108 @@ public class Welcome extends AppCompatActivity implements OnClickListener {
                     .toString() + " " + "[saveFuelDetails]",e.toString());
         }
         sp = getSharedPreferences("testapp", Context.MODE_PRIVATE);
-        String regComplete = sp.getString("checkReg", "false");
-        if(regComplete.equals("true")) {
-            //         App Demo
-            final Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
-            dialog.setContentView(R.layout.transparent);
-            RelativeLayout layout= (RelativeLayout) dialog.findViewById(R.id.transparent);
-            layout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    dialog.dismiss();
-                    final Dialog d1 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//        String regComplete = sp.getString("checkReg", "false");
+//        if(regComplete.equals("true")) {
+//            //         App Demo
+//            final Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+//            dialog.setContentView(R.layout.transparent);
+//            RelativeLayout layout= (RelativeLayout) dialog.findViewById(R.id.transparent);
+//            layout.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View arg0) {
+//                    dialog.dismiss();
+//                    final Dialog d1 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//
+//                    d1.setContentView(R.layout.transparent_fuel);
+//                    RelativeLayout layoutfuel = (RelativeLayout) d1.findViewById(R.id.fueltransparent);
+//
+//                    layoutfuel.setOnClickListener(new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            d1.dismiss();
+//                            final Dialog d2 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                            d2.setContentView(R.layout.transparent_advance);
+//                            RelativeLayout layoutAdv = (RelativeLayout) d2.findViewById(R.id.transAdvan);
+//                            layoutAdv.setOnClickListener(new OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    d2.dismiss();
+//                                    final Dialog d3 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                                    d3.setContentView(R.layout.transparent_trips);
+//                                    RelativeLayout transpTrips = (RelativeLayout) d3.findViewById(R.id.transTrips);
+//                                    transpTrips.setOnClickListener(new OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            d3.dismiss();
+//                                            final Dialog d4 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                                            d4.setContentView(R.layout.transparent_tracking);
+//                                            RelativeLayout transTracking = (RelativeLayout) d4.findViewById(R.id.transTracking);
+//                                            transTracking.setOnClickListener(new OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    d4.dismiss();
+//                                                    final  Dialog d5 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                                                    d5.setContentView(R.layout.transparent_payment);
+//                                                    RelativeLayout transPay = (RelativeLayout) d5.findViewById(R.id.transPayment);
+//                                                    transPay.setOnClickListener(new OnClickListener() {
+//                                                        @Override
+//                                                        public void onClick(View v) {
+//                                                            d5.dismiss();
+//                                                            final Dialog d6 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                                                            d6.setContentView(R.layout.transparent_dashboard);
+//                                                            RelativeLayout transDashbd = (RelativeLayout) d6.findViewById(R.id.transDashboard);
+//                                                            transDashbd.setOnClickListener(new OnClickListener() {
+//                                                                @Override
+//                                                                public void onClick(View v) {
+//                                                                    d6.dismiss();
+//                                                                    final Dialog d7 = new Dialog(Welcome.this,android.R.style.Theme_Translucent_NoTitleBar);
+//                                                                    d7.setContentView(R.layout.transparent_reminder);
+//                                                                    RelativeLayout transpRemind = (RelativeLayout) d7.findViewById(R.id.transReminder);
+//                                                                    transpRemind.setOnClickListener(new OnClickListener() {
+//                                                                        @Override
+//                                                                        public void onClick(View v) {
+//                                                                            d7.dismiss();
+//                                                                            final Dialog d8 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
+//                                                                            d8.setContentView(R.layout.transparent_leave);
+//                                                                            RelativeLayout transnpLeave = (RelativeLayout) d8.findViewById(R.id.transLeave);
+//                                                                            transnpLeave.setOnClickListener(new OnClickListener() {
+//                                                                                @Override
+//                                                                                public void onClick(View v) {
+//                                                                                    d8.dismiss();
+//                                                                                }
+//                                                                            });
+//                                                                            d8.show();
+//                                                                        }
+//                                                                    });
+//                                                                    d7.show();
+//                                                                }
+//                                                            });
+//                                                            d6.show();
+//                                                        }
+//                                                    });
+//                                                    d5.show();
+//                                                }
+//                                            });
+//                                            d4.show();
+//                                        }
+//                                    });
+//                                    d3.show();
+//                                }
+//                            });
+//                            d2.show();
+//                        }
+//                    });
+//                    d1.show();
+//
+//                }
+//
+//            });
+//            dialog.show();
 
-                    d1.setContentView(R.layout.transparent_fuel);
-                    RelativeLayout layoutfuel = (RelativeLayout) d1.findViewById(R.id.fueltransparent);
-
-                    layoutfuel.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            d1.dismiss();
-                            final Dialog d2 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                            d2.setContentView(R.layout.transparent_advance);
-                            RelativeLayout layoutAdv = (RelativeLayout) d2.findViewById(R.id.transAdvan);
-                            layoutAdv.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    d2.dismiss();
-                                    final Dialog d3 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                                    d3.setContentView(R.layout.transparent_trips);
-                                    RelativeLayout transpTrips = (RelativeLayout) d3.findViewById(R.id.transTrips);
-                                    transpTrips.setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            d3.dismiss();
-                                            final Dialog d4 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                                            d4.setContentView(R.layout.transparent_tracking);
-                                            RelativeLayout transTracking = (RelativeLayout) d4.findViewById(R.id.transTracking);
-                                            transTracking.setOnClickListener(new OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    d4.dismiss();
-                                                    final  Dialog d5 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                                                    d5.setContentView(R.layout.transparent_payment);
-                                                    RelativeLayout transPay = (RelativeLayout) d5.findViewById(R.id.transPayment);
-                                                    transPay.setOnClickListener(new OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            d5.dismiss();
-                                                            final Dialog d6 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                                                            d6.setContentView(R.layout.transparent_dashboard);
-                                                            RelativeLayout transDashbd = (RelativeLayout) d6.findViewById(R.id.transDashboard);
-                                                            transDashbd.setOnClickListener(new OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View v) {
-                                                                    d6.dismiss();
-                                                                    final Dialog d7 = new Dialog(Welcome.this,android.R.style.Theme_Translucent_NoTitleBar);
-                                                                    d7.setContentView(R.layout.transparent_reminder);
-                                                                    RelativeLayout transpRemind = (RelativeLayout) d7.findViewById(R.id.transReminder);
-                                                                    transpRemind.setOnClickListener(new OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(View v) {
-                                                                            d7.dismiss();
-                                                                            final Dialog d8 = new Dialog(Welcome.this, android.R.style.Theme_Translucent_NoTitleBar);
-                                                                            d8.setContentView(R.layout.transparent_leave);
-                                                                            RelativeLayout transnpLeave = (RelativeLayout) d8.findViewById(R.id.transLeave);
-                                                                            transnpLeave.setOnClickListener(new OnClickListener() {
-                                                                                @Override
-                                                                                public void onClick(View v) {
-                                                                                    d8.dismiss();
-                                                                                }
-                                                                            });
-                                                                            d8.show();
-                                                                        }
-                                                                    });
-                                                                    d7.show();
-                                                                }
-                                                            });
-                                                            d6.show();
-                                                        }
-                                                    });
-                                                    d5.show();
-                                                }
-                                            });
-                                            d4.show();
-                                        }
-                                    });
-                                    d3.show();
-                                }
-                            });
-                            d2.show();
-                        }
-                    });
-                    d1.show();
-
-                }
-
-            });
-            dialog.show();
-
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putString("checkReg", "false");
-            edit.commit();
-        }
+//            SharedPreferences.Editor edit = sp.edit();
+//            edit.putString("checkReg", "false");
+//            edit.commit();
+//        }
 
 
         toolbar = (Toolbar) findViewById(R.id.tool);
