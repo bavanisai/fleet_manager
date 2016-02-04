@@ -607,7 +607,8 @@ public class SendToWebService extends AsyncTask<String, String, String> {
             // Server
             authKey = settings.getString("AuthKey", null);
             //  System.out.println(authKey);
-            if (params[1].equals("RegisterAnApplication") || params[1].equals("ApplicationUpdateCheck") || params[1].equals("GetClientsDevices")) {
+            if (params[1].equals("RegisterAnApplication") || params[1].equals("ApplicationUpdateCheck")
+                    || params[1].equals("GetClientsDevices")) {
                 prefixUrl = regServerUrl;
                 isAppServerIpConfigured = true;
             }

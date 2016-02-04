@@ -611,10 +611,12 @@ try {
             tDestination.setText("Not Available");
             tSource.setText("Not Available");
         }
-//        if (!Fuel.equals("0.0") && (!Fuel.equals(""))
-//                && (!Fuel.equals("0"))) {
-            tFuel.setText(Fuel);
-       // }
+        if (!Fuel.equals("0.0") && (!Fuel.equals(""))
+                && (!Fuel.equals("0"))) {
+            tFuel.setText(Fuel+" ltr");
+       }else
+            tFuel.setText("No Status");
+
         if (RunningTime.equals(""))
             tRunningTime.setText("Not Available");
         else

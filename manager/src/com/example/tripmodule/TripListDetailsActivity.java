@@ -36,14 +36,14 @@ import java.util.ArrayList;
 public class TripListDetailsActivity extends Activity implements View.OnClickListener, IGetParticularTripData,ITripListFragment,IGetTripStatus {
     String inputvoucher,inputvehicle;
     int totalDestination;
-    TextView txtSource, txtDriver1;//txtDriver2;
-    Button btnEdit,btnAdd,btnDelete;
+    TextView txtSource, txtDriver1;
+    Button btnEdit,btnDelete;
     ListView destinationList;
     ArrayList<String> destList = new ArrayList<>();
     String val,data;
     int pos;
     final IGetParticularTripData mGetParticularTripData=this;
-    String sourceName,cleaner,driver,voucher;
+    String sourceName,cleaner,driver,voucher, tripStatus;
     NewMultipleDestinationArray mList;
     public static ArrayList<NewMultipleDestinationArray> multipleArrayList = new ArrayList<>();
     final ITripListFragment mTripListFragment=this;
@@ -193,7 +193,6 @@ catch (Exception e){
 
                 for (int i = 0; i < destDetails.length(); i++) {
                     JSONObject trip = destDetails.getJSONObject(i);
-
                     String vehicleNo=trip.getString("vehicleNumber");
                     String tripOrder=trip.getString("tripOrder");
                     String sourceOrLastDest=trip.getString("sourceName");
@@ -206,7 +205,7 @@ catch (Exception e){
                     String amount=trip.getString("amount");
                     String subVoucher=trip.getString("subVoucher");
                     String route=trip.getString("route");
-                    String tripStatus=trip.getString("tripStatus");
+                    tripStatus=trip.getString("tripStatus");
 
                     mList = new NewMultipleDestinationArray(vehicleNo, product, quantity, destination, distance, route, amount, tripPaymentType, payment_km, sourceOrLastDest,tripOrder,subVoucher);
                     int pos=multipleArrayList.size();
@@ -257,15 +256,13 @@ catch (Exception e){
             {
                 btnDelete.setVisibility(View.GONE);
             }
-            System.out.println(totalDestination);
+
             destinationList.setAdapter(adapter);
             destinationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     pos = position;
-                    // val = MultipleDestinationActivity.arrayList.get(position).toString();
                     val = multipleArrayList.get(position).toString();
-                    // Toast.makeText(DestinationActivity.this, "position" + position + " mylist[" + val + "]", Toast.LENGTH_LONG).show();
                 }
             });
         } catch (Exception e) {
@@ -279,33 +276,40 @@ catch (Exception e){
         switch (view.getId()){
             case R.id.tripDetailsActivityDestinationBtnEditDestination:
 
-                if(val!=null) {
-                    try {
-                        editTripData = new ArrayList<String>();
-                        String[] arr = val.split(",");
-                        String voucher = arr[11];
-                        for (int i = 0; i < arr.length; i++) {
-                            data = arr[i];
-                            editTripData.add(data);
+                    if (val != null)
+                    {
+                        if(pos==0) {
+                            Toast.makeText(TripListDetailsActivity.this, "Main trip can not edit!", Toast.LENGTH_LONG).show();
                         }
-                    } catch (Exception e) {
-                        ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
-                                        .getClass().toString() + " " + "[tripDetailsActivityDestinationBtnEditDestination]",
-                                e.toString());
+                        else {
+                            try {
+                                editTripData = new ArrayList<String>();
+                                String[] arr = val.split(",");
+                                String voucher = arr[11];
+
+                                for (int i = 0; i < arr.length; i++) {
+                                    data = arr[i];
+                                    editTripData.add(data);
+                                }
+                            } catch (Exception e) {
+                                ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
+                                                .getClass().toString() + " " + "[tripDetailsActivityDestinationBtnEditDestination]",
+                                        e.toString());
+                            }
+                            try {
+                                SendToWebService send = new SendToWebService(TripListDetailsActivity.this,
+                                        mGetTripStatus);
+                                send.execute("45", "GetTripStatus", voucher);
+                            } catch (Exception e) {
+                                ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
+                                                .getClass().toString() + " " + "[deleteSubTrip]",
+                                        e.toString());
+                            }
+                        }
+                    } else {
+                        Toast.makeText(TripListDetailsActivity.this, "Please select destination to edit", Toast.LENGTH_LONG).show();
                     }
-                    try {
-                        SendToWebService send = new SendToWebService(TripListDetailsActivity.this,
-                                mGetTripStatus);
-                        send.execute("45", "GetTripStatus", voucher);
-                    } catch (Exception e) {
-                        ExceptionMessage.exceptionLog(TripListDetailsActivity.this, this
-                                        .getClass().toString() + " " + "[deleteSubTrip]",
-                                e.toString());
-                    }
-                }else
-                {
-                    Toast.makeText(TripListDetailsActivity.this,"Please select destination to edit",Toast.LENGTH_LONG).show();
-                }
+
                 break;
 
             case R.id.tripDetailsActivityDestinationBtnDeleteDestination:

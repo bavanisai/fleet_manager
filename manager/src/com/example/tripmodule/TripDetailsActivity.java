@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class TripDetailsActivity extends Activity implements View.OnClickListener {
 
-    TextView txtSource,txtDriver1,txtDriver2;
-    Button btnEdit,btnAdd,btnDelete;
+    TextView txtSource,txtDriver1;
+    Button btnEdit,btnDelete;
     ListView destinationList;
     ArrayList<String> destList;
     String val,data,src,dri,veh;
@@ -41,10 +41,8 @@ public class TripDetailsActivity extends Activity implements View.OnClickListene
     private void bindData() {
         txtSource = (TextView)findViewById(R.id.tripDetailsActivityTvSource);
         txtDriver1 = (TextView)findViewById(R.id.tripDetailsActivityTvDriver1);
-        //   txtDriver2 = (TextView)findViewById(R.id.tripDetailsActivityTvDriver2);
         destinationList=(ListView)findViewById(R.id.tripDetailsActivityLvDestination);
         btnEdit = (Button)findViewById(R.id.tripDetailsActivityDestinationBtnEditDestination);
-        //   btnAdd = (Button)findViewById(R.id.tripDetailsActivityDestinationBtnAddDestination);
         btnDelete = (Button)findViewById(R.id.tripDetailsActivityDestinationBtnDeleteDestination);
     }
 
@@ -52,7 +50,6 @@ public class TripDetailsActivity extends Activity implements View.OnClickListene
 
        txtSource.setText(src);
        txtDriver1.setText(dri);
-
        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, destList);
        destinationList.setAdapter(adapter);
        destinationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,7 +57,7 @@ public class TripDetailsActivity extends Activity implements View.OnClickListene
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                pos=position;
                val = MultipleDestinationActivity.arrayList.get(position).toString();
-               // Toast.makeText(DestinationActivity.this, "position" + position + " mylist[" + val + "]", Toast.LENGTH_LONG).show();
+
            }
        });
    }
@@ -81,15 +78,8 @@ public class TripDetailsActivity extends Activity implements View.OnClickListene
                 in.putExtra("editPosition",pos);
                 in.putExtra("editTripData",editTripData);
                 startActivity(in);
-
                 break;
 
-//
-            //           case R.id.tripDetailsActivityDestinationBtnAddDestination:
-//                Intent intent=new Intent(TripDetailsActivity.this,MultipleDestinationActivity.class);
-//                intent.putExtra("editPosition",pos+1);
-//                startActivity(intent);
-//                break;
             case R.id.tripDetailsActivityDestinationBtnDeleteDestination:
                 MultipleDestinationActivity.arrayList.remove(pos);
                 Toast.makeText(TripDetailsActivity.this, "Destination" + pos + " completeList[" + val + "]" +" Removed", Toast.LENGTH_LONG).show();

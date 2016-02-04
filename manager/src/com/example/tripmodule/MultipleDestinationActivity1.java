@@ -116,8 +116,6 @@ public class MultipleDestinationActivity1 extends Activity implements View.OnCli
                     multipleDestinationBtnAdd.setText("UPDATE");
                     dataAdapter.remove(arr[3].toString());
                 // }
-            } else {
-               // Toast.makeText(MultipleDestinationActivity.this, "no value", Toast.LENGTH_LONG).show();
             }
         }
         catch (Exception e){

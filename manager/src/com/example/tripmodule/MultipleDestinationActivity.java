@@ -394,7 +394,6 @@ public class MultipleDestinationActivity extends Activity implements View.OnClic
     public void addDataToArrayList() {
         try {
             getData();
-
             DateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd hhmmss");
             dateFormatter.setLenient(false);
             Date today = new Date();

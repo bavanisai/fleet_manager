@@ -63,7 +63,6 @@ public class TripListFragment extends Fragment implements ITripListFragment, IGe
             @Override
             public void onClick(View view) {
                 try {
-                    System.out.println("clicked");
                     SendToWebService send = new SendToWebService(getActivity(), mGetTripList);
                     send.execute("43", "GetActiveTrips");
                 } catch (Exception e) {
